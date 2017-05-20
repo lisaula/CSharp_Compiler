@@ -48,7 +48,7 @@ namespace Compiler
             variable_declarator_list_p();
 
             if (!pass(TokenType.END_STATEMENT))
-                throwError(";");
+                throwError(" end statement ';'");
             consumeToken();
         }
 
@@ -96,6 +96,7 @@ namespace Compiler
 
         private void variable_initializer() //TODO
         {
+            DebugInfoMethod("variable_initializer");
             expression();
         }
     }

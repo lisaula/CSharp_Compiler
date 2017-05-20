@@ -1,12 +1,6 @@
-﻿
-namespace A
+﻿using System;
+public class kevin
 {
-    public class prueba
-    {
-        public float field;
-        public int method() { }
-        public prueba()
-        {
-        }
-    }
+    //public int x, y, z, c = 3;
+    public static float y1, z1, r;
 }

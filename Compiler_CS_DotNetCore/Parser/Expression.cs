@@ -9,8 +9,8 @@ namespace Compiler
         private void expression()
         {
             DebugInfoMethod("expression");
-            if (!pass(TokenType.LIT_INT))
-                throwError("int");
+            if (!pass(TokenType.LIT_INT, TokenType.ID))
+                throwError("int, id");
             consumeToken();
         }
     }
