@@ -100,13 +100,13 @@ public enum DIASDELASEMANA{
             var inputString = new InputString(@"using System;
 using Compiler.Parser.Nada;
 using jamones;
-public enum DIASDELASEMANA{
+enum DIASDELASEMANA{
     LUNES=1,MARTES=2,MIERCOLES=3,JUEVES=4,VIERNES=5,
 }
-public enum DIASDELASEMANA{
+enum DIASDELASEMANA{
     LUNES,MARTES,MIERCOLES,JUEVES,VIERNES,
 };
-public enum DIASDELASEMANA{
+enum DIASDELASEMANA{
     LUNES,MARTES,MIERCOLES,JUEVES,VIERNES,
 }");
             var lexer = new LexicalAnalyzer(inputString);

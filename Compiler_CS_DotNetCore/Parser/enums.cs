@@ -93,15 +93,5 @@ namespace Compiler
             }
             
         }
-
-        private void interface_declaration()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void class_declaration()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

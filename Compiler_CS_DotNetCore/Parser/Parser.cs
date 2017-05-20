@@ -15,7 +15,7 @@ namespace Compiler
         {
             this.lexer = lexer;
             current_token = lexer.getNextToken();
-            //doDebugOnlyCode = true;
+            doDebugOnlyCode = true;
         }
         
     }

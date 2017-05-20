@@ -10,7 +10,14 @@ namespace Compiler
     {
         TokenType[] encapsulationTypes = { TokenType.RW_PUBLIC, TokenType.RW_PRIVATE, TokenType.RW_PROTECTED };
         TokenType[] typesDeclarationOptions = { TokenType.RW_ABSTRACT, TokenType.RW_CLASS, TokenType.RW_ENUM, TokenType.RW_INTERFACE };
-
+        TokenType[] typesOptions = {
+            TokenType.RW_INT,
+            TokenType.RW_CHAR,
+            TokenType.RW_STRING,
+            TokenType.RW_BOOL,
+            TokenType.RW_FLOAT,
+            TokenType.ID
+        };
         public bool pass(params TokenType[] types)
         {
             foreach (var type in types)

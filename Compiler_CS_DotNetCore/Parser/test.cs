@@ -1,5 +1,5 @@
-﻿enum hola
+﻿public interface Hola
 {
-    viernes=4,
-    jueves,
+    void method();
+    int javier(int manuel, float luis);
 }
