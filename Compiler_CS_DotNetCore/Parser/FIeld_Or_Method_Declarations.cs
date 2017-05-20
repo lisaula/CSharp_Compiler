@@ -6,7 +6,7 @@ namespace Compiler
 {
     public partial class Parser
     {
-        private void field_or_method() //TODO: Not implemented
+        private void field_or_method()
         {
             DebugInfoMethod("field_or_method");
             if(pass(TokenType.OP_ASSIGN, TokenType.OP_COMMA, TokenType.END_STATEMENT))

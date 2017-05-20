@@ -71,6 +71,7 @@ public class kevin : Nexer{
     public int x, y, z, c = 3;
     public static float y1, z1, r;
     public float x1 = y1, z= z1,r = r2,f = 4;
+
 }
 ");
             var lexer = new LexicalAnalyzer(inputString);
@@ -139,7 +140,7 @@ class kevin : Nexe, Dos, Tres, Cuatro{
             var inputString = new InputString(@"using System;
 using Compiler.Parser.Nada;
 using jamones;
-public class kevin : Nexer, Javier, Aqui{
+public abstract class kevin : Nexer, Javier, Aqui{
     public kevin();
 }
 private class kevin : Nexe, Dos, Tres, Cuatro{
@@ -180,6 +181,22 @@ using Compiler.Parser.Nada;
 using jamones;
 public class kevin : Nexer, Javier{
     public ();
+}
+");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestClassCantHaveAbstractConstructor()
+        {
+            var inputString = new InputString(@"using System;
+using Compiler.Parser.Nada;
+using jamones;
+public class kevin : Nexer, Javier{
+    public abstract  kevin(){}
 }
 ");
             var lexer = new LexicalAnalyzer(inputString);
