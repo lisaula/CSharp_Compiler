@@ -43,7 +43,7 @@ namespace Compiler
             reservedWordsDict["foreach"] = TokenType.RW_FOREACH;
             reservedWordsDict["in"] = TokenType.RW_IN;
             reservedWordsDict["using"] = TokenType.RW_USING;
-            reservedWordsDict["nameespace"] = TokenType.RW_NAMEESPACE;
+            reservedWordsDict["namespace"] = TokenType.RW_NAMEESPACE;
             reservedWordsDict["if"] = TokenType.RW_IF;
             reservedWordsDict["else"] = TokenType.RW_ELSE;
             reservedWordsDict["switch"] = TokenType.RW_SWITCH;

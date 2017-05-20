@@ -23,7 +23,7 @@ namespace Compiler
 
         void throwError(string expected)
         {
-            throw new ParserException(expected, current_token.row, current_token.column);
+            throw new ParserException("Expected: "+expected, current_token.row, current_token.column);
         }
 
         void consumeToken()
@@ -39,7 +39,7 @@ namespace Compiler
 #if DEBUG
             if (doDebugOnlyCode)
             {
-                Console.WriteLine(message+" token: "+current_token.type);
+                Console.WriteLine(message+" - token: "+current_token.type+" lexema: "+current_token.lexema);
             }
         }
 #endif

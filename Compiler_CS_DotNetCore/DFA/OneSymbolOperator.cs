@@ -30,10 +30,10 @@ namespace Compiler
             operators[":"] = TokenType.OP_COLON;
             operators["("] = TokenType.OPEN_PARENTHESIS;
             operators[")"] = TokenType.CLOSE_PARENTHESIS;
-            operators["{"] = TokenType.KEY_OPEN;
-            operators["}"] = TokenType.KEY_CLOSE;
-            operators["["] = TokenType.KEY_BAR_OPEN;
-            operators["]"] = TokenType.KEY_BAR_CLOSE;
+            operators["{"] = TokenType.OPEN_CURLY_BRACKET;
+            operators["}"] = TokenType.CLOSE_CURLY_BRACKET;
+            operators["["] = TokenType.OPEN_SQUARE_BRACKET;
+            operators["]"] = TokenType.CLOSE_SQUARE_BRACKET;
             operators["<"] = TokenType.OP_LESS_THAN;
             operators[">"] = TokenType.OP_GREATER_THAN;
             operators["."] = TokenType.OP_DOT;

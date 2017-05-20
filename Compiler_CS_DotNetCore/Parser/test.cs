@@ -1,3 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿enum hola
+{
+    viernes=4,
+    jueves,
+}

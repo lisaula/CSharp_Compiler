@@ -56,8 +56,8 @@ cont++;
             lexer.init();
             Token token = lexer.getNextToken();
             TokenType[] tokensTypes = { TokenType.RW_WHILE, TokenType.OPEN_PARENTHESIS, TokenType.LIT_BOOL,
-                                        TokenType.CLOSE_PARENTHESIS, TokenType.KEY_OPEN, TokenType.ID,
-                                        TokenType.OP_INCREMENT, TokenType.END_STATEMENT, TokenType.KEY_CLOSE
+                                        TokenType.CLOSE_PARENTHESIS, TokenType.OPEN_CURLY_BRACKET, TokenType.ID,
+                                        TokenType.OP_INCREMENT, TokenType.END_STATEMENT, TokenType.CLOSE_CURLY_BRACKET
                                         };
             var cont = 0;
             while (token.type != TokenType.EOF)
@@ -80,11 +80,11 @@ foreach(string s in Ranger){}}");
                                         TokenType.ID, TokenType.OP_ASSIGN, TokenType.LIT_INT,
                                         TokenType.END_STATEMENT, TokenType.ID, TokenType.OP_LESS_OR_EQUAL,
                                         TokenType.ID, TokenType.END_STATEMENT, TokenType.ID,
-                                        TokenType.OP_DECREMENT, TokenType.CLOSE_PARENTHESIS, TokenType.KEY_OPEN,
+                                        TokenType.OP_DECREMENT, TokenType.CLOSE_PARENTHESIS, TokenType.OPEN_CURLY_BRACKET,
                                         TokenType.RW_FOREACH, TokenType.OPEN_PARENTHESIS, TokenType.RW_STRING,
                                         TokenType.ID, TokenType.RW_IN, TokenType.ID,
-                                        TokenType.CLOSE_PARENTHESIS, TokenType.KEY_OPEN, TokenType.KEY_CLOSE,
-                                        TokenType.KEY_CLOSE
+                                        TokenType.CLOSE_PARENTHESIS, TokenType.OPEN_CURLY_BRACKET, TokenType.CLOSE_CURLY_BRACKET,
+                                        TokenType.CLOSE_CURLY_BRACKET
                                         };
             var cont = 0;
             while (token.type != TokenType.EOF)
@@ -106,12 +106,12 @@ if(man >= 8){man<<=1|0xffff}}else");
             TokenType[] tokensTypes = { TokenType.RW_IF, TokenType.OPEN_PARENTHESIS, TokenType.ID,
                                         TokenType.OP_EQUAL, TokenType.ID, TokenType.OP_LOG_AND,
                                         TokenType.ID, TokenType.OP_NOT_EQUAL, TokenType.ID,
-                                        TokenType.CLOSE_PARENTHESIS, TokenType.KEY_OPEN, TokenType.RW_IF,
+                                        TokenType.CLOSE_PARENTHESIS, TokenType.OPEN_CURLY_BRACKET, TokenType.RW_IF,
                                         TokenType.OPEN_PARENTHESIS, TokenType.ID, TokenType.OP_GREATER_OR_EQUAL,
-                                        TokenType.LIT_INT, TokenType.CLOSE_PARENTHESIS, TokenType.KEY_OPEN,
+                                        TokenType.LIT_INT, TokenType.CLOSE_PARENTHESIS, TokenType.OPEN_CURLY_BRACKET,
                                         TokenType.ID, TokenType.OP_BIN_LS_ASSIGN, TokenType.LIT_INT,
-                                        TokenType.OP_BIN_OR, TokenType.LIT_INT, TokenType.KEY_CLOSE,
-                                        TokenType.KEY_CLOSE, TokenType.RW_ELSE
+                                        TokenType.OP_BIN_OR, TokenType.LIT_INT, TokenType.CLOSE_CURLY_BRACKET,
+                                        TokenType.CLOSE_CURLY_BRACKET, TokenType.RW_ELSE
                                         };
             var cont = 0;
             while (token.type != TokenType.EOF)
