@@ -55,10 +55,15 @@ namespace Compiler
         private void variable_declarator_list_p()
         {
             DebugInfoMethod("variable_declarator_list_p");
-            if (!pass(TokenType.OP_COMMA))
-                throwError("comma ','");
-            consumeToken();
-            variable_declarator_list();
+            if (pass(TokenType.OP_COMMA))
+            {
+                consumeToken();
+                variable_declarator_list();
+            }
+            else
+            {
+                DebugInfoMethod("epsilon");
+            }
         }
 
         private void variable_declarator_list()
