@@ -1,5 +1,11 @@
-﻿public interface Hola
+﻿
+namespace A
 {
-    void method();
-    int javier(int manuel, float luis);
+    public class prueba
+    {
+        public int method() { }
+        public prueba()
+        {
+        }
+    }
 }

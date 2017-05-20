@@ -18,6 +18,22 @@ namespace Compiler
             TokenType.RW_FLOAT,
             TokenType.ID
         };
+        TokenType[] optionalModifiersOptions = {
+            TokenType.RW_STATIC,
+            TokenType.RW_VIRTUAL,
+            TokenType.RW_OVERRIDE,
+            TokenType.RW_ABSTRACT,
+        };
+        
+        public void addLookAhead(Token token)
+        {
+            look_ahead.Add(token);
+        }
+        public void removeLookAhead(int index)
+        {
+            if(look_ahead.Count >0)
+                look_ahead.RemoveAt(index);
+        }
         public bool pass(params TokenType[] types)
         {
             foreach (var type in types)
@@ -35,7 +51,15 @@ namespace Compiler
 
         void consumeToken()
         {
-            current_token = lexer.getNextToken();
+            if (look_ahead.Count > 0)
+            {
+                current_token = look_ahead[0];
+                removeLookAhead(0);
+            }
+            else
+            {
+                current_token = lexer.getNextToken();
+            }
         }
 #if DEBUG
         private bool doDebugOnlyCode = false;

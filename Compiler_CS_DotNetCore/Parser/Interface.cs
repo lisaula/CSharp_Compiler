@@ -181,10 +181,5 @@ namespace Compiler
                 DebugInfoMethod("epsilon");
             }
         }
-
-        private void class_declaration()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

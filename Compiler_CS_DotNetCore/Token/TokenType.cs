@@ -93,6 +93,8 @@
         RW_SIZEOF,
         RW_TYPE,
         RW_ENUM,
-        RW_INTERFACE
+        RW_INTERFACE,
+        RW_VIRTUAL,
+        RW_BASE
     }
 }
