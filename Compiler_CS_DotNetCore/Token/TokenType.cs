@@ -96,6 +96,11 @@
         RW_INTERFACE,
         RW_VIRTUAL,
         RW_BASE,
-        RW_THIS
+        RW_THIS,
+        RW_DO,
+        RW_RETURN,
+        RW_CONTINUE,
+        RW_BREAK,
+        RW_DEFAULT
     }
 }

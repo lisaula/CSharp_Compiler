@@ -14,6 +14,7 @@ namespace UnitTestProject.ParsersTests
         {
             var inputString = new InputString(@"public class kevin : Javier
 {
+    int prueba = (!(isVisible && iden) || noEsta);
     int LUNES = ((5 + 3) + (4 + 3));
     int MARTES = ((5 * 9 / 3) - 7 + (2 * 7 + 4) / ( (128 >> 5 * 5) - (1 << 7 * 46) / 3 )) + 15;
     int MIERCOLES = 0;

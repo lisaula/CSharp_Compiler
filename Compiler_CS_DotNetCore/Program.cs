@@ -7,12 +7,8 @@ namespace Compiler
     {
         static void Main(string[] args)
         {
-            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\Compiler_CS_DotNetCore\Parser\test.cs");
-            var inputString = new InputString(@"
-public class kevin
-{
-    float f = int.tryParse(x);
-}");
+            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\Compiler_CS_DotNetCore\Parser\test.txt");
+            var inputString = new InputString(txt);
             var lexer = new LexicalAnalyzer(inputString);
             /*Token token = dfa.getNextToken();
             while (token.type != TokenType.EOF)
@@ -21,6 +17,7 @@ public class kevin
                 token = dfa.getNextToken();
             }
             System.Console.Out.WriteLine(token);*/
+            
             var parser = new Parser(lexer);
             parser.parse();
             System.Console.ReadKey();

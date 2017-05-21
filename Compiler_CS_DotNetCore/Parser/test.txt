@@ -1,0 +1,14 @@
+﻿using System;
+namespace N
+{
+    public abstract class kevin
+    {
+    	int local;
+    	Persona p;
+        int[] array = new int[5];
+        int array = (int)nuevo;
+        public Persona.Object[] getArray(){
+        	return persona;
+        }
+    }
+}

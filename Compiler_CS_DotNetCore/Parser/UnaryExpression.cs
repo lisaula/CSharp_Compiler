@@ -26,7 +26,7 @@ namespace Compiler
                     consumeToken();
                     if (!pass(typesOptions))
                         throwError("a type");
-                    consumeToken();
+                    types();
 
                     if (!pass(TokenType.CLOSE_PARENTHESIS))
                         throwError("close parenthesis ')'");
@@ -161,7 +161,8 @@ namespace Compiler
             DebugInfoMethod("instance_expression");
             if (!pass(typesOptions))
                 throwError("a type");
-            types();
+            //types();
+            consumeToken();
             instance_expression_factorized();
         }
 

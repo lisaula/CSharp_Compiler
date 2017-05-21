@@ -86,6 +86,11 @@ namespace Compiler
             TokenType.OP_MODULO
         };
 
+        TokenType[] unaryExpressionOptions = {
+            TokenType.OPEN_PARENTHESIS,TokenType.RW_NEW, TokenType.ID,
+            TokenType.RW_THIS
+        };
+
         public void addLookAhead(Token token)
         {
             look_ahead.Add(token);

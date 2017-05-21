@@ -99,7 +99,43 @@ namespace Compiler
             DebugInfoMethod("type");
             if (!pass(typesOptions))
                 throwError("a type");
+            if (pass(TokenType.ID))
+            {
+                qualified_identifier();
+                optional_rank_specifier_list();
+            }
+            else
+            {
+                built_in_type();
+                optional_rank_specifier_list();
+            }
+        }
+
+        private void built_in_type()
+        {
+            DebugInfoMethod("built_in_type");
+            if (!pass(TokenType.RW_INT,
+            TokenType.RW_CHAR,
+            TokenType.RW_STRING,
+            TokenType.RW_BOOL,
+            TokenType.RW_FLOAT))
+                throwError("a primitive type");
             consumeToken();
+        }
+
+        private void qualified_identifier()
+        {
+            DebugInfoMethod("qualified_identifier");
+            if (pass(TokenType.ID))
+            {
+                consumeToken();
+                if(pass(TokenType.OP_DOT))
+                    identifier_attribute();
+            }
+            else
+            {
+                DebugInfoMethod("epsilon");
+            }
         }
 
         private void fixed_parameters()
