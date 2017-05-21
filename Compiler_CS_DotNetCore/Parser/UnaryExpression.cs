@@ -202,6 +202,7 @@ namespace Compiler
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
                 .Concat(literalOptions).ToArray()))
             {
+                
                 expression_list();
 
                 if (!pass(TokenType.CLOSE_SQUARE_BRACKET))
@@ -214,7 +215,7 @@ namespace Compiler
             }else if (pass(TokenType.OP_COMMA))
             {
                 rank_specifier_list();
-                array_initializer();
+                optional_array_initializer();
             }
             else
             {

@@ -48,7 +48,7 @@ namespace Compiler
 
         private void optional_class_member_declaration_list()
         {
-            DebugInfoMethod("optional_class_member_declaration_list");
+            DebugInfoMethod("optional_class_member_declaration_list5555");
             TokenType[] nuevo = { TokenType.RW_VOID };
             if (pass(encapsulationTypes.Concat(optionalModifiersOptions).Concat(typesOptions).Concat(nuevo).ToArray()))
             {
@@ -77,10 +77,9 @@ namespace Compiler
             TokenType[] nuevo = { TokenType.RW_VOID };
             if (pass(optionalModifiersOptions.Concat(typesOptions).Concat(nuevo).ToArray()))
             {
-                if (pass(TokenType.ID))
+                addLookAhead(lexer.getNextToken());
+                if (pass(TokenType.ID) && look_ahead[0].type == TokenType.OPEN_PARENTHESIS)
                 {
-                    addLookAhead(lexer.getNextToken());
-                    if (look_ahead[0].type == TokenType.OPEN_PARENTHESIS)
                         constructor_declaration();
                 }
                 else
@@ -92,6 +91,10 @@ namespace Compiler
                     consumeToken();
                     field_or_method();
                 }
+            }
+            else
+            {
+                throwError("optional-modifier, type-or-void");
             }
         }
 
@@ -165,12 +168,29 @@ namespace Compiler
             }
         }
 
-        private void argument_list()//TODO: EXPRESSION NO ESTA IMPLEMENTADO
+        private void argument_list()
         {
             DebugInfoMethod("argument_list");
-            expression();
-            if(pass(TokenType.OP_COMMA))
-                argument_list_p();
+            TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
+                TokenType.OP_NULLABLE, TokenType.OP_LOG_OR,
+                TokenType.OP_LOG_AND, TokenType.OP_BIN_OR,
+                TokenType.OP_BIN_XOR, TokenType.OP_BIN_AND,
+                TokenType.OPEN_PARENTHESIS, TokenType.RW_NEW,
+                TokenType.ID, TokenType.RW_THIS
+            };
+            if (pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
+                Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
+                Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
+                .Concat(literalOptions).ToArray()))
+            {
+                expression();
+                if (pass(TokenType.OP_COMMA))
+                    argument_list_p();
+            }
+            else
+            {
+                DebugInfoMethod("epsilon");
+            }
         }
 
         private void argument_list_p()
