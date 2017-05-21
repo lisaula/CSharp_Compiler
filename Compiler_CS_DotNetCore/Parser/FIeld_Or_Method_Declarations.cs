@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Compiler
@@ -94,10 +95,30 @@ namespace Compiler
             }
         }
 
-        private void variable_initializer() //TODO
+        private void variable_initializer()
         {
             DebugInfoMethod("variable_initializer");
-            expression();
+            TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
+                TokenType.OP_NULLABLE, TokenType.OP_LOG_OR,
+                TokenType.OP_LOG_AND, TokenType.OP_BIN_OR,
+                TokenType.OP_BIN_XOR, TokenType.OP_BIN_AND,
+                TokenType.OPEN_PARENTHESIS, TokenType.RW_NEW,
+                TokenType.ID, TokenType.RW_THIS
+            };
+            if (pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
+                Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
+                Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
+                .Concat(literalOptions).ToArray()))
+            {
+                expression();
+            }else if (pass(TokenType.OPEN_CURLY_BRACKET))
+            {
+                array_initializer();
+            }
+            else
+            {
+                throwError("expression or array initializer '{'");
+            }
         }
     }
 }

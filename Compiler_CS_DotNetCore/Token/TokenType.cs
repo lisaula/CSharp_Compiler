@@ -95,6 +95,7 @@
         RW_ENUM,
         RW_INTERFACE,
         RW_VIRTUAL,
-        RW_BASE
+        RW_BASE,
+        RW_THIS
     }
 }

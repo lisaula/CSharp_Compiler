@@ -24,7 +24,68 @@ namespace Compiler
             TokenType.RW_OVERRIDE,
             TokenType.RW_ABSTRACT,
         };
-        
+        TokenType[] literalOptions = {
+            TokenType.LIT_INT,
+            TokenType.LIT_CHAR,
+            TokenType.LIT_FLOAT,
+            TokenType.LIT_STRING,
+            TokenType.LIT_BOOL
+        };
+        TokenType[] unaryOperatorOptions = {
+            TokenType.OP_SUM,
+            TokenType.OP_SUBSTRACT,
+            TokenType.OP_INCREMENT,
+            TokenType.OP_DECREMENT,
+            TokenType.OP_DENIAL,
+            TokenType.OP_BIN_ONES_COMPLMTS,
+            TokenType.OP_MULTIPLICATION
+        };
+        TokenType[] assignmentOperatorOptions = {
+            TokenType.OP_ASSIGN,
+            TokenType.OP_SUM_ONE_OPERND,
+            TokenType.OP_SUBSTRACT_ONE_OPERND,
+            TokenType.OP_MULTIPLICATION_ASSIGN,
+            TokenType.OP_DIVISION_ASSIGN,
+            TokenType.OP_MOD_ASSIGN,
+            TokenType.OP_AND_ASSIGN,
+            TokenType.OP_OR_ASSIGN,
+            TokenType.OP_XOR_ASSIGN,
+            TokenType.OP_BIN_LS_ASSIGN,
+            TokenType.OP_BIN_RS_ASSIGN,
+        };
+        TokenType[] relationalOperatorOptions = {
+            TokenType.OP_LESS_THAN,
+            TokenType.OP_GREATER_THAN,
+            TokenType.OP_LESS_OR_EQUAL,
+            TokenType.OP_GREATER_OR_EQUAL
+        };
+
+        TokenType[] equalityOperatorOptions = {
+            TokenType.OP_EQUAL,
+            TokenType.OP_NOT_EQUAL
+        };
+
+        TokenType[] shiftOperatorOptions = {
+            TokenType.OP_BIN_LS,
+            TokenType.OP_BIN_RS
+        };
+
+        TokenType[] additiveOperatorOptions = {
+            TokenType.OP_SUM,
+            TokenType.OP_SUBSTRACT
+        };
+
+        TokenType[] Is_AsOperatorOptions = {
+            TokenType.RW_IS,
+            TokenType.RW_AS
+        };
+
+        TokenType[] multiplicativeOperatorOptions = {
+            TokenType.OP_MULTIPLICATION,
+            TokenType.OP_DIVISION,
+            TokenType.OP_MODULO
+        };
+
         public void addLookAhead(Token token)
         {
             look_ahead.Add(token);
@@ -51,6 +112,7 @@ namespace Compiler
 
         void consumeToken()
         {
+            DebugInfoMethod("\t->consumio " + current_token.type+" lexema: "+current_token.lexema);
             if (look_ahead.Count > 0)
             {
                 current_token = look_ahead[0];
@@ -60,6 +122,7 @@ namespace Compiler
             {
                 current_token = lexer.getNextToken();
             }
+            DebugInfoMethod("\t->nuevo token " + current_token.type + " lexema: " + current_token.lexema);
         }
 #if DEBUG
         private bool doDebugOnlyCode = false;

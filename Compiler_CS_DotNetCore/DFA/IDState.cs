@@ -55,6 +55,7 @@ namespace Compiler
             reservedWordsDict["interface"] = TokenType.RW_INTERFACE;
             reservedWordsDict["virtual"] = TokenType.RW_VIRTUAL;
             reservedWordsDict["base"] = TokenType.RW_BASE;
+            reservedWordsDict["this"] = TokenType.RW_THIS;
         }
 
         public override Token makeToken(string lexema, int lexemaRow, int lexemaColumn)
