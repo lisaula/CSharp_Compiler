@@ -197,7 +197,8 @@ namespace Compiler
             DebugInfoMethod("identifiers_list");
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            consumeToken();
+            //consumeToken();
+            qualified_identifier();
             identifiers_list_p();
         }
 
@@ -209,7 +210,8 @@ namespace Compiler
                 consumeToken();
                 if (!pass(TokenType.ID))
                     throwError("identifier");
-                consumeToken();
+                //consumeToken();
+                qualified_identifier();
                 identifiers_list_p();
             }
             else

@@ -374,7 +374,21 @@ namespace Compiler
         {
             DebugInfoMethod("statement_expression");
             unary_expression();
-            statement_expression_p();
+            statement_expression_factorized();
+        }
+
+        private void statement_expression_factorized()
+        {
+            DebugInfoMethod("statement_expression_factorized");
+            if (pass(assignmentOperatorOptions))
+            {
+                consumeToken();
+                expression();
+            }
+            else
+            {
+                DebugInfoMethod("epsilon");
+            }
         }
 
         private void statement_expression_p()

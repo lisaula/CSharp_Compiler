@@ -46,7 +46,9 @@ namespace Compiler
                 TokenType.RW_DO, TokenType.RW_FOR, TokenType.RW_FOREACH,
                 TokenType.RW_BREAK, TokenType.RW_CONTINUE, TokenType.RW_RETURN
             };
-            if (pass(nuevo.Concat(typesOptions).ToArray()))
+            addLookAhead(lexer.getNextToken());
+            if (pass(nuevo.Concat(typesOptions).ToArray()) &&
+                look_ahead[0].type == TokenType.ID)
             {
                 local_variable_declaration();
                 if (!pass(TokenType.END_STATEMENT))
