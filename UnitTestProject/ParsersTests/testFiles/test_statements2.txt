@@ -18,7 +18,7 @@ class stmtTests
         if(true){
             if(hola);
             int value;
-            if((hola?(((5 * 9 / 3) - 7 + (2 * 7 + 4) / ( (128 >> 5 * 5) - (1 << 7 * 46) / 3 )) + 15):(((mama += " como" + (9*5)) =="s") ?3:6)) is int)
+            if((hola?(((5 * 9 / 3) - 7 + (2 * 7 + 4) / ( (128 >> 5 * 5) - (1 << 7 * 46) / 3 )) + 15):(((mama += " como" + (9*5))=="s")?3:6)) is int)
             {
                 value = 7;
             }else{
@@ -106,7 +106,7 @@ class stmtTests
         float[] rangos = new float[5];
         rangos[0] = 5.25f;
         rangos[1] = 5.25F;
-        rangos[2] = (float)9.8f;
+        rangos[2] = (float)9;
         rangos[3] = 5.25f;
         rangos[FOUR] = (float)200;
 
@@ -118,19 +118,19 @@ class stmtTests
 
         string[] nombres1 = new namespace1.MyBool[getSize()];
         string[] nombres2 = new namespace1.MyBool[this.getSize()];
-        string[] nombres2 = new namespace1.MyBool[(Numbers.Count>3) ?8:3];
+        string[] nombres2 = new namespace1.MyBool[(Numbers.Count>3)?8:3];
 
-        nombres1[getSize() -1] = "Imposible";
-        nombres1[this.getSize() -1] = "Thing";
-        nombres1[(Numbers.Count>3) ?8:3] = "Last";
+        nombres1[getSize()-1] = "Imposible";
+        nombres1[this.getSize()-1] = "Thing";
+        nombres1[(Numbers.Count>3)?8:3] = "Last";
 
         namespace1.MyBool[size *= 3] = value1;
         namespace1.MyBool[size += 3] = value2;
-        namespace1.MyBool[((size -= 3) >0) ?size:0] = value3;
+        namespace1.MyBool[((size -= 3)>0)?size:0] = value3;
 
         int size = 5;
         float[] val = new float[8];
-        val[size *= 3] = (float)5.5;
+        val[size *= 3] = (float)5.5F;
     }
 
     private static TokenType [] jumpsStmt()
