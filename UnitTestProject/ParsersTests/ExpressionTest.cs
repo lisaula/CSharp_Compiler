@@ -25,6 +25,23 @@ namespace UnitTestProject.ParsersTests
             var parser = new Parser(lexer);
             parser.parse();
         }
+        [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestWrongInlineExpression()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int prueba = (!(isVisible && iden) || noEsta);
+    int LUNES = ((5 + 3) + (4  3));
+    int MARTES = ((5 * 9 / 3) - 7 + (2 * 7 + 4) / ( (128 >> 5 * 5) - (1 << 7 * 46) / 3 )) + 15;
+    int MIERCOLES = 0;
+    int x = y = z = w = MARTES / 2;
+    Kevin kevin = new persona();
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
 
         [TestMethod]
         public void TestClassWithLogicalOperatorsInExpression()
@@ -32,6 +49,20 @@ namespace UnitTestProject.ParsersTests
             var inputString = new InputString(@"public class kevin : Javier
 {
     int LUNES = (!(isVisible && isHere) || noEsta);
+    bool boleano = isNull ?? true;
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestWrongLogicalExpression()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int LUNES = (!(isVisible && isHere) ||);
     bool boleano = isNull ?? true;
 }");
             var lexer = new LexicalAnalyzer(inputString);
@@ -53,12 +84,40 @@ namespace UnitTestProject.ParsersTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestClassWWrongTernaryOperatorsInExpression()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int LUNES = x==0? y=(5+3):z/2;
+    bool boleano = y>5? k--: (k>4? y++k++);
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
         public void TestClassWithNullCoalescingOperatorsInExpression()
         {
             var inputString = new InputString(@"public class kevin : Javier
 {
     int LUNES = x ?? ( y ?? (t??5) );
     bool boleano = j ?? (k>4? y++:k++);
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestClassWrongNullCoalescingOperatorsInExpression()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int LUNES = x ?? ( y ?? (t??5) );
+    bool boleano = j ?? );
 }");
             var lexer = new LexicalAnalyzer(inputString);
             var parser = new Parser(lexer);
@@ -74,6 +133,22 @@ namespace UnitTestProject.ParsersTests
     bool boleano = 5;
     int otro = 10; 
     float f = (1 | (0 & 5) & (100^100));
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestClassWrongBinaryOperatorsInExpression()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int LUNES =  1 << 5;
+    bool boleano = 5;
+    int otro = 10; 
+    float f = (1 | (0 &) (100^100));
 }");
             var lexer = new LexicalAnalyzer(inputString);
             var parser = new Parser(lexer);
@@ -150,6 +225,7 @@ namespace UnitTestProject.ParsersTests
     int otro = ((x++));
     int nuevo = + ++y;
     float f = (~nada);
+    bool c = (~(nada && isVisible) || !isVisible);
     int t = (int)nada;
     float mana = (float)(n.atributo);
 }");
@@ -185,6 +261,47 @@ namespace UnitTestProject.ParsersTests
     int arreglo = new int[2][]{ new int[5],new int[8]};
     int arreglo = { new int[5], new int[4], array };
     int value = new Persona(x,y,w).array[2];
+    int[,,,] x = new int[5,5,3,4];
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
+        public void TestAsAnIs()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int x = j as persona;
+    int j = h is Persona? h as Persona: h as Thomas;
+    bool nada = javier?? h is kevin? h as thomas: h as carlos;
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestWrongAsExpression()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int x = j as !;
+}");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ParserException))]
+        public void TestWrongIsExpression()
+        {
+            var inputString = new InputString(@"public class kevin : Javier
+{
+    int x = is persona carlos;
 }");
             var lexer = new LexicalAnalyzer(inputString);
             var parser = new Parser(lexer);

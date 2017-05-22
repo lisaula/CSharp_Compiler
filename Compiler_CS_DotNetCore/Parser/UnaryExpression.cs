@@ -50,7 +50,7 @@ namespace Compiler
 
         private void primary_expression()
         {
-            DebugInfoMethod("primary_expression jaja");
+            DebugInfoMethod("primary_expression");
             if (pass(TokenType.RW_NEW))
             {
                 consumeToken();
@@ -68,7 +68,7 @@ namespace Compiler
             {
                 consumeToken();
                 if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
-                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))//aqui
+                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                     primary_expression_p();
             }else if (pass(TokenType.OPEN_PARENTHESIS))
             {

@@ -166,22 +166,17 @@ namespace Compiler
 
         private void optional_for_initializer()
         {
-            TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
-                TokenType.OP_NULLABLE, TokenType.OP_LOG_OR,
-                TokenType.OP_LOG_AND, TokenType.OP_BIN_OR,
-                TokenType.OP_BIN_XOR, TokenType.OP_BIN_AND,
-                TokenType.OPEN_PARENTHESIS, TokenType.RW_NEW,
-                TokenType.ID, TokenType.RW_THIS
-            };
             TokenType[] var = { TokenType.RW_VAR };
                 DebugInfoMethod("optional_for_initializer");
-            if(pass(typesOptions.Concat(var).ToArray()))
+            addLookAhead(lexer.getNextToken());
+            int look_ahead_index = look_ahead.Count()-1;
+            if (pass(typesOptions.Concat(var).ToArray()) && 
+                (look_ahead[look_ahead_index].type == TokenType.ID
+                || look_ahead[look_ahead_index].type == TokenType.OPEN_SQUARE_BRACKET
+                || look_ahead[look_ahead_index].type == TokenType.OP_DOT))
             {
                 local_variable_declaration();
-            }else if (pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
-                Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
-                Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
-                .Concat(literalOptions).ToArray()))
+            }else if (pass(unaryExpressionOptions.Concat(unaryOperatorOptions).Concat(literalOptions).ToArray()))
             {
                 statement_expression_list();
             }

@@ -48,7 +48,9 @@ namespace Compiler
             };
             addLookAhead(lexer.getNextToken());
             if (pass(nuevo.Concat(typesOptions).ToArray()) &&
-                look_ahead[0].type == TokenType.ID)
+                (look_ahead[0].type == TokenType.ID 
+                || look_ahead[0].type == TokenType.OPEN_SQUARE_BRACKET
+                || look_ahead[0].type == TokenType.OP_DOT))
             {
                 local_variable_declaration();
                 if (!pass(TokenType.END_STATEMENT))

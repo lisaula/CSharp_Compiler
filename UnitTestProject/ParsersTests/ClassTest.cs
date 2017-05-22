@@ -141,7 +141,7 @@ class kevin : Nexe, Dos, Tres, Cuatro{
 using Compiler.Parser.Nada;
 using jamones;
 public abstract class kevin : Nexer, Javier, Aqui{
-    public kevin();
+    public kevin(int a) : base(a);
 }
 private class kevin : Nexe, Dos, Tres, Cuatro{
     private kevin();
