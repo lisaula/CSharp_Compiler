@@ -360,7 +360,21 @@ namespace Compiler
         {
             DebugInfoMethod("expression_list");
             expression();
-            optional_expression_list();
+            expression_list_p();
+        }
+
+        private void expression_list_p()
+        {
+            DebugInfoMethod("expression_list_p");
+            if (pass(TokenType.OP_COMMA))
+            {
+                consumeToken();
+                expression_list();
+            }
+            else
+            {
+                DebugInfoMethod("epsilon");
+            }
         }
 
         private void optional_expression_list()
