@@ -213,10 +213,10 @@ namespace Compiler
                 optional_rank_specifier_list();
                 optional_array_initializer();
 
-            }else if (pass(TokenType.OP_COMMA))
+            }else if (pass(TokenType.OP_COMMA,TokenType.CLOSE_SQUARE_BRACKET))
             {
                 rank_specifier_list();
-                optional_array_initializer();
+                array_initializer();
             }
             else
             {

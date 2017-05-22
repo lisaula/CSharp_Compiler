@@ -180,7 +180,7 @@ namespace UnitTestProject.ParsersTests
             var inputString = new InputString(@"public class kevin : Javier
 {
     float mana = new int[2][][][];
-    private int arreglo =  new float[,,,,]; 
+    private int arreglo =  new float[]{ 5,3,5}; 
     int arreglo = new int[2]{ 5,7 };
     int arreglo = new int[2][]{ new int[5],new int[8]};
     int arreglo = { new int[5], new int[4], array };
