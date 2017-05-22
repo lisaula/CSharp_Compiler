@@ -47,10 +47,11 @@ namespace Compiler
                 TokenType.RW_BREAK, TokenType.RW_CONTINUE, TokenType.RW_RETURN
             };
             addLookAhead(lexer.getNextToken());
+            addLookAhead(lexer.getNextToken());
             if (pass(nuevo.Concat(typesOptions).ToArray()) &&
                 (look_ahead[0].type == TokenType.ID 
                 || look_ahead[0].type == TokenType.OPEN_SQUARE_BRACKET
-                || look_ahead[0].type == TokenType.OP_DOT))
+                || look_ahead[0].type == TokenType.OP_DOT) && !literalOptions.Contains(look_ahead[1].type))
             {
                 local_variable_declaration();
                 if (!pass(TokenType.END_STATEMENT))
