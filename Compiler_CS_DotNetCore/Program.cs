@@ -8,12 +8,7 @@ namespace Compiler
         static void Main(string[] args)
         {
             var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\Compiler_CS_DotNetCore\Parser\test.txt");
-            var inputString = new InputString(@"public class kevin : Javier
-{
-    int[] x = new int[5,2];
-    public void metodo(){
-    }
-}");
+            var inputString = new InputString(txt);
             var lexer = new LexicalAnalyzer(inputString);
             /*Token token = dfa.getNextToken();
             while (token.type != TokenType.EOF)

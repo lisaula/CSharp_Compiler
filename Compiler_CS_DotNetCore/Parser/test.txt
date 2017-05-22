@@ -156,7 +156,7 @@ abstract class Test : SomeClass2, Hey, System.Some.Thing
     {
         while (true)
         {
-            
+            hola = "hola";
         }
 
         for (int x = 0, j = 1; true;)
