@@ -7,11 +7,16 @@ namespace Compiler
     {
         static void Main(string[] args)
         {
-            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\test_statements2.txt");
+            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\LexersTests\FileTest\lexer_test.txt");
             var s = @"public class kevin : Javier
 {
     bool nada = javier?? h is kevin? h as thomas: h as carlos;
 ++--+=-===!=
+/*
+*
+*
+**/
+hola
 }";
             var inputString = new InputString(s);
             var dfa = new LexicalAnalyzer(inputString);

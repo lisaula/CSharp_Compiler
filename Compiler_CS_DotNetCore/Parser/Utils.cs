@@ -38,7 +38,8 @@ namespace Compiler
             TokenType.LIT_CHAR,
             TokenType.LIT_FLOAT,
             TokenType.LIT_STRING,
-            TokenType.LIT_BOOL
+            TokenType.LIT_BOOL,
+            TokenType.LIT_VERBATIN
         };
         TokenType[] unaryOperatorOptions = {
             TokenType.OP_SUM,
