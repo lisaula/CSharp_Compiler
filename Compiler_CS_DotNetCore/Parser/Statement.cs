@@ -38,7 +38,7 @@ namespace Compiler
 
         private void statement()
         {
-            DebugInfoMethod("statement");
+            DebugInfoMethod("statement "+look_ahead.Count());
             TokenType[] nuevo = { TokenType.RW_VAR };
             TokenType[] embedded= {
                 TokenType.OPEN_CURLY_BRACKET,TokenType.END_STATEMENT,
@@ -46,13 +46,37 @@ namespace Compiler
                 TokenType.RW_DO, TokenType.RW_FOR, TokenType.RW_FOREACH,
                 TokenType.RW_BREAK, TokenType.RW_CONTINUE, TokenType.RW_RETURN
             };
-            addLookAhead(lexer.getNextToken());
-            addLookAhead(lexer.getNextToken());
-            if (pass(nuevo.Concat(typesOptions).ToArray()) &&
-                (look_ahead[0].type == TokenType.ID 
-                || look_ahead[0].type == TokenType.OPEN_SQUARE_BRACKET
-                || look_ahead[0].type == TokenType.OP_DOT
-                || look_ahead[0].type == TokenType.OP_LESS_THAN) && !literalOptions.Contains(look_ahead[1].type))
+
+            while (pass(typesOptions.Concat(nuevo).ToArray()))
+            {
+                addLookAhead(lexer.getNextToken());
+                if (look_ahead[look_ahead.Count() - 1].type == TokenType.OP_DOT)
+                {
+                    addLookAhead(lexer.getNextToken());
+                }
+                else
+                    break;
+            }
+            int index;
+            int index2=0;
+            Token placeholder = current_token;
+            if (pass(typesOptions.Concat(nuevo).ToArray()))
+            {
+                index = look_ahead.Count() - 1;
+                placeholder = look_ahead[index];
+                addLookAhead(lexer.getNextToken());
+                index2 = look_ahead.Count() - 1;
+                DebugInfoMethod("PH: " + placeholder.type+" "+ look_ahead[index2].type);
+            }
+            if ( 
+                (pass(typesOptions.Concat(nuevo).ToArray()) &&
+                (placeholder.type == TokenType.ID
+                || placeholder.type == TokenType.OP_LESS_THAN
+                || 
+                (placeholder.type == TokenType.OPEN_SQUARE_BRACKET
+                && (look_ahead[index2].type == TokenType.CLOSE_SQUARE_BRACKET
+                || look_ahead[index2].type == TokenType.OP_COMMA) ))) 
+               )
             {
                 local_variable_declaration();
                 if (!pass(TokenType.END_STATEMENT))

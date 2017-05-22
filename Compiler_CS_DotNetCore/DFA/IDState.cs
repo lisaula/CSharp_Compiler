@@ -50,7 +50,7 @@ namespace Compiler
             reservedWordsDict["case"] = TokenType.RW_CASE;
             reservedWordsDict["static"] = TokenType.RW_STATIC;
             reservedWordsDict["sizeof"] = TokenType.RW_SIZEOF;
-            reservedWordsDict["type"] = TokenType.RW_TYPE;
+            //reservedWordsDict["type"] = TokenType.RW_TYPE;
             reservedWordsDict["enum"] = TokenType.RW_ENUM;
             reservedWordsDict["interface"] = TokenType.RW_INTERFACE;
             reservedWordsDict["virtual"] = TokenType.RW_VIRTUAL;

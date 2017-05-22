@@ -47,6 +47,16 @@ public class kevin : Nexer{
         }
 
         [TestMethod]
+        public void TestClassWithStamentsInBody2()
+        {
+            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\test_statements2.txt");
+            var inputString = new InputString(txt);
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
         public void TestClassWithMaybeEmptyBlockInBody()
         {
             var txt = @"

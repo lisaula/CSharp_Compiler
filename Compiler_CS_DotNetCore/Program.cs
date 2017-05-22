@@ -7,27 +7,13 @@ namespace Compiler
     {
         static void Main(string[] args)
         {
-            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\test_statements.txt");
-            var inputString = new InputString(@"
+            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\test_statements2.txt");
+            var s = @"
 public class kevin : Nexer{
-    public method(int a){
-    }
-
-    public method(int a) : base(a){
-        this.local = a;
-        x[5] = 10;
-        ++x;
-        x++;
-        (Persona)new Persona();
-        5;
-        (5+A).CompareTo(10);
-        this.prototype.jamon(a,a).value;
-        this.prototype.jamon(a,a).value[5];
-        Dictionary<int,float> hasmap = new Dictionary<int,float>();
-        var nuevo = new Dictionary<int,float>();
-    }
+    int x = (Numbers.Count>3) ?8:3;
 }
-");
+";
+            var inputString = new InputString(txt);
             var lexer = new LexicalAnalyzer(inputString);
             /*Token token = dfa.getNextToken();
             while (token.type != TokenType.EOF)

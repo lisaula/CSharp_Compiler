@@ -20,9 +20,21 @@ namespace Compiler
             }else if (pass(TokenType.OPEN_PARENTHESIS))
             {
                 addLookAhead(lexer.getNextToken());
-                addLookAhead(lexer.getNextToken());
-                if (typesOptions.Contains(look_ahead[0].type) && 
-                    (look_ahead[1].type == TokenType.CLOSE_PARENTHESIS || look_ahead[1].type == TokenType.OP_DOT))
+                int first = look_ahead.Count() - 1;
+                Token placehold = look_ahead[look_ahead.Count() - 1];
+                bool accept = false;
+                while (typesOptions.Contains(placehold.type) || placehold.type == TokenType.OP_DOT
+                    || placehold.type == TokenType.OPEN_SQUARE_BRACKET || placehold.type == TokenType.CLOSE_SQUARE_BRACKET
+                    || placehold.type == TokenType.OP_LESS_THAN || placehold.type == TokenType.OP_GREATER_THAN
+                    || placehold.type == TokenType.OP_COMMA)
+                {
+                    addLookAhead(lexer.getNextToken());
+                    placehold = look_ahead[look_ahead.Count() - 1];
+                    accept = true;
+                }
+                DebugInfoMethod("PH" + placehold.type+ " "+look_ahead[first].type);
+                if (typesOptions.Contains(look_ahead[first].type) && accept && 
+                    (placehold.type == TokenType.CLOSE_PARENTHESIS))
                 {
                     consumeToken();
                     if (!pass(typesOptions))

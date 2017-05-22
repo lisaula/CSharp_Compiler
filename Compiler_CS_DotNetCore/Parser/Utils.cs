@@ -19,6 +19,14 @@ namespace Compiler
             TokenType.ID,
             TokenType.RW_DICTIONARY
         };
+        TokenType[] typesOptionsWithNoID = {
+            TokenType.RW_INT,
+            TokenType.RW_CHAR,
+            TokenType.RW_STRING,
+            TokenType.RW_BOOL,
+            TokenType.RW_FLOAT,
+            TokenType.RW_DICTIONARY
+        };
         TokenType[] optionalModifiersOptions = {
             TokenType.RW_STATIC,
             TokenType.RW_VIRTUAL,
@@ -95,6 +103,7 @@ namespace Compiler
         public void addLookAhead(Token token)
         {
             look_ahead.Add(token);
+            DebugInfoMethod("->agrego " + look_ahead[look_ahead.Count() - 1]);
         }
         public void removeLookAhead(int index)
         {
