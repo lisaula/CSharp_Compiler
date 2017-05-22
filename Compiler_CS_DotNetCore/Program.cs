@@ -10,10 +10,14 @@ namespace Compiler
             var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\test_statements2.txt");
             var s = @"
 public class kevin : Nexer{
-    int x = (Numbers.Count>3) ?8:3;
+    public void metodo(){
+        for(i.system.hola nombre =0; i < 10; i++, x++){
+            System.Console.Writeline(""hola"");
+        }
+    }
 }
 ";
-            var inputString = new InputString(txt);
+            var inputString = new InputString(s);
             var lexer = new LexicalAnalyzer(inputString);
             /*Token token = dfa.getNextToken();
             while (token.type != TokenType.EOF)

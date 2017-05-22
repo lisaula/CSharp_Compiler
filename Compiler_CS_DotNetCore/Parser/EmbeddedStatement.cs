@@ -168,7 +168,7 @@ namespace Compiler
         {
             TokenType[] var = { TokenType.RW_VAR };
                 DebugInfoMethod("optional_for_initializer");
-            addLookAhead(lexer.getNextToken());
+            /*addLookAhead(lexer.getNextToken());
             int look_ahead_index = look_ahead.Count()-1;
             addLookAhead(lexer.getNextToken());
             int look_ahead_index2 = look_ahead.Count() - 1;
@@ -177,7 +177,39 @@ namespace Compiler
                 || look_ahead[look_ahead_index].type == TokenType.OPEN_SQUARE_BRACKET
                 || look_ahead[look_ahead_index].type == TokenType.OP_DOT
                 || look_ahead[look_ahead_index].type == TokenType.OP_LESS_THAN) && !literalOptions.Contains(look_ahead[look_ahead_index2].type))
+            {*/
+            //addLookAhead(lexer.getNextToken());
+            //int first = look_ahead.Count() - 1;
+            while (pass(typesOptions.Concat(var).ToArray()))
             {
+                addLookAhead(lexer.getNextToken());
+                if (look_ahead[look_ahead.Count() - 1].type == TokenType.OP_DOT)
+                {
+                    addLookAhead(lexer.getNextToken());
+                }
+                else
+                    break;
+            }
+            int index;
+            int index2 = 0;
+            Token placeholder = current_token;
+            if (pass(typesOptions.Concat(var).ToArray()))
+            {
+                index = look_ahead.Count() - 1;
+                placeholder = look_ahead[index];
+                addLookAhead(lexer.getNextToken());
+                index2 = look_ahead.Count() - 1;
+                DebugInfoMethod("PH: " + placeholder.type + " " + look_ahead[index2].type);
+            }
+            if (
+                (pass(typesOptions.Concat(var).ToArray()) &&
+                (placeholder.type == TokenType.ID
+                || placeholder.type == TokenType.OP_LESS_THAN
+                ||
+                (placeholder.type == TokenType.OPEN_SQUARE_BRACKET
+                && (look_ahead[index2].type == TokenType.CLOSE_SQUARE_BRACKET
+                || look_ahead[index2].type == TokenType.OP_COMMA))))
+               ) { 
                 local_variable_declaration();
             }else if (pass(unaryExpressionOptions.Concat(unaryOperatorOptions).Concat(literalOptions).ToArray()))
             {
