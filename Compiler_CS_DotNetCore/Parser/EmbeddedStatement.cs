@@ -170,10 +170,13 @@ namespace Compiler
                 DebugInfoMethod("optional_for_initializer");
             addLookAhead(lexer.getNextToken());
             int look_ahead_index = look_ahead.Count()-1;
-            if (pass(typesOptions.Concat(var).ToArray()) && 
+            addLookAhead(lexer.getNextToken());
+            int look_ahead_index2 = look_ahead.Count() - 1;
+            if (pass(var.Concat(typesOptions).ToArray()) &&
                 (look_ahead[look_ahead_index].type == TokenType.ID
                 || look_ahead[look_ahead_index].type == TokenType.OPEN_SQUARE_BRACKET
-                || look_ahead[look_ahead_index].type == TokenType.OP_DOT))
+                || look_ahead[look_ahead_index].type == TokenType.OP_DOT
+                || look_ahead[look_ahead_index].type == TokenType.OP_LESS_THAN) && !literalOptions.Contains(look_ahead[look_ahead_index2].type))
             {
                 local_variable_declaration();
             }else if (pass(unaryExpressionOptions.Concat(unaryOperatorOptions).Concat(literalOptions).ToArray()))

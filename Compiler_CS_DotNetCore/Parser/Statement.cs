@@ -51,7 +51,8 @@ namespace Compiler
             if (pass(nuevo.Concat(typesOptions).ToArray()) &&
                 (look_ahead[0].type == TokenType.ID 
                 || look_ahead[0].type == TokenType.OPEN_SQUARE_BRACKET
-                || look_ahead[0].type == TokenType.OP_DOT) && !literalOptions.Contains(look_ahead[1].type))
+                || look_ahead[0].type == TokenType.OP_DOT
+                || look_ahead[0].type == TokenType.OP_LESS_THAN) && !literalOptions.Contains(look_ahead[1].type))
             {
                 local_variable_declaration();
                 if (!pass(TokenType.END_STATEMENT))
@@ -66,7 +67,7 @@ namespace Compiler
             }
             else
             {
-                throwError("local or embedded statement");
+                throwError("local or embedded statement con " + current_token.type);
             }
         }
 
