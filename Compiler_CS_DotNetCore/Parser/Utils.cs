@@ -16,7 +16,8 @@ namespace Compiler
             TokenType.RW_STRING,
             TokenType.RW_BOOL,
             TokenType.RW_FLOAT,
-            TokenType.ID
+            TokenType.ID,
+            TokenType.RW_DICTIONARY
         };
         TokenType[] optionalModifiersOptions = {
             TokenType.RW_STATIC,

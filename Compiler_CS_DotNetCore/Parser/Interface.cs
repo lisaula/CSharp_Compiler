@@ -103,12 +103,39 @@ namespace Compiler
             {
                 qualified_identifier();
                 optional_rank_specifier_list();
+            }else if (pass(TokenType.RW_DICTIONARY))
+            {
+                dictionary();
             }
             else
             {
                 built_in_type();
                 optional_rank_specifier_list();
             }
+        }
+
+        private void dictionary()
+        {
+            DebugInfoMethod("dictionary");
+            if (!pass(TokenType.RW_DICTIONARY))
+                throwError("resered word \"dictionary\"");
+            consumeToken();
+
+            if (!pass(TokenType.OP_LESS_THAN))
+                throwError("<");
+            consumeToken();
+
+            types();
+
+            if (!pass(TokenType.OP_COMMA))
+                throwError("comma ','");
+            consumeToken();
+
+            types();
+
+            if (!pass(TokenType.OP_GREATER_THAN))
+                throwError(">");
+            consumeToken();
         }
 
         private void built_in_type()
@@ -126,16 +153,13 @@ namespace Compiler
         private void qualified_identifier()
         {
             DebugInfoMethod("qualified_identifier");
-            if (pass(TokenType.ID))
+            if (!pass(TokenType.ID))
             {
-                consumeToken();
-                if(pass(TokenType.OP_DOT))
-                    identifier_attribute();
+                throwError("identifier");
             }
-            else
-            {
-                DebugInfoMethod("epsilon");
-            }
+            consumeToken();
+            if (pass(TokenType.OP_DOT))
+                identifier_attribute();
         }
 
         private void fixed_parameters()

@@ -75,7 +75,10 @@ namespace Compiler
                 throwError("open parenthesis '('");
             consumeToken();
 
-            types();
+            if (pass(TokenType.RW_VAR))
+                consumeToken();
+            else
+                types();
 
             if (!pass(TokenType.ID))
                 throwError("identifier");
@@ -384,10 +387,11 @@ namespace Compiler
             {
                 consumeToken();
                 expression();
+                statement_expression_p();
             }
             else
             {
-                DebugInfoMethod("epsilon");
+                statement_expression_p();
             }
         }
 

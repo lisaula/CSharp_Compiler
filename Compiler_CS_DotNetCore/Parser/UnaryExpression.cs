@@ -21,7 +21,8 @@ namespace Compiler
             {
                 addLookAhead(lexer.getNextToken());
                 addLookAhead(lexer.getNextToken());
-                if (typesOptions.Contains(look_ahead[0].type) && look_ahead[1].type == TokenType.CLOSE_PARENTHESIS)
+                if (typesOptions.Contains(look_ahead[0].type) && 
+                    (look_ahead[1].type == TokenType.CLOSE_PARENTHESIS || look_ahead[1].type == TokenType.OP_DOT))
                 {
                     consumeToken();
                     if (!pass(typesOptions))
@@ -54,17 +55,20 @@ namespace Compiler
             {
                 consumeToken();
                 instance_expression();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT))
+                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT, 
+                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                     primary_expression_p();
             }else if (pass(literalOptions))
             {
                 consumeToken();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT))
+                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                     primary_expression_p();
             }else if (pass(TokenType.ID))
             {
                 consumeToken();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT))
+                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))//aqui
                     primary_expression_p();
             }else if (pass(TokenType.OPEN_PARENTHESIS))
             {
@@ -76,13 +80,15 @@ namespace Compiler
                 DebugInfoMethod("consumiendo close parenthesis");
                 consumeToken();
 
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT))
+                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                     primary_expression_p();
             }
             else if(pass(TokenType.RW_THIS))
             {
                 consumeToken();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT))
+                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                     primary_expression_p();
             }
             else
@@ -101,9 +107,13 @@ namespace Compiler
                 if (!pass(TokenType.ID))
                     throwError("identifier");
                 consumeToken();
+                primary_expression_p();
+            }else if(pass(TokenType.OPEN_PARENTHESIS, TokenType.OPEN_SQUARE_BRACKET))
+            {
                 optional_funct_or_array_call();
                 primary_expression_p();
-            }else if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT))
+            }
+            else if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT))
             {
                 consumeToken();
                 primary_expression_p();
@@ -162,7 +172,13 @@ namespace Compiler
             if (!pass(typesOptions))
                 throwError("a type");
             //types();
-            consumeToken();
+            if (pass(TokenType.ID))
+                qualified_identifier();
+            else if (pass(TokenType.RW_DICTIONARY))
+                dictionary();
+            else
+                consumeToken();
+
             instance_expression_factorized();
         }
 
@@ -366,7 +382,7 @@ namespace Compiler
             }
             else
             {
-                DebugInfoMethod("expression");
+                DebugInfoMethod("epsilon");
             }
 
         }

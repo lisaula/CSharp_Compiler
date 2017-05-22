@@ -10,7 +10,9 @@ namespace Compiler
             var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\Compiler_CS_DotNetCore\Parser\test.txt");
             var inputString = new InputString(@"public class kevin : Javier
 {
-    private int arreglo =  new float[]{ 5,3,5}; 
+    int[] x = new int[5,2];
+    public void metodo(){
+    }
 }");
             var lexer = new LexicalAnalyzer(inputString);
             /*Token token = dfa.getNextToken();

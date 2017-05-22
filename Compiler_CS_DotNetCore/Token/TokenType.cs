@@ -101,6 +101,7 @@
         RW_RETURN,
         RW_CONTINUE,
         RW_BREAK,
-        RW_DEFAULT
+        RW_DEFAULT,
+        RW_DICTIONARY
     }
 }
