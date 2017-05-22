@@ -109,10 +109,15 @@ namespace Compiler
             dfa.addTransition(top, "q0", "OneSymbolOperator");
 
             //comentarios
+
+            //hacer estados /, y *
+            dfa.addState("div-op", false, true);
+
+
             var coment = new RegularState("comentario_linea", false, false);
             coment.ignoreLexema();
             dfa.addState(coment);
-            dfa.addTransition("/", "OneSymbolOperator", "comentario_linea",false);
+            dfa.addTransition("/", "div-op", "comentario_linea",false);
             dfa.addTransition("cualquiera - {fin de linea}", "comentario_linea", "comentario_linea", false);
             var tcl = new Transition();
             tcl.setSettings(false);
@@ -123,42 +128,105 @@ namespace Compiler
             coment = new RegularState("comentario_bloque", false, false);
             coment.ignoreLexema();
             dfa.addState(coment);
-            dfa.addTransition("*", "OneSymbolOperator", "comentario_bloque", false);
+            dfa.addTransition("*", "div-op", "comentario_bloque", false);
             dfa.addTransition("cualquiera - {EOF,*}", "comentario_bloque", "comentario_bloque", false);
             dfa.addState("*", false, false);
             dfa.addTransition("*", "comentario_bloque", "*", false);
             dfa.addTransition("/", "*", "q0", false);
             dfa.addTransition("cualquiera - {EOF,/,*}", "*", "comentario_bloque", false);
             dfa.addTransition("*", "*", "*", false);
-            
+
             //operadores de dos symbolos
+            dfa.addState(new TwoSymbolOperator("ASSIGN", false, true));
+            //+,+=,++
             dfa.addState("sum-op", false, true);
-            dfa.addState("sum-assign", false, true);
             dfa.addState("increment", false, true);
 
             dfa.addTransition("+", "q0", "sum-op",true);
-            dfa.addTransition("=", "sum-op", "sum-assign", true);
+            dfa.addTransition("=", "sum-op", "ASSIGN", true);
             dfa.addTransition("+", "sum-op", "increment", true);
+            //-,-=,--
+            dfa.addState("sus-op", false, true);
+            dfa.addState("decrement", false, true);
 
+            dfa.addTransition("-", "q0", "sus-op", true);
+            dfa.addTransition("=", "sus-op", "ASSIGN", true);
+            dfa.addTransition("-", "sus-op", "decrement", true);
+            // /,/=
 
+            dfa.addTransition("/", "q0", "div-op", true);
+            dfa.addTransition("=", "div-op", "ASSIGN", true);
+            
+            // *, *=
+            dfa.addState("mul-op", false, true);
 
-            var ttp = new Transition();
-            ttp.setSettings(true);
-            ttp.addCondition("+");
-            ttp.addCondition("-");
-            ttp.addCondition("=");
-            ttp.addCondition("&");
-            ttp.addCondition("|");
-            ttp.addCondition("<");
-            ttp.addCondition(">");
-            ttp.addCondition("?");
-            dfa.addTransition(ttp, "OneSymbolOperator", "TwoSymbolOperator");
+            dfa.addTransition("*", "q0", "mul-op", true);
+            dfa.addTransition("=", "mul-op", "ASSIGN", true);
 
-            var tthp = new Transition();
-            tthp.setSettings(true);
-            tthp.addCondition("=");
-            dfa.addTransition(tthp, "TwoSymbolOperator", "TwoSymbolOperator");
+            // !, !=
+            dfa.addState("not-op", false, true);
 
+            dfa.addTransition("!", "q0", "not-op", true);
+            dfa.addTransition("=", "not-op", "ASSIGN", true);
+
+            // &, &&, &=
+            dfa.addState("and-op", false, true);
+            dfa.addState("and-bin", false, true);
+
+            dfa.addTransition("&", "q0", "and-bin", true);
+            dfa.addTransition("&", "and-bin", "and-op", true);
+            dfa.addTransition("=", "and-bin", "ASSIGN", true);
+
+            // |, |=, ||
+            dfa.addState("or-op", false, true);
+            dfa.addState("or-bin", false, true);
+
+            dfa.addTransition("|", "q0", "or-bin", true);
+            dfa.addTransition("|", "or-bin", "or-op", true);
+            dfa.addTransition("=", "or-bin", "ASSIGN", true);
+
+            // %, %=
+            dfa.addState("mod-op", false, true);
+
+            dfa.addTransition("%", "q0", "mod-op", true);
+            dfa.addTransition("=", "mod-op", "ASSIGN", true);
+
+            // ^, ^=
+            dfa.addState("xor-op", false, true);
+
+            dfa.addTransition("^", "q0", "xor-op", true);
+            dfa.addTransition("=", "xor-op", "ASSIGN", true);
+
+            // ?, ??
+            dfa.addState("ter-op", false, true);
+            dfa.addState("coalescing-op", false, true);
+
+            dfa.addTransition("?", "q0", "ter-op", true);
+            dfa.addTransition("?", "ter-op", "coalescing-op", true);
+
+            //>, >>, >>=, <=
+            dfa.addState("greater-op", false, true);
+            dfa.addState("sr-bin", false, true);
+
+            dfa.addTransition(">", "q0", "greater-op", true);
+            dfa.addTransition(">", "greater-op", "sr-bin", true);
+            dfa.addTransition("=", "greater-op", "ASSIGN", true);
+            dfa.addTransition("=", "sr-bin", "ASSIGN", true);
+
+            //<, <<, <<=, <=
+            dfa.addState("less-op", false, true);
+            dfa.addState("sl-bin", false, true);
+
+            dfa.addTransition("<", "q0", "less-op", true);
+            dfa.addTransition("<", "less-op", "sl-bin", true);
+            dfa.addTransition("=", "less-op", "ASSIGN", true);
+            dfa.addTransition("=", "sl-bin", "ASSIGN", true);
+
+            //=, ==
+            dfa.addState("=", false, true);
+
+            dfa.addTransition("=", "q0", "=", true);
+            dfa.addTransition("=", "=", "ASSIGN", true);
 
             //char
             dfa.addState("consumeChar",false,false);
@@ -290,11 +358,202 @@ namespace Compiler
             if (currentState.isFinal)
             {
                 if (currentState.name == "ID" || currentState.name == "LIT_NUMERIC" 
-                    ||currentState.name=="OneSymbolOperator")
+                    ||currentState.name=="OneSymbolOperator"
+                    || currentState.name == "ASSIGN") 
                 {
                     return currentState.makeToken(lexema.ToString(), lexemaRow, lexemaColumn);
                 }
-                if(currentState.name == "EOF")
+
+                if (currentState.name == "less-op")
+                {
+                    return new Token(
+                        TokenType.OP_LESS_THAN,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "=")
+                {
+                    return new Token(
+                        TokenType.OP_ASSIGN,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "sl-bin")
+                {
+                    return new Token(
+                        TokenType.OP_BIN_LS,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "greater-op")
+                {
+                    return new Token(
+                        TokenType.OP_GREATER_THAN,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "sr-bin")
+                {
+                    return new Token(
+                        TokenType.OP_BIN_RS,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "coalescing-op")
+                {
+                    return new Token(
+                        TokenType.OP_NULLABLE,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "ter-op")
+                {
+                    return new Token(
+                        TokenType.OP_TER_NULLABLE,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "xor-op")
+                {
+                    return new Token(
+                        TokenType.OP_BIN_XOR,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "mod-op")
+                {
+                    return new Token(
+                        TokenType.OP_MODULO,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "or-op")
+                {
+                    return new Token(
+                        TokenType.OP_LOG_OR,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+                if (currentState.name == "or-bin")
+                {
+                    return new Token(
+                        TokenType.OP_BIN_OR,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "and-op")
+                {
+                    return new Token(
+                        TokenType.OP_LOG_AND,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+                if (currentState.name == "and-bin")
+                {
+                    return new Token(
+                        TokenType.OP_BIN_AND,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "not-op")
+                {
+                    return new Token(
+                        TokenType.OP_DENIAL,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+                if (currentState.name == "mul-op")
+                {
+                    return new Token(
+                        TokenType.OP_MULTIPLICATION,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+                if (currentState.name == "sum-op")
+                {
+                    return new Token(
+                        TokenType.OP_SUM,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+                if (currentState.name == "increment")
+                {
+                    return new Token(
+                        TokenType.OP_INCREMENT,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+                if (currentState.name == "sus-op")
+                {
+                    return new Token(
+                        TokenType.OP_SUBSTRACT,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+                if (currentState.name == "decrement")
+                {
+                    return new Token(
+                        TokenType.OP_DECREMENT,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+                if (currentState.name == "div-op")
+                {
+                    return new Token(
+                        TokenType.OP_DIVISION,
+                        lexema.ToString(),
+                        lexemaRow,
+                        lexemaColumn
+                        );
+                }
+
+
+                if (currentState.name == "EOF")
                 {
                     return new Token(
                         TokenType.EOF,
