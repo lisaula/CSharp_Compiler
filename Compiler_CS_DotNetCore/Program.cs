@@ -13,6 +13,7 @@ public class kevin : Nexer{
     public void metodo(){
         for(i.system.hola nombre =0; i < 10; i++, x++){
             System.Console.Writeline(""hola"");
+            System.Console.Writeline = 5;
         }
     }
 }

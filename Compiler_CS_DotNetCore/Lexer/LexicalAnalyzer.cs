@@ -95,19 +95,8 @@ namespace Compiler
             dfa.addState(new OneSymbolOperator("OneSymbolOperator", false, true));
             var top= new Transition();
             top.setSettings(true);
-            top.addCondition("+");
-            top.addCondition("-");
-            top.addCondition("*");
-            top.addCondition("/");
-            top.addCondition("!");
-            top.addCondition("&");
-            top.addCondition("|");
-            top.addCondition("%");
-            top.addCondition("^");
             top.addCondition("~");
-            top.addCondition("=");
             top.addCondition(";");
-            top.addCondition("?");
             top.addCondition(":");
             top.addCondition("(");
             top.addCondition(")");
@@ -115,9 +104,6 @@ namespace Compiler
             top.addCondition("}");
             top.addCondition("[");
             top.addCondition("]");
-            top.addCondition("=");
-            top.addCondition("<");
-            top.addCondition(">");
             top.addCondition(".");
             top.addCondition(",");
             dfa.addTransition(top, "q0", "OneSymbolOperator");
@@ -144,8 +130,18 @@ namespace Compiler
             dfa.addTransition("/", "*", "q0", false);
             dfa.addTransition("cualquiera - {EOF,/,*}", "*", "comentario_bloque", false);
             dfa.addTransition("*", "*", "*", false);
+            
             //operadores de dos symbolos
-            dfa.addState(new TwoSymbolOperator("TwoSymbolOperator", false, true));
+            dfa.addState("sum-op", false, true);
+            dfa.addState("sum-assign", false, true);
+            dfa.addState("increment", false, true);
+
+            dfa.addTransition("+", "q0", "sum-op",true);
+            dfa.addTransition("=", "sum-op", "sum-assign", true);
+            dfa.addTransition("+", "sum-op", "increment", true);
+
+
+
             var ttp = new Transition();
             ttp.setSettings(true);
             ttp.addCondition("+");
@@ -294,8 +290,7 @@ namespace Compiler
             if (currentState.isFinal)
             {
                 if (currentState.name == "ID" || currentState.name == "LIT_NUMERIC" 
-                    ||currentState.name=="OneSymbolOperator"
-                    || currentState.name == "TwoSymbolOperator")
+                    ||currentState.name=="OneSymbolOperator")
                 {
                     return currentState.makeToken(lexema.ToString(), lexemaRow, lexemaColumn);
                 }
