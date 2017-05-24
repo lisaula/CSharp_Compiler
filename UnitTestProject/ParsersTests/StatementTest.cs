@@ -27,6 +27,40 @@ public class kevin : Nexer{
         }
 
         [TestMethod]
+        public void TestClassWithIfsNestedInBody()
+        {
+            var inputString = new InputString(@"
+public class kevin {
+    public void method(int a){
+        if(a==true)
+            if(b>10)
+                if(j != a)
+                    for(int a = 10; a >10; a--){}
+        switch(hola){
+            case 5:
+            break;
+            case 10:
+                if(a>10){
+                    System.Console.out.Writeline(""hola"");
+                }
+            break;
+            default:
+                continue;
+        }
+        
+        Dictionary<int,float> hashmap = new Dictionary<int,float>();
+        if(hashmap is Dictionary<int,float>){
+            var nuevo = (Dictionary<int,float>)hashmap;
+        }
+    }
+}
+");
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
+
+        [TestMethod]
         public void TestClassWithMultipleLocalStamentsInBody()
         {
             var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\local_variable_test_file.txt");

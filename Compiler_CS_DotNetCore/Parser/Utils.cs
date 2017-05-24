@@ -98,7 +98,7 @@ namespace Compiler
 
         TokenType[] unaryExpressionOptions = {
             TokenType.OPEN_PARENTHESIS,TokenType.RW_NEW, TokenType.ID,
-            TokenType.RW_THIS
+            TokenType.RW_THIS, TokenType.RW_BASE
         };
 
         public void addLookAhead(Token token)

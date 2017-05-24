@@ -10,7 +10,7 @@ namespace Compiler
         private void unary_expression()
         {
             TokenType[] nuevo = { TokenType.RW_NEW , TokenType.ID,
-                TokenType.OPEN_PARENTHESIS, TokenType.RW_THIS
+                TokenType.OPEN_PARENTHESIS, TokenType.RW_THIS, TokenType.RW_BASE
             };
             DebugInfoMethod("unary_expression");
             if (pass(unaryOperatorOptions))
@@ -76,7 +76,7 @@ namespace Compiler
                 if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
                     TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                     primary_expression_p();
-            }else if (pass(TokenType.ID))
+            }else if (pass(TokenType.ID, TokenType.RW_BASE))
             {
                 consumeToken();
                 if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
