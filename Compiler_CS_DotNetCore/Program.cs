@@ -14,8 +14,18 @@ namespace Compiler
                 using Luis.Carlos.Isaula;
                 using Javier;
                 namespace Hola.Mama.Como.Estas{
+                    using Adentro.Nuevo;
+                    namespace B{
+                        using adentro2;
+                        public enum Adentro{
+                            LUNES,
+                            MARTES = 5,
+                            MIERCOLES
+                        }
+                    }
                 }
 enum NUevoEnum{
+    JAIME
 }
                 ";
             var inputString = new InputString(s);

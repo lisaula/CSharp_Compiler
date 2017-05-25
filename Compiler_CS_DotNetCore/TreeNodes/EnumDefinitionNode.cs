@@ -1,7 +1,10 @@
-﻿namespace Compiler.Tree
+﻿using System.Collections.Generic;
+
+namespace Compiler.Tree
 {
     public class EnumDefinitionNode : TypeDefinitionNode
     {
+        public List<EnumNode> enumNodeList;
         private EncapsulationNode encapsulation;
         private IdentifierNode identifier;
 

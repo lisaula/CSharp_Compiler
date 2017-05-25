@@ -17,7 +17,7 @@ namespace Compiler
             var identifier = new IdentifierNode(current_token.lexema);
             consumeToken();
             var enumDefition = new EnumDefinitionNode(encapsulation, identifier);
-            enum_body();
+            enumDefition.enumNodeList = enum_body();
             optional_body_end();
             return enumDefition;
         }
@@ -35,62 +35,68 @@ namespace Compiler
             }
         }
 
-        private void enum_body()
+        private List<EnumNode> enum_body()
         {
             DebugInfoMethod("enum_body");
             if (!pass(TokenType.OPEN_CURLY_BRACKET))
                 throwError("open curly bracket '{'");
             consumeToken();
 
-            optional_assignable_identifiers_list();
+            var lista = optional_assignable_identifiers_list();
 
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '}'");
             consumeToken();
+            return lista;
         }
 
-        private void optional_assignable_identifiers_list()
+        private List<EnumNode> optional_assignable_identifiers_list()
         {
             DebugInfoMethod("optional_assignable_identifiers_list");
             if (pass(TokenType.ID))
             {
+                var identifier = new IdentifierNode(current_token.lexema);
                 consumeToken();
-                assignment_options();
+                return assignment_options(identifier);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void assignment_options()
+        private List<EnumNode> assignment_options(IdentifierNode identifier)
         {
             DebugInfoMethod("assignment_options");
-
-            if(pass(TokenType.OP_COMMA))
-                optional_assignable_identifiers_list_p();        
-            else if (pass(TokenType.OP_ASSIGN))
+                      
+            if (pass(TokenType.OP_ASSIGN))
             {
                 consumeToken();
 
                 expression();
-
-                if (pass(TokenType.OP_COMMA))
-                    optional_assignable_identifiers_list_p();
-            }
+                return optional_assignable_identifiers_list_p(identifier, new ExpressionNode("7"));
+            }else
+                return optional_assignable_identifiers_list_p(identifier, null);
         }
 
-        private void optional_assignable_identifiers_list_p()
+        private List<EnumNode> optional_assignable_identifiers_list_p(IdentifierNode identifier, ExpressionNode expressionNode)
         {
             DebugInfoMethod("optional_assignable_identifiers_list_p");
+            var enumNode = new EnumNode(identifier, expressionNode);
             if (pass(TokenType.OP_COMMA))
             {
                 consumeToken();
-                optional_assignable_identifiers_list();
+                var lista = optional_assignable_identifiers_list();
+                lista.Insert(0, enumNode);
+                return lista;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                var lista = new List<EnumNode>();
+                lista.Add(enumNode);
+                return lista;
             }
             
         }

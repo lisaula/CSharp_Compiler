@@ -42,6 +42,10 @@ namespace Compiler
             TokenType[] nuevo = { TokenType.RW_NAMEESPACE };
             if (pass(encapsulationTypes.Concat(nuevo).Concat(typesDeclarationOptions).ToArray()))
             {
+                if (namespaceList == null)
+                    namespaceList = new List<NamespaceNode>();
+                if (typeList == null)
+                    typeList = new List<TypeDefinitionNode>();
                 return namespace_member_declaration(ref namespaceList, ref typeList);
             }
             else
@@ -100,8 +104,8 @@ namespace Compiler
             if (!pass(TokenType.OPEN_CURLY_BRACKET))
                 throwError("open curly bracket '{'");
             consumeToken();
-            optional_using_directive(ref namespaceNode.usingList);
-            optional_namespace_member_declaration(ref namespaceNode.namespaceList, ref namespaceNode.typeList);
+            namespaceNode.usingList = optional_using_directive(ref namespaceNode.usingList);
+            namespaceNode.namespaceList = optional_namespace_member_declaration(ref namespaceNode.namespaceList, ref namespaceNode.typeList);
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '}'");
             consumeToken();
@@ -174,7 +178,7 @@ namespace Compiler
         {
             DebugInfoMethod("optional_using_directive");
             if (pass(TokenType.RW_USING))
-                return using_directive(usingList);
+                return using_directive(usingList?? new List<UsingNode>());
             else
             {
                 DebugInfoMethod("epsilon");
