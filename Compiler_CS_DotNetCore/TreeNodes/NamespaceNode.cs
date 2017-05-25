@@ -4,12 +4,13 @@ namespace Compiler.Tree
 {
     public class NamespaceNode
     {
-        private IdenfierNode identifier;
+        private List<IdentifierNode> identifierList;
         public List<UsingNode> usingList;
         public List<NamespaceNode> namespaceList;
-        public NamespaceNode(IdenfierNode identifier)
+        public List<TypeDefinitionNode> typeList;
+        public NamespaceNode(List<IdentifierNode> identifier)
         {
-            this.identifier = identifier;
+            this.identifierList = identifier;
         }
     }
 }

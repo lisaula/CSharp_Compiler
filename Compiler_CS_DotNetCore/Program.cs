@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 namespace Compiler
 {
     class Program
@@ -10,10 +11,12 @@ namespace Compiler
         {
             var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\compiiiss1.txt");
             var s = @"
-                using Carlos;
+                using Luis.Carlos.Isaula;
                 using Javier;
-                namespace Hola{
+                namespace Hola.Mama.Como.Estas{
                 }
+enum NUevoEnum{
+}
                 ";
             var inputString = new InputString(s);
             var lexer = new LexicalAnalyzer(inputString);
@@ -22,7 +25,8 @@ namespace Compiler
             try
             {
                 tree = parser.parse();
-            }catch(System.Exception e)
+            }
+            catch(System.Exception e)
             {
                 System.Console.Out.WriteLine(e);
             }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
+using Compiler.Tree;
 namespace Compiler
 {
     public partial class Parser
     {
-        private void enum_declaration()
+        private TypeDefinitionNode enum_declaration(EncapsulationNode encapsulation)
         {
             DebugInfoMethod("enum_declaration");
             if (!pass(TokenType.RW_ENUM))
@@ -14,11 +14,12 @@ namespace Compiler
             consumeToken();
             if (!pass(TokenType.ID))
                 throwError("identifier");
+            var identifier = new IdentifierNode(current_token.lexema);
             consumeToken();
-
+            var enumDefition = new EnumDefinitionNode(encapsulation, identifier);
             enum_body();
             optional_body_end();
-
+            return enumDefition;
         }
 
         private void optional_body_end()

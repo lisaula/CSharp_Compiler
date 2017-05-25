@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Compiler.Tree;
 namespace Compiler
 {
     public partial class Parser
@@ -157,9 +157,11 @@ namespace Compiler
             {
                 throwError("identifier");
             }
+            var lista = new List<IdentifierNode>();
+            lista.Add(new IdentifierNode(current_token.lexema));
             consumeToken();
             if (pass(TokenType.OP_DOT))
-                identifier_attribute();
+                identifier_attribute(ref lista);
         }
 
         private void fixed_parameters()

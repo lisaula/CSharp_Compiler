@@ -26,22 +26,23 @@ namespace Compiler
 
         private CompilationNode compilation_unit()
         {
-            var compilationNode = new CompilationNode();
+            CompilationNode compilationNode = new CompilationNode();
             DebugInfoMethod("compilation_unit");
             var usingList = new List<UsingNode>();
-            compilationNode.usingArray = optional_using_directive(ref usingList);
+            compilationNode.usingList = optional_using_directive(ref usingList);
             var namespaceList = new List<NamespaceNode>();
-            compilationNode.namespaceArray = optional_namespace_member_declaration(ref namespaceList);
+            compilationNode.typeList = new List<TypeDefinitionNode>();
+            compilationNode.namespaceList = optional_namespace_member_declaration(ref namespaceList, ref compilationNode.typeList);
             return compilationNode;
         }
 
-        private List<NamespaceNode> optional_namespace_member_declaration(ref List<NamespaceNode> namespaceList)
+        private List<NamespaceNode> optional_namespace_member_declaration(ref List<NamespaceNode> namespaceList, ref List<TypeDefinitionNode> typeList)
         {
             DebugInfoMethod("optional_namespace_member_declaration");
             TokenType[] nuevo = { TokenType.RW_NAMEESPACE };
             if (pass(encapsulationTypes.Concat(nuevo).Concat(typesDeclarationOptions).ToArray()))
             {
-                return namespace_member_declaration(ref namespaceList);
+                return namespace_member_declaration(ref namespaceList, ref typeList);
             }
             else
             {
@@ -50,17 +51,17 @@ namespace Compiler
             } 
         }
 
-        private List<NamespaceNode> namespace_member_declaration(ref List<NamespaceNode> namespaceList)
+        private List<NamespaceNode> namespace_member_declaration(ref List<NamespaceNode> namespaceList, ref List<TypeDefinitionNode> typeList)
         {
             DebugInfoMethod("namespace_member_declaration");
             if (pass(TokenType.RW_NAMEESPACE))
             {
                 namespaceList.Add(namespace_declaration());
-                return optional_namespace_member_declaration(ref namespaceList);
+                return optional_namespace_member_declaration(ref namespaceList, ref typeList);
             }else if (pass(encapsulationTypes.Concat(typesDeclarationOptions).ToArray()))
             {
-                type_declaration_list();
-                return optional_namespace_member_declaration(ref namespaceList);
+                typeList = type_declaration_list();
+                return optional_namespace_member_declaration(ref namespaceList, ref typeList);
             }
             else
             {
@@ -79,15 +80,17 @@ namespace Compiler
             consumeToken();
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var identifier = new IdenfierNode(current_token.lexema);
+            var identifier = new IdentifierNode(current_token.lexema);
+            var lista = new List<IdentifierNode>();
+            lista.Add(identifier);
             consumeToken();
             if (pass(TokenType.OP_DOT))
             {
-                identifier_attribute();
+                identifier_attribute(ref lista);
             }
             if (!pass(TokenType.OPEN_CURLY_BRACKET))
                 throwError("open curly bracket '{'");
-            var namespaceNode = new NamespaceNode(identifier);
+            NamespaceNode namespaceNode = new NamespaceNode(lista);
             namespace_body(ref namespaceNode);
             return namespaceNode;
         }
@@ -98,36 +101,40 @@ namespace Compiler
                 throwError("open curly bracket '{'");
             consumeToken();
             optional_using_directive(ref namespaceNode.usingList);
-            optional_namespace_member_declaration(ref namespaceNode.namespaceList);
+            optional_namespace_member_declaration(ref namespaceNode.namespaceList, ref namespaceNode.typeList);
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '}'");
             consumeToken();
         }
 
-        private void type_declaration_list()
+        private List<TypeDefinitionNode> type_declaration_list()
         {
             DebugInfoMethod("type_declaration_list");
             if (pass(encapsulationTypes.Concat(typesDeclarationOptions).ToArray()))
             {
-                type_declaration();
-                type_declaration_list();
+                var typeDefinition = type_declaration();
+                var typeList = type_declaration_list();
+
+                typeList.Insert(0, typeDefinition);
+                return typeList;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<TypeDefinitionNode>();
             }
         }
 
-        private void type_declaration()
+        private TypeDefinitionNode type_declaration()
         {
             DebugInfoMethod("type_declaration");
-            encapsulation_modifier();
+            var encapsulationNode = encapsulation_modifier();
             if (!pass(typesDeclarationOptions))
                 throwError("Class, Interface or Enum");
-            group_declaration();
+            return group_declaration(encapsulationNode);
         }
 
-        private void group_declaration()
+        private TypeDefinitionNode group_declaration(EncapsulationNode encapsulation)
         {
             if (pass(TokenType.RW_ABSTRACT, TokenType.RW_CLASS))
             {
@@ -138,25 +145,28 @@ namespace Compiler
             }
             else if(pass(TokenType.RW_ENUM))
             {
-                enum_declaration();
+                return enum_declaration(encapsulation);
             }
             else
             {
                 throwError("Class, Interface or Enum");
             }
-
+            return null;
         }
 
-        private void encapsulation_modifier()
+        private EncapsulationNode encapsulation_modifier()
         {
             DebugInfoMethod("encapsulation_modifier");
             if (pass(encapsulationTypes))
             {
+                var encapsulation = new EncapsulationNode(current_token.lexema);
                 consumeToken();
+                return encapsulation;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new EncapsulationNode();
             }
         }
 
@@ -182,23 +192,25 @@ namespace Compiler
 
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var identifier = new IdenfierNode(current_token.lexema);
+            var identifier = new IdentifierNode(current_token.lexema);
+            List<IdentifierNode> lista = new List<IdentifierNode>();
+            lista.Add(identifier);
             consumeToken();
 
             if (pass(TokenType.OP_DOT))
             {
-                identifier_attribute();
+                identifier_attribute(ref lista);
             }
 
             if (!pass(TokenType.END_STATEMENT))
                 throwError(";");
 
             consumeToken();
-            usignList.Add(new UsingNode(identifier));
+            usignList.Add(new UsingNode(lista));
             return optional_using_directive(ref usignList);
         }
 
-        private void identifier_attribute()
+        private void identifier_attribute(ref List<IdentifierNode> identifierList)
         {
             DebugInfoMethod("identifier_attribute");
             if (pass(TokenType.OP_DOT))
@@ -206,8 +218,9 @@ namespace Compiler
                 consumeToken();
                 if (!pass(TokenType.ID))
                     throwError("identifier");
+                identifierList.Add(new IdentifierNode(current_token.lexema));
                 consumeToken();
-                identifier_attribute();
+                identifier_attribute(ref identifierList);
             }
             else
             {

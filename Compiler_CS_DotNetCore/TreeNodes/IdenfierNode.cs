@@ -1,11 +1,10 @@
 ﻿namespace Compiler.Tree
 {
-    public class IdenfierNode
+    public class IdentifierNode
     {
-        private Token current_token;
         private string lexema;
 
-        public IdenfierNode(string lexema)
+        public IdentifierNode(string lexema)
         {
             this.lexema = lexema;
         }
