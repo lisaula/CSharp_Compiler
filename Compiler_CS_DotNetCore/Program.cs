@@ -23,6 +23,9 @@ namespace Compiler
                             MIERCOLES
                         }
                     }
+                    public interface NuevoInterface {
+                        void methodo(int paramenter);
+                    }
                 }
 enum NUevoEnum{
     JAIME

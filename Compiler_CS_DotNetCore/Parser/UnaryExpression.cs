@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler.Tree;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -218,6 +219,7 @@ namespace Compiler
 
         private void instance_expression_factorized_p()
         {
+            var arrayNode = new ArrayNode();
             DebugInfoMethod("instance_expression_factorized_p");
             TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
                 TokenType.OP_NULLABLE, TokenType.OP_LOG_OR,
@@ -238,12 +240,12 @@ namespace Compiler
                     throwError("close square bracket ']'");
                 consumeToken();
 
-                optional_rank_specifier_list();
+                optional_rank_specifier_list(ref arrayNode);
                 optional_array_initializer();
 
             }else if (pass(TokenType.OP_COMMA,TokenType.CLOSE_SQUARE_BRACKET))
             {
-                rank_specifier_list();
+                rank_specifier_list(ref arrayNode);
                 array_initializer();
             }
             else
@@ -310,30 +312,32 @@ namespace Compiler
             }
         }
 
-        private void rank_specifier_list()
+        private void rank_specifier_list(ref ArrayNode arrayNode)
         {
             DebugInfoMethod("rank_specifier_list");
-            rank_specifier();
-            optional_rank_specifier_list();
+            rank_specifier(ref arrayNode);
+            optional_rank_specifier_list(ref arrayNode);
         }
 
-        private void rank_specifier()
+        private void rank_specifier(ref ArrayNode arrayNode)
         {
             DebugInfoMethod("rank_specifier");
-            optional_comma_list();
+            optional_comma_list(ref arrayNode);
 
             if (!pass(TokenType.CLOSE_SQUARE_BRACKET))
                 throwError("close square bracket ']'");
             consumeToken();
+            arrayNode.arrayOfArrays++;
         }
 
-        private void optional_comma_list()
+        private void optional_comma_list(ref ArrayNode arrayNode)
         {
             DebugInfoMethod("optional_comma_list");
             if (pass(TokenType.OP_COMMA))
             {
                 consumeToken();
-                optional_comma_list();
+                arrayNode.dimensions++;
+                optional_comma_list(ref arrayNode);
             }
             else
             {
@@ -354,13 +358,15 @@ namespace Compiler
             }
         }
 
-        private void optional_rank_specifier_list()
+        private void optional_rank_specifier_list(ref ArrayNode arrayNode)
         {
+            if (arrayNode == null)
+                arrayNode = new ArrayNode();
             DebugInfoMethod("optional_rank_specifier_list");
             if (pass(TokenType.OPEN_SQUARE_BRACKET))
             {
                 consumeToken();
-                rank_specifier_list();
+                rank_specifier_list(ref arrayNode);
             }
             else
             {

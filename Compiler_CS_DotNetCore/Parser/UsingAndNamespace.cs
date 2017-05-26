@@ -84,14 +84,8 @@ namespace Compiler
             consumeToken();
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var identifier = new IdentifierNode(current_token.lexema);
-            var lista = new List<IdentifierNode>();
-            lista.Add(identifier);
-            consumeToken();
-            if (pass(TokenType.OP_DOT))
-            {
-                identifier_attribute(ref lista);
-            }
+
+            var lista = qualified_identifier();
             if (!pass(TokenType.OPEN_CURLY_BRACKET))
                 throwError("open curly bracket '{'");
             NamespaceNode namespaceNode = new NamespaceNode(lista);
@@ -145,7 +139,7 @@ namespace Compiler
                 class_declaration();
             }else if (pass(TokenType.RW_INTERFACE))
             {
-                interface_declaration();
+                return interface_declaration(encapsulation);
             }
             else if(pass(TokenType.RW_ENUM))
             {
@@ -196,15 +190,8 @@ namespace Compiler
 
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var identifier = new IdentifierNode(current_token.lexema);
-            List<IdentifierNode> lista = new List<IdentifierNode>();
-            lista.Add(identifier);
-            consumeToken();
 
-            if (pass(TokenType.OP_DOT))
-            {
-                identifier_attribute(ref lista);
-            }
+            var lista = qualified_identifier();
 
             if (!pass(TokenType.END_STATEMENT))
                 throwError(";");
@@ -214,7 +201,7 @@ namespace Compiler
             return optional_using_directive(ref usignList);
         }
 
-        private void identifier_attribute(ref List<IdentifierNode> identifierList)
+        private List<IdentifierNode> identifier_attribute()
         {
             DebugInfoMethod("identifier_attribute");
             if (pass(TokenType.OP_DOT))
@@ -222,13 +209,16 @@ namespace Compiler
                 consumeToken();
                 if (!pass(TokenType.ID))
                     throwError("identifier");
-                identifierList.Add(new IdentifierNode(current_token.lexema));
+                var id = new IdentifierNode(current_token.lexema);
                 consumeToken();
-                identifier_attribute(ref identifierList);
+                var lista = identifier_attribute();
+                lista.Insert(0, id);
+                return lista;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<IdentifierNode>();
                 //epsilon
             }
         }
