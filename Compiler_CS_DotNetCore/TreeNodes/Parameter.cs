@@ -2,12 +2,12 @@
 {
     public class Parameter
     {
-        private TypeDefinitionNode t;
+        private TypeDefinitionNode type;
         private IdentifierNode id;
 
         public Parameter(TypeDefinitionNode t, IdentifierNode id)
         {
-            this.t = t;
+            this.type = t;
             this.id = id;
         }
     }

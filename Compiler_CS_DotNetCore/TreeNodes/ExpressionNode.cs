@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Tree
 {
-    public class ExpressionNode
+    public class ExpressionNode : VariableInitializer
     {
         public string v;
 

@@ -4,11 +4,11 @@ namespace Compiler.Tree
 {
     internal class PrimitiveType : TypeDefinitionNode
     {
-        private TokenType type;
+        private Token token_type;
         public ArrayNode arrayNode;
-        public PrimitiveType(TokenType type)
+        public PrimitiveType(Token token)
         {
-            this.type = type;
+            this.token_type = token;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Compiler
 
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var interfaceNode = new InterfaceNode(encapsulation, current_token.lexema);
+            var interfaceNode = new InterfaceNode(encapsulation, current_token);
             consumeToken();
 
             if (pass(TokenType.OP_COLON))
@@ -73,7 +73,7 @@ namespace Compiler
             var type = type_or_void();
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var id = new IdentifierNode(current_token.lexema);
+            var id = new IdentifierNode(current_token);
             consumeToken();
 
             if (!pass(TokenType.OPEN_PARENTHESIS))
@@ -93,7 +93,7 @@ namespace Compiler
             DebugInfoMethod("type_or_void");
             if (pass(TokenType.RW_VOID))
             {
-                var t = new VoidTypeNode(current_token.type, null);
+                var t = new VoidTypeNode(current_token, null);
                 consumeToken();
                 return t;
             }
@@ -167,9 +167,9 @@ namespace Compiler
             TokenType.RW_BOOL,
             TokenType.RW_FLOAT))
                 throwError("a primitive type");
-            var type = current_token.type;
+            var token = current_token;
             consumeToken();
-            return new PrimitiveType(type);
+            return new PrimitiveType(token);
         }
 
         private List<IdentifierNode> qualified_identifier()
@@ -179,7 +179,7 @@ namespace Compiler
             {
                 throwError("identifier");
             }
-            var id = new IdentifierNode(current_token.lexema);
+            var id = new IdentifierNode(current_token);
             consumeToken();
             var lista = identifier_attribute();
             lista.Insert(0, id);
@@ -229,7 +229,7 @@ namespace Compiler
             var t = types();
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var id = new IdentifierNode(current_token.lexema);
+            var id = new IdentifierNode(current_token);
             consumeToken();
             return new Parameter(t, id);
         }

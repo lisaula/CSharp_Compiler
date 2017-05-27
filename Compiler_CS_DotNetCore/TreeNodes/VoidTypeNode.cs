@@ -2,16 +2,16 @@
 {
     internal class VoidTypeNode : TypeDefinitionNode
     {
-        private TokenType type;
+        private Token token_type;
         public ArrayNode arrayNode;
-        public VoidTypeNode(TokenType type)
+        public VoidTypeNode(Token token_type)
         {
-            this.type = type;
+            this.token_type = token_type;
         }
 
-        public VoidTypeNode(TokenType type, ArrayNode array)
+        public VoidTypeNode(Token token_type, ArrayNode array)
         {
-            this.type = type;
+            this.token_type = token_type;
             arrayNode = array;
         }
     }

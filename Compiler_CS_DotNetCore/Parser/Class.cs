@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Compiler.Tree;
 namespace Compiler
 {
     public partial class Parser
     {
-        private void class_declaration()
+        private ClassDefinitionNode class_declaration(EncapsulationNode encapsulation)
         {
             DebugInfoMethod("class_declaration");
+            bool isAbstract = false;
             if (pass(TokenType.RW_ABSTRACT))
             {
-                class_modifier();
+                isAbstract =  class_modifier();
             }
             if (!pass(TokenType.RW_CLASS))
                 throwError("class");
@@ -20,40 +21,42 @@ namespace Compiler
 
             if (!pass(TokenType.ID))
                 throwError("identifier");
+            var id = new IdentifierNode(current_token);
             consumeToken();
-
+            InheritanceNode inheritance = null;
             if (pass(TokenType.OP_COLON))
             {
-                inheritance_base();
+                inheritance =  inheritance_base();
             }
+            var clase = new ClassDefinitionNode(encapsulation, isAbstract, id, inheritance);
+            class_body(ref clase);
 
-            class_body();
             optional_body_end();
-
+            return clase;
         }
 
-        private void class_body()
+        private void class_body(ref ClassDefinitionNode clase)
         {
             DebugInfoMethod("class_body");
             if (!pass(TokenType.OPEN_CURLY_BRACKET))
                 throwError("open curly bracket '{'");
             consumeToken();
 
-            optional_class_member_declaration_list();
+            optional_class_member_declaration_list(ref clase);
 
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '}'");
             consumeToken();
         }
 
-        private void optional_class_member_declaration_list()
+        private void optional_class_member_declaration_list(ref ClassDefinitionNode clase)
         {
-            DebugInfoMethod("optional_class_member_declaration_list5555");
+            DebugInfoMethod("optional_class_member_declaration_list");
             TokenType[] nuevo = { TokenType.RW_VOID };
             if (pass(encapsulationTypes.Concat(optionalModifiersOptions).Concat(typesOptions).Concat(nuevo).ToArray()))
             {
-                class_member_declaration();
-                optional_class_member_declaration_list();
+                class_member_declaration(ref clase);
+                optional_class_member_declaration_list(ref clase);
             }
             else
             {
@@ -61,17 +64,18 @@ namespace Compiler
             }
         }
 
-        private void class_member_declaration()
+        private void class_member_declaration(ref ClassDefinitionNode clase)
         {
             DebugInfoMethod("class_member_declaration");
+            EncapsulationNode encapsulation = null;
             if (pass(encapsulationTypes))
             {
-                encapsulation_modifier();
+                encapsulation = encapsulation_modifier();
             }
-            class_member_declaration_options();
+            class_member_declaration_options(encapsulation, ref clase);
         }
 
-        private void class_member_declaration_options()
+        private void class_member_declaration_options(EncapsulationNode encapsulation, ref ClassDefinitionNode clase)
         {
             DebugInfoMethod("class_member_declaration_options");
             TokenType[] nuevo = { TokenType.RW_VOID };
@@ -84,12 +88,13 @@ namespace Compiler
                 }
                 else
                 {
-                    optional_modifier();
-                    type_or_void();
+                    var modifier = optional_modifier();
+                    var type = type_or_void();
                     if (!pass(TokenType.ID))
                         throwError("identifier");
+                    var id = new IdentifierNode(current_token);
                     consumeToken();
-                    field_or_method();
+                    field_or_method(encapsulation, modifier, type, id, ref clase);
                 }
             }
             else
@@ -208,29 +213,34 @@ namespace Compiler
             }
         }
 
-        private void optional_modifier()
+        private ModifierNode optional_modifier()
         {
             DebugInfoMethod("optional_modifier");
             if (pass(optionalModifiersOptions))
             {
+                var token = current_token;
                 consumeToken();
+                return new ModifierNode(token);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void class_modifier()
+        private bool class_modifier()
         {
             DebugInfoMethod("class_modifier");
             if (pass(TokenType.RW_ABSTRACT))
             {
                 consumeToken();
+                return true;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return false;
             }
             
         }

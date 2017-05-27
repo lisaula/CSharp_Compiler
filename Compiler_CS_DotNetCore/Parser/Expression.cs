@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Compiler.Tree;
 namespace Compiler
 {
     public partial class Parser
     {
-        private void expression()
+        private ExpressionNode expression()
         {
             TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
                 TokenType.OP_NULLABLE, TokenType.OP_LOG_OR,
@@ -23,6 +23,7 @@ namespace Compiler
                 .Concat(literalOptions).ToArray() ))
                 throwError("Operator, identifier or literal in expression");
             conditional_expression();
+            return new ExpressionNode("expresion");
         }
 
         private void conditional_expression()

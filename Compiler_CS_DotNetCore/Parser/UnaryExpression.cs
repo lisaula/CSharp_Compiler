@@ -254,21 +254,22 @@ namespace Compiler
             }
         }
 
-        private void array_initializer()
+        private ArrayInitializer array_initializer()
         {
             DebugInfoMethod("array_initializer");
             if (!pass(TokenType.OPEN_CURLY_BRACKET))
                 throwError("open curly bracket '{'");
             consumeToken();
-
-            optional_variable_initializer_list();
+            var array_init = new ArrayInitializer();
+            array_init.variables_list = optional_variable_initializer_list();
 
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '{'");
             consumeToken();
+            return array_init;
         }
 
-        private void optional_variable_initializer_list()
+        private List<VariableInitializer> optional_variable_initializer_list()
         {
             DebugInfoMethod("optional_variable_initializer_list");
             TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
@@ -283,32 +284,36 @@ namespace Compiler
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
                 .Concat(literalOptions).ToArray()))
             {
-                variable_initializer_list();
+                return variable_initializer_list();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void variable_initializer_list()
+        private List<VariableInitializer> variable_initializer_list()
         {
             DebugInfoMethod("variable_initializer_list");
-            variable_initializer();
-            variable_initializer_list_p();
+            var var_init = variable_initializer();
+            var lista = variable_initializer_list_p();
+            lista.Insert(0, var_init);
+            return lista;
         }
 
-        private void variable_initializer_list_p()
+        private List<VariableInitializer> variable_initializer_list_p()
         {
             DebugInfoMethod("variable_initializer_list_p");
             if (pass(TokenType.OP_COMMA))
             {
                 consumeToken();
-                variable_initializer_list();
+                return variable_initializer_list();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<VariableInitializer>();
             }
         }
 

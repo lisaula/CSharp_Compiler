@@ -14,7 +14,7 @@ namespace Compiler
             consumeToken();
             if (!pass(TokenType.ID))
                 throwError("identifier");
-            var identifier = new IdentifierNode(current_token.lexema);
+            var identifier = new IdentifierNode(current_token);
             consumeToken();
             var enumDefition = new EnumDefinitionNode(encapsulation, identifier);
             enumDefition.enumNodeList = enum_body();
@@ -55,7 +55,7 @@ namespace Compiler
             DebugInfoMethod("optional_assignable_identifiers_list");
             if (pass(TokenType.ID))
             {
-                var identifier = new IdentifierNode(current_token.lexema);
+                var identifier = new IdentifierNode(current_token);
                 consumeToken();
                 return assignment_options(identifier);
             }

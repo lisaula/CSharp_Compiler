@@ -136,7 +136,7 @@ namespace Compiler
         {
             if (pass(TokenType.RW_ABSTRACT, TokenType.RW_CLASS))
             {
-                class_declaration();
+                return class_declaration(encapsulation);
             }else if (pass(TokenType.RW_INTERFACE))
             {
                 return interface_declaration(encapsulation);
@@ -157,14 +157,14 @@ namespace Compiler
             DebugInfoMethod("encapsulation_modifier");
             if (pass(encapsulationTypes))
             {
-                var encapsulation = new EncapsulationNode(current_token.lexema);
+                var encapsulation = new EncapsulationNode(current_token);
                 consumeToken();
                 return encapsulation;
             }
             else
             {
                 DebugInfoMethod("epsilon");
-                return new EncapsulationNode();
+                return null;
             }
         }
 
@@ -209,7 +209,7 @@ namespace Compiler
                 consumeToken();
                 if (!pass(TokenType.ID))
                     throwError("identifier");
-                var id = new IdentifierNode(current_token.lexema);
+                var id = new IdentifierNode(current_token);
                 consumeToken();
                 var lista = identifier_attribute();
                 lista.Insert(0, id);

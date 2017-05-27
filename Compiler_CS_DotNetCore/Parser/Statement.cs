@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Compiler.Tree;
 namespace Compiler
 {
     public partial class Parser
@@ -132,11 +132,14 @@ namespace Compiler
             TokenType[] nuevo = { TokenType.RW_VAR };
             if (!pass(typesOptions.Concat(nuevo).ToArray()))
                 throwError("a type");
-            if (pass(TokenType.RW_VAR))
+            TypeDefinitionNode type = null; 
+            if (pass(TokenType.RW_VAR)) {
+                type = new VarType(current_token);
                 consumeToken();
-            else
-                types();
-            variable_declarator_list();
+            } else {
+                type =  types();
+            }
+            variable_declarator_list(null,null,type);
         } 
     }
 }

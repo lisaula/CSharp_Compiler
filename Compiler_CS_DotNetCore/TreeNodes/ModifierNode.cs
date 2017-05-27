@@ -1,10 +1,10 @@
 ﻿namespace Compiler.Tree
 {
-    public class IdentifierNode
+    public class ModifierNode
     {
         private Token token;
 
-        public IdentifierNode(Token token)
+        public ModifierNode(Token token)
         {
             this.token = token;
         }

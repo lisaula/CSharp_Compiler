@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Compiler.Tree;
 namespace Compiler
 {
     public partial class Parser
     {
-        private void field_or_method()
+        private void field_or_method(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, ref ClassDefinitionNode clase)
         {
             DebugInfoMethod("field_or_method");
             if(pass(TokenType.OP_ASSIGN, TokenType.OP_COMMA, TokenType.END_STATEMENT))
             {
-                field_declaration();
-            }else if (pass(TokenType.OPEN_PARENTHESIS))
+                var assignment = field_declaration(encapsulation, modifier, type, ref clase);
+                var field = new FieldNode(encapsulation, modifier, type, id, assignment);
+                clase.fields.Add(field);
+            } else if (pass(TokenType.OPEN_PARENTHESIS))
             {
                 method_declaration();
             }
@@ -40,62 +42,72 @@ namespace Compiler
             maybe_empty_block();
         }
 
-        private void field_declaration()
+        private VariableInitializer field_declaration(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type,ref ClassDefinitionNode clase)
         {
             DebugInfoMethod("field_declaration");
             if (!pass(TokenType.OP_ASSIGN, TokenType.OP_COMMA, TokenType.END_STATEMENT))
                 throwError("'=', ',' or ';' ");
-            variable_assigner();
-            variable_declarator_list_p();
-
+            var assignmentExpression = variable_assigner();
+            var list = variable_declarator_list_p(encapsulation, modifier, type);
+            clase.fields.AddRange(list);
             if (!pass(TokenType.END_STATEMENT))
                 throwError(" end statement ';'");
             consumeToken();
+            return assignmentExpression;
         }
 
-        private void variable_declarator_list_p()
+        private List<FieldNode> variable_declarator_list_p(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type)
         {
             DebugInfoMethod("variable_declarator_list_p");
             if (pass(TokenType.OP_COMMA))
             {
                 consumeToken();
-                variable_declarator_list();
+                return variable_declarator_list(encapsulation,modifier, type);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<FieldNode>();
             }
         }
 
-        private void variable_declarator_list()
+        private List<FieldNode> variable_declarator_list(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type)
         {
             DebugInfoMethod("variable_declarator_list");
             if (!pass(TokenType.ID))
                 throwError("identifier");
+            var id = new IdentifierNode(current_token);
             consumeToken();
 
+            VariableInitializer init = null;
             if (pass(TokenType.OP_ASSIGN))
             {
-                variable_assigner();
+                init = variable_assigner();
             }
-            variable_declarator_list_p();
+            var field = new FieldNode(encapsulation, modifier, type, id, init);
+
+            var lista = variable_declarator_list_p(encapsulation, modifier, type);
+            lista.Insert(0, field);
+            return lista;
         }
 
-        private void variable_assigner()
+        private VariableInitializer variable_assigner()
         {
             DebugInfoMethod("variable_assigner");
             if (pass(TokenType.OP_ASSIGN))
             {
                 consumeToken();
-                variable_initializer();
+                var assignmentExpression = variable_initializer();
+                return assignmentExpression;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void variable_initializer()
+        private VariableInitializer variable_initializer()
         {
             DebugInfoMethod("variable_initializer");
             TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
@@ -110,14 +122,15 @@ namespace Compiler
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
                 .Concat(literalOptions).ToArray()))
             {
-                expression();
+                return expression();
             }else if (pass(TokenType.OPEN_CURLY_BRACKET))
             {
-                array_initializer();
+                return array_initializer();
             }
             else
             {
                 throwError("expression or array initializer '{'");
+                return null;
             }
         }
     }

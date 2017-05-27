@@ -6,22 +6,22 @@ namespace Compiler.Tree
     {
         internal InheritanceNode inheritance;
         internal List<MethodNode> methods;
-        private string Identifier;
+        private Token token_identifier;
         private EncapsulationNode encapsulation;
 
         public InterfaceNode()
         {
         }
 
-        public InterfaceNode(string lexema)
+        public InterfaceNode(Token token)
         {
-            this.Identifier = lexema;
+            this.token_identifier = token;
         }
 
-        public InterfaceNode(EncapsulationNode encapsulation, string lexema)
+        public InterfaceNode(EncapsulationNode encapsulation, Token token)
         {
             this.encapsulation = encapsulation;
-            this.Identifier = lexema;
+            this.token_identifier = token;
         }
     }
 }

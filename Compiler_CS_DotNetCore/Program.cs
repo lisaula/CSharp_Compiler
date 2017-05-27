@@ -17,18 +17,26 @@ namespace Compiler
                     using Adentro.Nuevo;
                     namespace B{
                         using adentro2;
-                        public enum Adentro{
+                        enum Adentro{
                             LUNES,
                             MARTES = 5,
                             MIERCOLES
                         }
                     }
-                    public interface NuevoInterface {
-                        void methodo(int paramenter);
+                    public interface NuevoInterface: Padre.Clase, Clase2 {
+                        int[,][] methodo(int paramenter);
+                        Dictionary<int,string>[,,] methodo2 (string[] arrayString);
                     }
                 }
 enum NUevoEnum{
     JAIME
+}
+
+public abstract class NuevaClase : Padre, Lista.Padre {
+}
+
+private class ClasePrivada {
+    public int x = 3, y=5, k=4;
 }
                 ";
             var inputString = new InputString(s);

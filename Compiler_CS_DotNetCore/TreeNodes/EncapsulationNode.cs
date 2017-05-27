@@ -2,16 +2,15 @@
 {
     public class EncapsulationNode
     {
-        private string lexema;
+        private Token token;
 
         public EncapsulationNode()
         {
-            lexema = null;
         }
 
-        public EncapsulationNode(string lexema)
+        public EncapsulationNode(Token token)
         {
-            this.lexema = lexema;
+            this.token = token;
         }
     }
 }
