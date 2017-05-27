@@ -39,6 +39,9 @@ private class ClasePrivada {
     public int x = 3, y=5, k=4;
 
     public override int metodo(int paramenterA, string[] paremeterB){}
+
+    public Constructor(int a ) : base(a){}
+    private Constructor2 (int a ){}
 }
                 ";
             var inputString = new InputString(s);

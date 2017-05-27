@@ -6,6 +6,7 @@ namespace Compiler.Tree
     {
         public  List<FieldNode> fields;
         public List<MethodNode> methods;
+        public List<ConstructorNode> constructors;
         private EncapsulationNode encapsulation;
         private bool isAbstract;
         private IdentifierNode id;

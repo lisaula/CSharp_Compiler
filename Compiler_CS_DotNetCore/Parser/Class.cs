@@ -84,7 +84,7 @@ namespace Compiler
                 addLookAhead(lexer.getNextToken());
                 if (pass(TokenType.ID) && look_ahead[0].type == TokenType.OPEN_PARENTHESIS)
                 {
-                        constructor_declaration();
+                        constructor_declaration(encapsulation, ref clase);
                 }
                 else
                 {
@@ -103,28 +103,33 @@ namespace Compiler
             }
         }
 
-        private void constructor_declaration()
+        private void constructor_declaration(EncapsulationNode encapsulation, ref ClassDefinitionNode clase)
         {
             DebugInfoMethod("constructor_declaration");
             if (!pass(TokenType.ID))
                 throwError("identifier");
+            var id = new IdentifierNode(current_token);
             consumeToken();
 
             if (!pass(TokenType.OPEN_PARENTHESIS))
                 throwError("open parenthesis '('");
             consumeToken();
 
-            fixed_parameters();
+            var parameters = fixed_parameters();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
             consumeToken();
 
+            ConstructorInitializerNode init = null;
             if (pass(TokenType.OP_COLON))
             {
-                constructor_initializer();
+                init = constructor_initializer();
             }
-            maybe_empty_block();
+            var statements = maybe_empty_block();
+            if (clase.constructors == null)
+                clase.constructors = new List<ConstructorNode>();
+            clase.constructors.Add(new ConstructorNode(encapsulation, id, parameters, init, statements));
         }
 
         private List<Statement> maybe_empty_block()
@@ -149,7 +154,7 @@ namespace Compiler
             }
         }
 
-        private void constructor_initializer()
+        private ConstructorInitializerNode constructor_initializer()
         {
             DebugInfoMethod("constructor_initializer");
             if (pass(TokenType.OP_COLON))
@@ -164,19 +169,21 @@ namespace Compiler
                     throwError("open parenthesis '('");
                 consumeToken();
 
-                argument_list();
+                var argumentList = argument_list();
 
                 if (!pass(TokenType.CLOSE_PARENTHESIS))
                     throwError("close parenthesis ')'");
                 consumeToken();
+                return new ConstructorInitializerNode(argumentList);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void argument_list()
+        private List<ExpressionNode> argument_list()
         {
             DebugInfoMethod("argument_list");
             TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
@@ -191,28 +198,33 @@ namespace Compiler
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
                 .Concat(literalOptions).ToArray()))
             {
-                expression();
-                if (pass(TokenType.OP_COMMA))
-                    argument_list_p();
+                var expressionNode = expression();
+                var lista = argument_list_p();
+                lista.Insert(0, expressionNode);
+                return lista;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void argument_list_p()
+        private List<ExpressionNode> argument_list_p()
         {
             DebugInfoMethod("argument_list_p");
             if (pass(TokenType.OP_COMMA))
             {
                 consumeToken();
-                expression();
-                argument_list_p();
+                var expressionNode = expression();
+                var lista = argument_list_p();
+                lista.Insert(0, expressionNode);
+                return lista;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<ExpressionNode>();
             }
         }
 
