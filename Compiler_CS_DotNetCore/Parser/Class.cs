@@ -127,22 +127,25 @@ namespace Compiler
             maybe_empty_block();
         }
 
-        private void maybe_empty_block()
+        private List<Statement> maybe_empty_block()
         {
             DebugInfoMethod("maybe_empty_block");
             if (pass(TokenType.OPEN_CURLY_BRACKET))
             {
                 consumeToken();
-                optional_statement_list();
+                var lista =  optional_statement_list();
                 if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                     throwError("close curly bracket '}'");
-                consumeToken();                    
+                consumeToken();
+                return lista;
             }else if (pass(TokenType.END_STATEMENT)){
                 consumeToken();
+                return null;
             }
             else
             {
                 throwError("block of code, or end of statement");
+                return null;
             }
         }
 

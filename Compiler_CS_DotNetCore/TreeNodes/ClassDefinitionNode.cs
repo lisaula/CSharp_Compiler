@@ -5,6 +5,7 @@ namespace Compiler.Tree
     public class ClassDefinitionNode : TypeDefinitionNode
     {
         public  List<FieldNode> fields;
+        public List<MethodNode> methods;
         private EncapsulationNode encapsulation;
         private bool isAbstract;
         private IdentifierNode id;

@@ -17,7 +17,7 @@ namespace Compiler
                 clase.fields.Add(field);
             } else if (pass(TokenType.OPEN_PARENTHESIS))
             {
-                method_declaration();
+                method_declaration(encapsulation, modifier, type, id, ref clase);
             }
             else
             {
@@ -26,20 +26,24 @@ namespace Compiler
             
         }
 
-        private void method_declaration()
+        private void method_declaration(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, ref ClassDefinitionNode clase)
         {
             DebugInfoMethod("method_declaration");
             if (!pass(TokenType.OPEN_PARENTHESIS))
                 throwError("open parenthesis '('");
             consumeToken();
 
-            fixed_parameters();
+            var parameters = fixed_parameters();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
             consumeToken();
 
-            maybe_empty_block();
+            var statements = maybe_empty_block();
+            var method = new MethodNode(encapsulation, modifier, type, id, parameters, statements);
+            if (clase.methods == null)
+                clase.methods = new List<MethodNode>();
+            clase.methods.Add(method);
         }
 
         private VariableInitializer field_declaration(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type,ref ClassDefinitionNode clase)

@@ -37,6 +37,8 @@ public abstract class NuevaClase : Padre, Lista.Padre {
 
 private class ClasePrivada {
     public int x = 3, y=5, k=4;
+
+    public override int metodo(int paramenterA, string[] paremeterB){}
 }
                 ";
             var inputString = new InputString(s);

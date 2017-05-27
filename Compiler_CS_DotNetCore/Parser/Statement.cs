@@ -7,7 +7,7 @@ namespace Compiler
 {
     public partial class Parser
     {
-        private void optional_statement_list()
+        private List<Statement> optional_statement_list()
         {
             DebugInfoMethod("optional_statement_list");
             TokenType[] nuevo = {
@@ -26,7 +26,7 @@ namespace Compiler
             {
                 DebugInfoMethod("epsilon");
             }
-
+            return null;
         }
 
         private void statement_list()
