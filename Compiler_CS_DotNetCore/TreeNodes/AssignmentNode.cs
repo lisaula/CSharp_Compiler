@@ -2,15 +2,19 @@
 {
     public class AssignmentNode : ExpressionNode
     {
-        public UnaryExpressionNode leftValue;
+        public ExpressionNode leftExpression;
         public Token assigmentOperator;
-        public ExpressionNode expr;
+        public ExpressionNode rightExpression;
 
-        public AssignmentNode(UnaryExpressionNode leftValue, Token assigmentOperator, ExpressionNode expr)
+        public AssignmentNode(ExpressionNode leftExpression, Token assigmentOperator, ExpressionNode rightExpression)
         {
-            this.leftValue = leftValue;
+            this.leftExpression = leftExpression;
             this.assigmentOperator = assigmentOperator;
-            this.expr = expr;
+            this.rightExpression = rightExpression;
+        }
+        public AssignmentNode()
+        {
+
         }
     }
 }

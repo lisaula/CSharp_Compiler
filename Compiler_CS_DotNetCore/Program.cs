@@ -11,44 +11,23 @@ namespace Compiler
         {
             var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\compiiiss1.txt");
             var s = @"
-                using Luis.Carlos.Isaula;
-                using Javier;
-                namespace Hola.Mama.Como.Estas{
-                    using Adentro.Nuevo;
-                    namespace B{
-                        using adentro2;
-                        enum Adentro{
-                            LUNES,
-                            MARTES = 5,
-                            MIERCOLES
-                        }
-                    }
-                    public interface NuevoInterface: Padre.Clase, Clase2 {
-                        int[,][] methodo(int paramenter);
-                        Dictionary<int,string>[,,] methodo2 (string[] arrayString);
-                    }
-                }
-enum NUevoEnum{
-    JAIME
-}
-
-public abstract class NuevaClase : Padre, Lista.Padre {
-}
-
 private class ClasePrivada {
-    public int x = 3, y=5, k=4;
-    
-    public override int metodo(int paramenterA, string[] paremeterB){}
-
-    public Constructor(int a ) : base(a){}
+    public Constructor(int a ) : base(a){
+        if(a == null){
+            a = new int[3];
+        }
+        
+        while(a is int){
+            a++;
+        }
+    }
     private Constructor2 (int a ){
         int.TryParse(x);
+        for(int i =0; i< 10; ++i){
+            System.Console.Out.WriteLine(""Hola people"");
+        }
+        Clase x = new Clase();
     }
-    public int x = int.TryParse(nuevo);
-}
-
-public enum A {
-    NUEVO = int.TryParse(x)
 }
                 ";
             var inputString = new InputString(s);
@@ -72,7 +51,12 @@ public enum A {
             System.Type[] types = { typeof(UsingNode), typeof(NamespaceNode), typeof(EnumDefinitionNode)
             , typeof(EnumNode), typeof(InterfaceNode), typeof(ClassDefinitionNode), typeof(FieldNode)
             , typeof(MethodNode), typeof(ConstructorNode),typeof(ConstructorInitializerNode), typeof(IdentifierNode), typeof(Token)
-            , typeof(ExpressionNode), typeof(Parameter), typeof(ModifierNode), typeof(PrimitiveType), typeof(DictionaryTypeNode)};
+            , typeof(ExpressionNode), typeof(Parameter), typeof(ModifierNode), typeof(PrimitiveType), typeof(DictionaryTypeNode)
+            , typeof(LiteralNode), typeof(StatementExpressionNode), typeof(FunctionCallExpression), typeof(AccessMemory)
+            , typeof(ReferenceAccessNode), typeof(ForStatementNode), typeof(ForeachStatementNode), typeof(WhileStatementNode)
+            , typeof(DoStatementNode), typeof(IfStatementNode),typeof(SwitchStatementNode) , typeof(BodyStatement), typeof(LocalVariableDefinitionNode)
+            , typeof(EmbeddedStatementNode), typeof(IdentifierTypeNode), typeof(ClassInstantiation), typeof(ArrayInstantiation), typeof(ConditionExpression)
+            , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(ExpressionUnaryNode)};
             var serializer = new XmlSerializer(typeof(CompilationNode),types);
             var logPath = System.IO.Path.GetTempFileName();
             var logFile = System.IO.File.Create("hola.xml");

@@ -79,6 +79,17 @@ public class kevin {
             var parser = new Parser(lexer);
             parser.parse();
         }
+        
+        
+        [TestMethod]
+        public void TestParserCompiiiss()
+        {
+            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\compiiiss1.txt");
+            var inputString = new InputString(txt);
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer);
+            parser.parse();
+        }
 
         [TestMethod]
         public void TestClassWithStamentsInBody2()

@@ -2,7 +2,7 @@
 {
     public class EncapsulationNode
     {
-        private Token token;
+        public Token token;
 
         public EncapsulationNode()
         {

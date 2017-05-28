@@ -148,7 +148,7 @@ namespace Compiler
                 type =  types();
             }
             var variables = variable_declarator_list(null,null,type);
-            return new LocalVariableDefinitionNode(type, variables);
+            return new LocalVariableDefinitionNode(variables);
         } 
     }
 }

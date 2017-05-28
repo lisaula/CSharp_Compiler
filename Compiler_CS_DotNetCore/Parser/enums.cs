@@ -62,7 +62,7 @@ namespace Compiler
             else
             {
                 DebugInfoMethod("epsilon");
-                return null;
+                return new List<EnumNode>();
             }
         }
 
@@ -74,8 +74,8 @@ namespace Compiler
             {
                 consumeToken();
 
-                expression();
-                return optional_assignable_identifiers_list_p(identifier, new ExpressionNode("7"));
+                var expr = expression();
+                return optional_assignable_identifiers_list_p(identifier, expr);
             }else
                 return optional_assignable_identifiers_list_p(identifier, null);
         }

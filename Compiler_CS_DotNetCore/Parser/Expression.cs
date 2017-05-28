@@ -22,321 +22,326 @@ namespace Compiler
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
                 .Concat(literalOptions).Concat(primitiveTypes).ToArray() ))
                 throwError("Operator, identifier or literal in expression");
-            conditional_expression();
-            return new ExpressionNode("expresion");
+            return conditional_expression();
         }
 
-        private void conditional_expression()
+        private ExpressionNode conditional_expression()
         {
             DebugInfoMethod("conditional_expression");
-            null_coalescing_expression();
-            if (pass(TokenType.OP_TER_NULLABLE))
-            {
-                conditional_expression_p();
-            }
+            ExpressionNode expr =  null_coalescing_expression();    
+            return conditional_expression_p(expr);
         }
 
-        private void conditional_expression_p()
+        private ExpressionNode conditional_expression_p(ExpressionNode expr)
         {
             DebugInfoMethod("conditional_expression_p");
             if (pass(TokenType.OP_TER_NULLABLE))
             {
                 consumeToken();
 
-                expression();
+                var true_expression = expression();
 
                 if (!pass(TokenType.OP_COLON))
                     throwError("colon ':'");
                 consumeToken();
 
-                expression();
+                var false_expression = expression();
+                return new TernaryExpressionNode(expr, true_expression, false_expression);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return expr;
             }
         }
 
-        private void null_coalescing_expression()
+        private ExpressionNode null_coalescing_expression()
         {
             DebugInfoMethod("null_coalescing_expression");
-            conditional_or_expression();
-            if (pass(TokenType.OP_NULLABLE))
-                null_coalescing_expression_p();
+            ExpressionNode conditionalOr = conditional_or_expression();
+            return null_coalescing_expression_p(conditionalOr);
         }
 
-        private void null_coalescing_expression_p()
+        private ExpressionNode null_coalescing_expression_p(ExpressionNode conditionalOr)
         {
             DebugInfoMethod("null_coalescing_expression_p");
             if (pass(TokenType.OP_NULLABLE))
             {
                 consumeToken();
-                null_coalescing_expression();
+                ExpressionNode nullCoalescing = null_coalescing_expression();
+                return new CoalescingExpressionNode(conditionalOr, nullCoalescing);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return conditionalOr;
             }
         }
 
-        private void conditional_or_expression()
+        private ExpressionNode conditional_or_expression()
         {
             DebugInfoMethod("conditional_or_expression");
-            conditional_and_expression();
-            if(pass(TokenType.OP_LOG_OR))
-               conditional_or_expression_p();
+            ExpressionNode conditionExpression = conditional_and_expression();
+            return conditional_or_expression_p(conditionExpression);
         }
 
-        private void conditional_or_expression_p()
+        private ExpressionNode conditional_or_expression_p(ExpressionNode condition)
         {
             DebugInfoMethod("conditional_or_expression_p");
             if (pass(TokenType.OP_LOG_OR))
             {
+                var conditionalOperator = current_token;
                 consumeToken();
-                conditional_and_expression();
-                if (pass(TokenType.OP_LOG_OR))
-                    conditional_or_expression_p();
+                var conditionExpression = conditional_and_expression();
+                
+                return conditional_or_expression_p(new ConditionExpression(condition, conditionalOperator, conditionExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return condition;
             }
         }
 
-        private void conditional_and_expression()
+        private ExpressionNode conditional_and_expression()
         {
             DebugInfoMethod("conditional_and_expression");
-            inclusive_or_expression();
-            if(pass(TokenType.OP_LOG_AND))
-                conditional_and_expression_p();
+            ExpressionNode binaryExpression = inclusive_or_expression();
+            return conditional_and_expression_p(binaryExpression);
         }
 
-        private void conditional_and_expression_p()
+        private ExpressionNode conditional_and_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("conditional_and_expression_p");
             if (pass(TokenType.OP_LOG_AND))
             {
+                var Operator = current_token;
                 consumeToken();
-                inclusive_or_expression();
-                if (pass(TokenType.OP_LOG_AND))
-                    conditional_and_expression_p();
+                var rightExpression =inclusive_or_expression();
+                
+                return conditional_and_expression_p(new ConditionExpression(leftExpression, Operator, rightExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
 
-        private void inclusive_or_expression()
+        private ExpressionNode inclusive_or_expression()
         {
             DebugInfoMethod("inclusive_or_expression");
-            exclusive_or_expression();
-            if(pass(TokenType.OP_BIN_OR))
-                inclusive_or_expression_p();
+            ExpressionNode binaryExpression = exclusive_or_expression();
+            return inclusive_or_expression_p(binaryExpression);
         }
 
-        private void inclusive_or_expression_p()
+        private ExpressionNode inclusive_or_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("inclusive_or_expression_p");
             if (pass(TokenType.OP_BIN_OR))
             {
+                var Operator = current_token;
                 consumeToken();
-                exclusive_or_expression();
-                if (pass(TokenType.OP_BIN_OR))
-                    inclusive_or_expression_p();
+                var rightExpression = exclusive_or_expression();
+                return inclusive_or_expression_p(new BinaryExpression(leftExpression, Operator, rightExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
 
-        private void exclusive_or_expression()
+        private ExpressionNode exclusive_or_expression()
         {
             DebugInfoMethod("exclusive_or_expression");
-            and_expression();
-            if (pass(TokenType.OP_BIN_XOR))
-                exclusive_or_expression_p();
+            ExpressionNode andExpresion = and_expression();
+            return exclusive_or_expression_p(andExpresion);
         }
 
-        private void exclusive_or_expression_p()
+        private ExpressionNode exclusive_or_expression_p(ExpressionNode LeftExpression)
         {
             DebugInfoMethod("exclusive_or_expression_p");
             if (pass(TokenType.OP_BIN_XOR))
             {
+                var Operator = current_token;
                 consumeToken();
-                and_expression();
-                if (pass(TokenType.OP_BIN_XOR))
-                    exclusive_or_expression_p();
+                var rightExpression = and_expression();
+                return exclusive_or_expression_p(new BinaryExpression(LeftExpression, Operator, rightExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return LeftExpression;
             }
         }
 
-        private void and_expression()
+        private ExpressionNode and_expression()
         {
             DebugInfoMethod("and_expression");
-            equality_expression();
-            if(pass(TokenType.OP_BIN_AND))
-                and_expression_p();
+            ExpressionNode equalityExpression = equality_expression();
+            return and_expression_p(equalityExpression);
         }
 
-        private void and_expression_p()
+        private ExpressionNode and_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("and_expression_p");
             if (pass(TokenType.OP_BIN_AND))
             {
+                var Operator = current_token;
                 consumeToken();
-                equality_expression();
-                if (pass(TokenType.OP_BIN_AND))
-                    and_expression_p();
+                var rightExpression = equality_expression();
+                return and_expression_p(new BinaryExpression(leftExpression, Operator, rightExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
 
-        private void equality_expression()
+        private ExpressionNode equality_expression()
         {
             DebugInfoMethod("equality_expression");
-            relational_expression();
-            if (pass(equalityOperatorOptions))
-                equality_expression_p();
+            ExpressionNode relationalExpression = relational_expression();
+            return equality_expression_p(relationalExpression);
         }
 
-        private void equality_expression_p()
+        private ExpressionNode equality_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("equality_expression_p");
             if (pass(equalityOperatorOptions))
             {
+                var Operator = current_token;
                 consumeToken();
-                relational_expression();
-                if (pass(equalityOperatorOptions))
-                    equality_expression_p();
+                var rightExpression = relational_expression();
+                return equality_expression_p(new ConditionExpression(leftExpression, Operator, rightExpression));
 
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
 
-        private void relational_expression()
+        private ExpressionNode relational_expression()
         {
             DebugInfoMethod("relational_expression");
-            shift_expression();
-            if (pass(relationalOperatorOptions.Concat(Is_AsOperatorOptions).ToArray()))
-                relational_expression_p();
+            ExpressionNode shiftExpression = shift_expression();
+            return relational_expression_p(shiftExpression);
         }
 
-        private void relational_expression_p()
+        private ExpressionNode relational_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("relational_expression_p");
             if (pass(relationalOperatorOptions))
             {
+                var Operator = current_token;
                 consumeToken();
-                shift_expression();
-                if (pass(relationalOperatorOptions.Concat(Is_AsOperatorOptions).ToArray()))
-                    relational_expression_p();
+                var rightExpression = shift_expression();
+                return relational_expression_p(new ConditionExpression(leftExpression, Operator, rightExpression));
             }else if (pass(Is_AsOperatorOptions))
             {
+                var Operator = current_token;
                 consumeToken();
-                types();
-                if (pass(relationalOperatorOptions.Concat(Is_AsOperatorOptions).ToArray()))
-                    relational_expression_p();
+                TypeDefinitionNode type = types();
+                if (Operator.type == TokenType.RW_AS)
+                    return relational_expression_p(new CastingExpressionNode(type, leftExpression));
+                else
+                    return relational_expression_p(new ConditionExpression(leftExpression, Operator, type));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
 
-        private void shift_expression()
+        private ExpressionNode shift_expression()
         {
             DebugInfoMethod("shift_expression");
-            additive_expression();
-            if (pass(shiftOperatorOptions))
-                shift_expression_p();
+            ExpressionNode additiveExpression = additive_expression();
+            return shift_expression_p(additiveExpression);
         }
 
-        private void shift_expression_p()
+        private ExpressionNode shift_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("shift_expression_p");
             if (pass(shiftOperatorOptions))
             {
+                var Operator = current_token;
                 consumeToken();
-                additive_expression();
-                if (pass(shiftOperatorOptions))
-                    shift_expression_p();
+                var rigtExpression = additive_expression();
+                return shift_expression_p(new BinaryExpression(leftExpression, Operator, rigtExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
 
-        private void additive_expression()
+        private ExpressionNode additive_expression()
         {
             DebugInfoMethod("additive_expression");
-            multiplicative_expression();
-            if (pass(additiveOperatorOptions))
-                additive_expression_p();
+            ExpressionNode multiplicative = multiplicative_expression();
+            return additive_expression_p(multiplicative);
         }
 
-        private void additive_expression_p()
+        private ExpressionNode additive_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("additive_expression_p");
             if (pass(additiveOperatorOptions))
             {
+                var Operator = current_token;
                 consumeToken();
-                multiplicative_expression();
-                if (pass(additiveOperatorOptions))
-                    additive_expression_p();
+                var rightExpression = multiplicative_expression();
+                return additive_expression_p(new ArithmeticExpression(leftExpression, Operator, rightExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
 
-        private void multiplicative_expression()
+        private ExpressionNode multiplicative_expression()
         {
             DebugInfoMethod("multiplicative_expression");
-            unary_expression();
-            multiplicative_expression_factorized();
+            ExpressionNode unary = unary_expression();
+            return multiplicative_expression_factorized(unary);
         }
 
-        private void multiplicative_expression_factorized()
+        private ExpressionNode multiplicative_expression_factorized(ExpressionNode unary)
         {
             DebugInfoMethod("multiplicative_expression_factorized");
             if (pass(assignmentOperatorOptions))
             {
+                var Operator = current_token;
                 consumeToken();
-                expression();
-                if (pass(multiplicativeOperatorOptions))
-                    multiplicative_expression_p();
+                var rightExpression = expression();
+                return multiplicative_expression_p(new AssignmentNode(unary, Operator, rightExpression));
             }else
             {
-                multiplicative_expression_p();
+                return multiplicative_expression_p(unary);
             }
         }
 
-        private void multiplicative_expression_p()
+        private ExpressionNode multiplicative_expression_p(ExpressionNode leftExpression)
         {
             DebugInfoMethod("multiplicative_expression_p");
             if (pass(multiplicativeOperatorOptions))
             {
+                var Operator = current_token;
                 consumeToken();
-                unary_expression();
-                if (pass(multiplicativeOperatorOptions))
-                    multiplicative_expression_p();
+                var rightExpression = unary_expression();
+                return multiplicative_expression_p(new ArithmeticExpression(leftExpression, Operator, rightExpression));
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftExpression;
             }
         }
     }

@@ -1,525 +1,479 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CompilationNode xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <usingList>
-    <UsingNode>
-      <identifierList>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>24</column>
-            <row>2</row>
-            <lexema>Luis</lexema>
-          </token>
-        </IdentifierNode>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>29</column>
-            <row>2</row>
-            <lexema>Carlos</lexema>
-          </token>
-        </IdentifierNode>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>36</column>
-            <row>2</row>
-            <lexema>Isaula</lexema>
-          </token>
-        </IdentifierNode>
-      </identifierList>
-    </UsingNode>
-    <UsingNode>
-      <identifierList>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>24</column>
-            <row>3</row>
-            <lexema>Javier</lexema>
-          </token>
-        </IdentifierNode>
-      </identifierList>
-    </UsingNode>
-  </usingList>
-  <namespaceList>
-    <NamespaceNode>
-      <identifierList>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>28</column>
-            <row>4</row>
-            <lexema>Hola</lexema>
-          </token>
-        </IdentifierNode>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>33</column>
-            <row>4</row>
-            <lexema>Mama</lexema>
-          </token>
-        </IdentifierNode>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>38</column>
-            <row>4</row>
-            <lexema>Como</lexema>
-          </token>
-        </IdentifierNode>
-        <IdentifierNode>
-          <token>
-            <type>ID</type>
-            <column>43</column>
-            <row>4</row>
-            <lexema>Estas</lexema>
-          </token>
-        </IdentifierNode>
-      </identifierList>
-      <usingList>
-        <UsingNode>
-          <identifierList>
-            <IdentifierNode>
-              <token>
-                <type>ID</type>
-                <column>28</column>
-                <row>5</row>
-                <lexema>Adentro</lexema>
-              </token>
-            </IdentifierNode>
-            <IdentifierNode>
-              <token>
-                <type>ID</type>
-                <column>36</column>
-                <row>5</row>
-                <lexema>Nuevo</lexema>
-              </token>
-            </IdentifierNode>
-          </identifierList>
-        </UsingNode>
-      </usingList>
-      <namespaceList>
-        <NamespaceNode>
-          <identifierList>
-            <IdentifierNode>
-              <token>
-                <type>ID</type>
-                <column>32</column>
-                <row>6</row>
-                <lexema>B</lexema>
-              </token>
-            </IdentifierNode>
-          </identifierList>
-          <usingList>
-            <UsingNode>
-              <identifierList>
-                <IdentifierNode>
-                  <token>
-                    <type>ID</type>
-                    <column>32</column>
-                    <row>7</row>
-                    <lexema>adentro2</lexema>
-                  </token>
-                </IdentifierNode>
-              </identifierList>
-            </UsingNode>
-          </usingList>
-          <namespaceList />
-          <typeList>
-            <TypeDefinitionNode xsi:type="EnumDefinitionNode">
-              <enumNodeList>
-                <EnumNode>
-                  <identifier>
-                    <token>
-                      <type>ID</type>
-                      <column>30</column>
-                      <row>9</row>
-                      <lexema>LUNES</lexema>
-                    </token>
-                  </identifier>
-                </EnumNode>
-                <EnumNode>
-                  <identifier>
-                    <token>
-                      <type>ID</type>
-                      <column>30</column>
-                      <row>10</row>
-                      <lexema>MARTES</lexema>
-                    </token>
-                  </identifier>
-                  <expressionNode>
-                    <v>7</v>
-                  </expressionNode>
-                </EnumNode>
-                <EnumNode>
-                  <identifier>
-                    <token>
-                      <type>ID</type>
-                      <column>30</column>
-                      <row>11</row>
-                      <lexema>MIERCOLES</lexema>
-                    </token>
-                  </identifier>
-                </EnumNode>
-              </enumNodeList>
-              <identifier>
-                <token>
-                  <type>ID</type>
-                  <column>31</column>
-                  <row>8</row>
-                  <lexema>Adentro</lexema>
-                </token>
-              </identifier>
-            </TypeDefinitionNode>
-          </typeList>
-        </NamespaceNode>
-      </namespaceList>
-      <typeList>
-        <TypeDefinitionNode xsi:type="InterfaceNode">
-          <inheritance>
-            <identifierList>
-              <ArrayOfIdentifierNode>
-                <IdentifierNode>
-                  <token>
-                    <type>ID</type>
-                    <column>55</column>
-                    <row>14</row>
-                    <lexema>Padre</lexema>
-                  </token>
-                </IdentifierNode>
-                <IdentifierNode>
-                  <token>
-                    <type>ID</type>
-                    <column>61</column>
-                    <row>14</row>
-                    <lexema>Clase</lexema>
-                  </token>
-                </IdentifierNode>
-              </ArrayOfIdentifierNode>
-              <ArrayOfIdentifierNode>
-                <IdentifierNode>
-                  <token>
-                    <type>ID</type>
-                    <column>68</column>
-                    <row>14</row>
-                    <lexema>Clase2</lexema>
-                  </token>
-                </IdentifierNode>
-              </ArrayOfIdentifierNode>
-            </identifierList>
-          </inheritance>
-          <methods>
-            <MethodNode>
-              <returnType xsi:type="PrimitiveType">
+  <usingList />
+  <namespaceList />
+  <typeList>
+    <TypeDefinitionNode xsi:type="ClassDefinitionNode">
+      <fields />
+      <constructors>
+        <ConstructorNode>
+          <encapsulation>
+            <token>
+              <type>RW_PUBLIC</type>
+              <column>6</column>
+              <row>3</row>
+              <lexema>public</lexema>
+            </token>
+          </encapsulation>
+          <id>
+            <token>
+              <type>ID</type>
+              <column>13</column>
+              <row>3</row>
+              <lexema>Constructor</lexema>
+            </token>
+          </id>
+          <parameters>
+            <Parameter>
+              <type xsi:type="PrimitiveType">
                 <token_type>
                   <type>RW_INT</type>
-                  <column>26</column>
-                  <row>15</row>
+                  <column>25</column>
+                  <row>3</row>
                   <lexema>int</lexema>
                 </token_type>
                 <arrayNode>
-                  <arrayOfArrays>2</arrayOfArrays>
-                  <dimensions>1</dimensions>
+                  <arrayOfArrays>0</arrayOfArrays>
+                  <dimensions>0</dimensions>
                 </arrayNode>
-              </returnType>
+              </type>
               <id>
                 <token>
                   <type>ID</type>
-                  <column>35</column>
-                  <row>15</row>
-                  <lexema>methodo</lexema>
+                  <column>29</column>
+                  <row>3</row>
+                  <lexema>a</lexema>
                 </token>
               </id>
-              <parameters>
-                <Parameter>
-                  <type xsi:type="PrimitiveType">
-                    <token_type>
-                      <type>RW_INT</type>
-                      <column>43</column>
-                      <row>15</row>
-                      <lexema>int</lexema>
-                    </token_type>
-                    <arrayNode>
-                      <arrayOfArrays>0</arrayOfArrays>
-                      <dimensions>0</dimensions>
-                    </arrayNode>
-                  </type>
-                  <id>
-                    <token>
-                      <type>ID</type>
-                      <column>47</column>
-                      <row>15</row>
-                      <lexema>paramenter</lexema>
-                    </token>
-                  </id>
-                </Parameter>
-              </parameters>
-            </MethodNode>
-            <MethodNode>
-              <returnType xsi:type="DictionaryTypeNode">
-                <t1 xsi:type="PrimitiveType">
-                  <token_type>
-                    <type>RW_INT</type>
-                    <column>37</column>
-                    <row>16</row>
-                    <lexema>int</lexema>
-                  </token_type>
-                  <arrayNode>
-                    <arrayOfArrays>0</arrayOfArrays>
-                    <dimensions>0</dimensions>
-                  </arrayNode>
-                </t1>
-                <t2 xsi:type="PrimitiveType">
-                  <token_type>
-                    <type>RW_STRING</type>
-                    <column>41</column>
-                    <row>16</row>
-                    <lexema>string</lexema>
-                  </token_type>
-                  <arrayNode>
-                    <arrayOfArrays>0</arrayOfArrays>
-                    <dimensions>0</dimensions>
-                  </arrayNode>
-                </t2>
-                <arrayNode>
-                  <arrayOfArrays>1</arrayOfArrays>
-                  <dimensions>2</dimensions>
-                </arrayNode>
-              </returnType>
-              <id>
+            </Parameter>
+          </parameters>
+          <base_init>
+            <argumentList>
+              <ExpressionNode xsi:type="IdentifierNode">
                 <token>
                   <type>ID</type>
-                  <column>53</column>
-                  <row>16</row>
-                  <lexema>methodo2</lexema>
+                  <column>40</column>
+                  <row>3</row>
+                  <lexema>a</lexema>
                 </token>
-              </id>
-              <parameters>
-                <Parameter>
-                  <type xsi:type="PrimitiveType">
-                    <token_type>
-                      <type>RW_STRING</type>
-                      <column>63</column>
-                      <row>16</row>
-                      <lexema>string</lexema>
-                    </token_type>
-                    <arrayNode>
-                      <arrayOfArrays>1</arrayOfArrays>
-                      <dimensions>0</dimensions>
-                    </arrayNode>
-                  </type>
-                  <id>
+              </ExpressionNode>
+            </argumentList>
+          </base_init>
+          <bodyStatements>
+            <statements>
+              <Statement xsi:type="IfStatementNode">
+                <expr xsi:type="ConditionExpression">
+                  <leftExpression xsi:type="IdentifierNode">
                     <token>
                       <type>ID</type>
-                      <column>72</column>
-                      <row>16</row>
-                      <lexema>arrayString</lexema>
+                      <column>13</column>
+                      <row>4</row>
+                      <lexema>a</lexema>
                     </token>
-                  </id>
-                </Parameter>
-              </parameters>
-            </MethodNode>
-          </methods>
-          <token_identifier>
-            <type>ID</type>
-            <column>39</column>
-            <row>14</row>
-            <lexema>NuevoInterface</lexema>
-          </token_identifier>
-          <encapsulation />
-        </TypeDefinitionNode>
-      </typeList>
-    </NamespaceNode>
-  </namespaceList>
-  <typeList>
-    <TypeDefinitionNode xsi:type="EnumDefinitionNode">
-      <enumNodeList>
-        <EnumNode>
-          <identifier>
+                  </leftExpression>
+                  <Operator>
+                    <type>OP_EQUAL</type>
+                    <column>15</column>
+                    <row>4</row>
+                    <lexema>==</lexema>
+                  </Operator>
+                  <rightExpression xsi:type="IdentifierNode">
+                    <token>
+                      <type>ID</type>
+                      <column>18</column>
+                      <row>4</row>
+                      <lexema>null</lexema>
+                    </token>
+                  </rightExpression>
+                </expr>
+                <body xsi:type="BodyStatement">
+                  <statements>
+                    <Statement xsi:type="StatementExpressionNode">
+                      <expression xsi:type="AssignmentNode">
+                        <leftExpression xsi:type="IdentifierNode">
+                          <token>
+                            <type>ID</type>
+                            <column>14</column>
+                            <row>5</row>
+                            <lexema>a</lexema>
+                          </token>
+                        </leftExpression>
+                        <assigmentOperator>
+                          <type>OP_ASSIGN</type>
+                          <column>16</column>
+                          <row>5</row>
+                          <lexema>=</lexema>
+                        </assigmentOperator>
+                        <rightExpression xsi:type="ArrayInstantiation">
+                          <primaryExpressionBracket>
+                            <ExpressionNode xsi:type="LiteralNode">
+                              <token>
+                                <type>LIT_INT</type>
+                                <column>26</column>
+                                <row>5</row>
+                                <lexema>3</lexema>
+                              </token>
+                            </ExpressionNode>
+                          </primaryExpressionBracket>
+                          <arrayNode>
+                            <arrayOfArrays>0</arrayOfArrays>
+                            <dimensions>0</dimensions>
+                          </arrayNode>
+                          <type xsi:type="PrimitiveType">
+                            <token_type>
+                              <type>RW_INT</type>
+                              <column>22</column>
+                              <row>5</row>
+                              <lexema>int</lexema>
+                            </token_type>
+                          </type>
+                        </rightExpression>
+                      </expression>
+                    </Statement>
+                  </statements>
+                </body>
+              </Statement>
+              <Statement xsi:type="WhileStatementNode">
+                <conditionExpression xsi:type="ConditionExpression">
+                  <leftExpression xsi:type="IdentifierNode">
+                    <token>
+                      <type>ID</type>
+                      <column>16</column>
+                      <row>8</row>
+                      <lexema>a</lexema>
+                    </token>
+                  </leftExpression>
+                  <Operator>
+                    <type>RW_IS</type>
+                    <column>18</column>
+                    <row>8</row>
+                    <lexema>is</lexema>
+                  </Operator>
+                </conditionExpression>
+                <body xsi:type="BodyStatement">
+                  <statements>
+                    <Statement xsi:type="StatementExpressionNode">
+                      <expression xsi:type="PostAdditiveExpressionNode">
+                        <primary xsi:type="IdentifierNode">
+                          <token>
+                            <type>ID</type>
+                            <column>14</column>
+                            <row>9</row>
+                            <lexema>a</lexema>
+                          </token>
+                        </primary>
+                        <operator>
+                          <type>OP_INCREMENT</type>
+                          <column>15</column>
+                          <row>9</row>
+                          <lexema>++</lexema>
+                        </operator>
+                      </expression>
+                    </Statement>
+                  </statements>
+                </body>
+              </Statement>
+            </statements>
+          </bodyStatements>
+        </ConstructorNode>
+        <ConstructorNode>
+          <encapsulation>
+            <token>
+              <type>RW_PRIVATE</type>
+              <column>6</column>
+              <row>12</row>
+              <lexema>private</lexema>
+            </token>
+          </encapsulation>
+          <id>
             <token>
               <type>ID</type>
-              <column>6</column>
-              <row>20</row>
-              <lexema>JAIME</lexema>
+              <column>14</column>
+              <row>12</row>
+              <lexema>Constructor2</lexema>
             </token>
-          </identifier>
-        </EnumNode>
-      </enumNodeList>
-      <identifier>
+          </id>
+          <parameters>
+            <Parameter>
+              <type xsi:type="PrimitiveType">
+                <token_type>
+                  <type>RW_INT</type>
+                  <column>28</column>
+                  <row>12</row>
+                  <lexema>int</lexema>
+                </token_type>
+                <arrayNode>
+                  <arrayOfArrays>0</arrayOfArrays>
+                  <dimensions>0</dimensions>
+                </arrayNode>
+              </type>
+              <id>
+                <token>
+                  <type>ID</type>
+                  <column>32</column>
+                  <row>12</row>
+                  <lexema>a</lexema>
+                </token>
+              </id>
+            </Parameter>
+          </parameters>
+          <bodyStatements>
+            <statements>
+              <Statement xsi:type="StatementExpressionNode">
+                <expression xsi:type="FunctionCallExpression">
+                  <primary xsi:type="AccessMemory">
+                    <primary xsi:type="ReferenceAccessNode">
+                      <token>
+                        <type>RW_INT</type>
+                        <column>10</column>
+                        <row>13</row>
+                        <lexema>int</lexema>
+                      </token>
+                    </primary>
+                    <id>
+                      <type>ID</type>
+                      <column>14</column>
+                      <row>13</row>
+                      <lexema>TryParse</lexema>
+                    </id>
+                  </primary>
+                  <arguments>
+                    <ExpressionNode xsi:type="IdentifierNode">
+                      <token>
+                        <type>ID</type>
+                        <column>23</column>
+                        <row>13</row>
+                        <lexema>x</lexema>
+                      </token>
+                    </ExpressionNode>
+                  </arguments>
+                </expression>
+              </Statement>
+              <Statement xsi:type="ForStatementNode">
+                <initializer>
+                  <Statement xsi:type="LocalVariableDefinitionNode">
+                    <type xsi:type="PrimitiveType">
+                      <token_type>
+                        <type>RW_INT</type>
+                        <column>14</column>
+                        <row>14</row>
+                        <lexema>int</lexema>
+                      </token_type>
+                      <arrayNode>
+                        <arrayOfArrays>0</arrayOfArrays>
+                        <dimensions>0</dimensions>
+                      </arrayNode>
+                    </type>
+                    <variable>
+                      <FieldNode>
+                        <type xsi:type="PrimitiveType">
+                          <token_type>
+                            <type>RW_INT</type>
+                            <column>14</column>
+                            <row>14</row>
+                            <lexema>int</lexema>
+                          </token_type>
+                          <arrayNode>
+                            <arrayOfArrays>0</arrayOfArrays>
+                            <dimensions>0</dimensions>
+                          </arrayNode>
+                        </type>
+                        <id>
+                          <token>
+                            <type>ID</type>
+                            <column>18</column>
+                            <row>14</row>
+                            <lexema>i</lexema>
+                          </token>
+                        </id>
+                        <assignment xsi:type="LiteralNode">
+                          <token>
+                            <type>LIT_INT</type>
+                            <column>21</column>
+                            <row>14</row>
+                            <lexema>0</lexema>
+                          </token>
+                        </assignment>
+                      </FieldNode>
+                    </variable>
+                  </Statement>
+                </initializer>
+                <expresion xsi:type="ConditionExpression">
+                  <leftExpression xsi:type="IdentifierNode">
+                    <token>
+                      <type>ID</type>
+                      <column>24</column>
+                      <row>14</row>
+                      <lexema>i</lexema>
+                    </token>
+                  </leftExpression>
+                  <Operator>
+                    <type>OP_LESS_THAN</type>
+                    <column>25</column>
+                    <row>14</row>
+                    <lexema>&lt;</lexema>
+                  </Operator>
+                  <rightExpression xsi:type="LiteralNode">
+                    <token>
+                      <type>LIT_INT</type>
+                      <column>27</column>
+                      <row>14</row>
+                      <lexema>10</lexema>
+                    </token>
+                  </rightExpression>
+                </expresion>
+                <iterative>
+                  <Statement xsi:type="StatementExpressionNode">
+                    <expression xsi:type="ExpressionUnaryNode">
+                      <Operator>
+                        <type>OP_INCREMENT</type>
+                        <column>31</column>
+                        <row>14</row>
+                        <lexema>++</lexema>
+                      </Operator>
+                      <expression xsi:type="IdentifierNode">
+                        <token>
+                          <type>ID</type>
+                          <column>33</column>
+                          <row>14</row>
+                          <lexema>i</lexema>
+                        </token>
+                      </expression>
+                    </expression>
+                  </Statement>
+                </iterative>
+                <body xsi:type="BodyStatement">
+                  <statements>
+                    <Statement xsi:type="StatementExpressionNode">
+                      <expression xsi:type="FunctionCallExpression">
+                        <primary xsi:type="AccessMemory">
+                          <primary xsi:type="AccessMemory">
+                            <primary xsi:type="AccessMemory">
+                              <primary xsi:type="IdentifierNode">
+                                <token>
+                                  <type>ID</type>
+                                  <column>14</column>
+                                  <row>15</row>
+                                  <lexema>System</lexema>
+                                </token>
+                              </primary>
+                              <id>
+                                <type>ID</type>
+                                <column>21</column>
+                                <row>15</row>
+                                <lexema>Console</lexema>
+                              </id>
+                            </primary>
+                            <id>
+                              <type>ID</type>
+                              <column>29</column>
+                              <row>15</row>
+                              <lexema>Out</lexema>
+                            </id>
+                          </primary>
+                          <id>
+                            <type>ID</type>
+                            <column>33</column>
+                            <row>15</row>
+                            <lexema>WriteLine</lexema>
+                          </id>
+                        </primary>
+                        <arguments>
+                          <ExpressionNode xsi:type="LiteralNode">
+                            <token>
+                              <type>LIT_STRING</type>
+                              <column>43</column>
+                              <row>15</row>
+                              <lexema>"Hola people"</lexema>
+                            </token>
+                          </ExpressionNode>
+                        </arguments>
+                      </expression>
+                    </Statement>
+                  </statements>
+                </body>
+              </Statement>
+              <Statement xsi:type="LocalVariableDefinitionNode">
+                <type xsi:type="IdentifierTypeNode">
+                  <arrayNode>
+                    <arrayOfArrays>0</arrayOfArrays>
+                    <dimensions>0</dimensions>
+                  </arrayNode>
+                  <Identifiers>
+                    <IdentifierNode>
+                      <token>
+                        <type>ID</type>
+                        <column>10</column>
+                        <row>17</row>
+                        <lexema>Clase</lexema>
+                      </token>
+                    </IdentifierNode>
+                  </Identifiers>
+                </type>
+                <variable>
+                  <FieldNode>
+                    <type xsi:type="IdentifierTypeNode">
+                      <arrayNode>
+                        <arrayOfArrays>0</arrayOfArrays>
+                        <dimensions>0</dimensions>
+                      </arrayNode>
+                      <Identifiers>
+                        <IdentifierNode>
+                          <token>
+                            <type>ID</type>
+                            <column>10</column>
+                            <row>17</row>
+                            <lexema>Clase</lexema>
+                          </token>
+                        </IdentifierNode>
+                      </Identifiers>
+                    </type>
+                    <id>
+                      <token>
+                        <type>ID</type>
+                        <column>16</column>
+                        <row>17</row>
+                        <lexema>x</lexema>
+                      </token>
+                    </id>
+                    <assignment xsi:type="ClassInstantiation">
+                      <type xsi:type="IdentifierTypeNode">
+                        <Identifiers>
+                          <IdentifierNode>
+                            <token>
+                              <type>ID</type>
+                              <column>24</column>
+                              <row>17</row>
+                              <lexema>Clase</lexema>
+                            </token>
+                          </IdentifierNode>
+                        </Identifiers>
+                      </type>
+                    </assignment>
+                  </FieldNode>
+                </variable>
+              </Statement>
+            </statements>
+          </bodyStatements>
+        </ConstructorNode>
+      </constructors>
+      <encapsulation>
         <token>
-          <type>ID</type>
-          <column>7</column>
-          <row>19</row>
-          <lexema>NUevoEnum</lexema>
+          <type>RW_PRIVATE</type>
+          <column>2</column>
+          <row>2</row>
+          <lexema>private</lexema>
         </token>
-      </identifier>
-    </TypeDefinitionNode>
-    <TypeDefinitionNode xsi:type="ClassDefinitionNode">
-      <fields />
-      <encapsulation />
-      <isAbstract>true</isAbstract>
+      </encapsulation>
+      <isAbstract>false</isAbstract>
       <id>
         <token>
           <type>ID</type>
-          <column>24</column>
-          <row>23</row>
-          <lexema>NuevaClase</lexema>
+          <column>16</column>
+          <row>2</row>
+          <lexema>ClasePrivada</lexema>
         </token>
       </id>
-      <inheritance>
-        <identifierList>
-          <ArrayOfIdentifierNode>
-            <IdentifierNode>
-              <token>
-                <type>ID</type>
-                <column>37</column>
-                <row>23</row>
-                <lexema>Padre</lexema>
-              </token>
-            </IdentifierNode>
-          </ArrayOfIdentifierNode>
-          <ArrayOfIdentifierNode>
-            <IdentifierNode>
-              <token>
-                <type>ID</type>
-                <column>44</column>
-                <row>23</row>
-                <lexema>Lista</lexema>
-              </token>
-            </IdentifierNode>
-            <IdentifierNode>
-              <token>
-                <type>ID</type>
-                <column>50</column>
-                <row>23</row>
-                <lexema>Padre</lexema>
-              </token>
-            </IdentifierNode>
-          </ArrayOfIdentifierNode>
-        </identifierList>
-      </inheritance>
     </TypeDefinitionNode>
-    <TypeDefinitionNode xsi:type="ClassDefinitionNode">
-      <fields>
-        <FieldNode>
-          <encapsulation />
-          <type xsi:type="PrimitiveType">
-            <token_type>
-              <type>RW_INT</type>
-              <column>13</column>
-              <row>27</row>
-              <lexema>int</lexema>
-            </token_type>
-            <arrayNode>
-              <arrayOfArrays>0</arrayOfArrays>
-              <dimensions>0</dimensions>
-            </arrayNode>
-          </type>
-          <id>
-            <token>
-              <type>ID</type>
-              <column>24</column>
-              <row>27</row>
-              <lexema>y</lexema>
-            </token>
-          </id>
-          <assignment xsi:type="ExpressionNode">
-            <v>expresion</v>
-          </assignment>
-        </FieldNode>
-        <FieldNode>
-          <encapsulation />
-          <type xsi:type="PrimitiveType">
-            <token_type>
-              <type>RW_INT</type>
-              <column>13</column>
-              <row>27</row>
-              <lexema>int</lexema>
-            </token_type>
-            <arrayNode>
-              <arrayOfArrays>0</arrayOfArrays>
-              <dimensions>0</dimensions>
-            </arrayNode>
-          </type>
-          <id>
-            <token>
-              <type>ID</type>
-              <column>29</column>
-              <row>27</row>
-              <lexema>k</lexema>
-            </token>
-          </id>
-          <assignment xsi:type="ExpressionNode">
-            <v>expresion</v>
-          </assignment>
-        </FieldNode>
-        <FieldNode>
-          <encapsulation />
-          <type xsi:type="PrimitiveType">
-            <token_type>
-              <type>RW_INT</type>
-              <column>13</column>
-              <row>27</row>
-              <lexema>int</lexema>
-            </token_type>
-            <arrayNode>
-              <arrayOfArrays>0</arrayOfArrays>
-              <dimensions>0</dimensions>
-            </arrayNode>
-          </type>
-          <id>
-            <token>
-              <type>ID</type>
-              <column>17</column>
-              <row>27</row>
-              <lexema>x</lexema>
-            </token>
-          </id>
-          <assignment xsi:type="ExpressionNode">
-            <v>expresion</v>
-          </assignment>
-        </FieldNode>
-        <FieldNode>
-          <encapsulation />
-          <type xsi:type="PrimitiveType">
-            <token_type>
-              <type>RW_INT</type>
-              <column>13</column>
-              <row>35</row>
-              <lexema>int</lexema>
-            </token_type>
-            <arrayNode>
-              <arrayOfArrays>0</arrayOfArrays>
-              <dimensions>0</dimensions>
-            </arrayNode>
-          </type>
-          <id>
-            <token>
-              <type>ID</type>
-              <column>17</column>
-              <row>35</row>
-              <lexema>x</lexema>
-            </token>
-          </id>
-          <assignment xsi:type="ExpressionNode">
-            <v>expresion</v>
-          </assignment>
-        </FieldNode>
-      </fields>
-      <methods>
-        <MethodNode>
-          <returnType xsi:type="PrimitiveType">
-            <token_type>
-              <type>RW_INT</type>
-              <column>22</column>
-              <row>29</row>
-              <lexema>int</lexema>
-            </token_type>
-            <arrayNode>
-              <arrayOfArrays>0</arrayOfArrays>
-              <dimensions>0</dimensions>
-            </arrayNode>
-          </returnType>
-       
+  </typeList>
+</CompilationNode>

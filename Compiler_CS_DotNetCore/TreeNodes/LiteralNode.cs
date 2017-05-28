@@ -1,14 +1,14 @@
 ﻿namespace Compiler.Tree
 {
-    public class IdentifierNode: PrimaryExpressionNode
+    public class LiteralNode : PrimaryExpressionNode
     {
         public Token token;
 
-        public IdentifierNode(Token token)
+        public LiteralNode(Token token)
         {
             this.token = token;
         }
-        public IdentifierNode()
+        public LiteralNode()
         {
 
         }
