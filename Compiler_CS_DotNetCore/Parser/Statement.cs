@@ -20,23 +20,25 @@ namespace Compiler
                 Concat(literalOptions).ToArray()
                 ))
             {
-                statement_list();
+                return statement_list();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<Statement>();
             }
-            return null;
         }
 
-        private void statement_list()
+        private List<Statement> statement_list()
         {
             DebugInfoMethod("statement_list");
-            statement();
-            optional_statement_list();
+            var stmnt = statement();
+            var list = optional_statement_list();
+            list.Insert(0, stmnt);
+            return list;
         }
 
-        private void statement()
+        private Statement statement()
         {
             DebugInfoMethod("statement "+look_ahead.Count());
             TokenType[] nuevo = { TokenType.RW_VAR };
@@ -78,55 +80,61 @@ namespace Compiler
                 || look_ahead[index2].type == TokenType.OP_COMMA) ))) 
                )
             {
-                local_variable_declaration();
+                var local = local_variable_declaration();
                 if (!pass(TokenType.END_STATEMENT))
                     throwError("end statement ';'");
                 consumeToken();
+                return local;
             }
             else if(pass(embedded.Concat(unaryExpressionOptions).Concat(unaryOperatorOptions).
-                Concat(literalOptions).ToArray()
+                Concat(literalOptions).Concat(primitiveTypes).ToArray()
                 ))
             {
-                embedded_statement();
+                return embedded_statement();
             }
             else
             {
                 throwError("local or embedded statement con " + current_token.type);
+                return null;
             }
         }
 
-        private void embedded_statement()
+        private EmbeddedStatementNode embedded_statement()
         {
             DebugInfoMethod("embedded_statement");
             if (pass(TokenType.OPEN_CURLY_BRACKET, TokenType.END_STATEMENT))
             {
-                maybe_empty_block();
-            }else if (pass(unaryExpressionOptions.Concat(unaryOperatorOptions).Concat(literalOptions).ToArray())) 
+                return maybe_empty_block();
+            }else if (pass(unaryExpressionOptions.Concat(unaryOperatorOptions).Concat(literalOptions).Concat(primitiveTypes).ToArray())) 
             {
-                statement_expression();
+                var stmt = statement_expression();
                 if (!pass(TokenType.END_STATEMENT))
                     throwError("end statement ';'");
                 consumeToken();
-            }else if(pass(TokenType.RW_IF, TokenType.RW_SWITCH))
+                return stmt;
+            }
+            else if(pass(TokenType.RW_IF, TokenType.RW_SWITCH))
             {
-                selection_statement();
+                return selection_statement();
             }else if(pass(TokenType.RW_WHILE, TokenType.RW_DO, TokenType.RW_FOR
                 , TokenType.RW_FOREACH))
             {
-                iteration_statement();
+                return iteration_statement();
             }else if(pass(TokenType.RW_BREAK, TokenType.RW_CONTINUE, TokenType.RW_RETURN))
             {
-                jump_statement();
+                var jump =  jump_statement();
                 if (!pass(TokenType.END_STATEMENT))
                     throwError("end statement ';'");
                 consumeToken();
+                return jump;
             }
             else
             {
                 throwError("block, statement, selection,iteration, or jump statement");
+                return null;
             }
         }
-        private void local_variable_declaration()
+        private LocalVariableDefinitionNode local_variable_declaration()
         {
             DebugInfoMethod("local_variable_declaration");
             TokenType[] nuevo = { TokenType.RW_VAR };
@@ -139,7 +147,8 @@ namespace Compiler
             } else {
                 type =  types();
             }
-            variable_declarator_list(null,null,type);
+            var variables = variable_declarator_list(null,null,type);
+            return new LocalVariableDefinitionNode(type, variables);
         } 
     }
 }

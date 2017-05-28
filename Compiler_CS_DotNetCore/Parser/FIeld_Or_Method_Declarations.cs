@@ -39,8 +39,8 @@ namespace Compiler
                 throwError("close parenthesis ')'");
             consumeToken();
 
-            var statements = maybe_empty_block();
-            var method = new MethodNode(encapsulation, modifier, type, id, parameters, statements);
+            var bodyStatements = maybe_empty_block();
+            var method = new MethodNode(encapsulation, modifier, type, id, parameters, bodyStatements);
             if (clase.methods == null)
                 clase.methods = new List<MethodNode>();
             clase.methods.Add(method);
@@ -124,7 +124,7 @@ namespace Compiler
             if (pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
                 Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
-                .Concat(literalOptions).ToArray()))
+                .Concat(literalOptions).Concat(primitiveTypes).ToArray()))
             {
                 return expression();
             }else if (pass(TokenType.OPEN_CURLY_BRACKET))

@@ -37,11 +37,18 @@ public abstract class NuevaClase : Padre, Lista.Padre {
 
 private class ClasePrivada {
     public int x = 3, y=5, k=4;
-
+    
     public override int metodo(int paramenterA, string[] paremeterB){}
 
     public Constructor(int a ) : base(a){}
-    private Constructor2 (int a ){}
+    private Constructor2 (int a ){
+        int.TryParse(x);
+    }
+    public int x = int.TryParse(nuevo);
+}
+
+public enum A {
+    NUEVO = int.TryParse(x)
 }
                 ";
             var inputString = new InputString(s);

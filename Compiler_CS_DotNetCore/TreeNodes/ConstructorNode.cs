@@ -8,15 +8,15 @@ namespace Compiler.Tree
         public IdentifierNode id;
         public List<Parameter> parameters;
         public ConstructorInitializerNode base_init;
-        public List<Statement> statements;
+        public BodyStatement bodyStatements;
 
-        public ConstructorNode(EncapsulationNode encapsulation, IdentifierNode id, List<Parameter> parameters, ConstructorInitializerNode base_init, List<Statement> statements)
+        public ConstructorNode(EncapsulationNode encapsulation, IdentifierNode id, List<Parameter> parameters, ConstructorInitializerNode base_init, BodyStatement bodyStatements)
         {
             this.encapsulation = encapsulation;
             this.id = id;
             this.parameters = parameters;
             this.base_init = base_init;
-            this.statements = statements;
+            this.bodyStatements = bodyStatements;
         }
         public ConstructorNode()
         {

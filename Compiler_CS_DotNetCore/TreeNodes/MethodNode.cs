@@ -9,7 +9,7 @@ namespace Compiler.Tree
         public List<Parameter> parameters;
         public EncapsulationNode encapsulation;
         public ModifierNode modifier;
-        public List<Statement> statements;
+        public BodyStatement bodyStatements;
 
         public MethodNode(TypeDefinitionNode returnType, IdentifierNode id, List<Parameter> parameters)
         {
@@ -22,14 +22,14 @@ namespace Compiler.Tree
 
         }
 
-        public MethodNode(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, List<Parameter> parameters, List<Statement> statements)
+        public MethodNode(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, List<Parameter> parameters, BodyStatement bodyStatements)
         {
             this.encapsulation = encapsulation;
             this.modifier = modifier;
             this.returnType = type;
             this.id = id;
             this.parameters = parameters;
-            this.statements = statements;
+            this.bodyStatements = bodyStatements;
         }
     }
 }

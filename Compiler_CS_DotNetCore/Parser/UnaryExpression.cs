@@ -8,7 +8,7 @@ namespace Compiler
 {
     public partial class Parser
     {
-        private void unary_expression()
+        private UnaryExpressionNode unary_expression()
         {
             TokenType[] nuevo = { TokenType.RW_NEW , TokenType.ID,
                 TokenType.OPEN_PARENTHESIS, TokenType.RW_THIS, TokenType.RW_BASE
@@ -51,7 +51,7 @@ namespace Compiler
                 {
                     primary_expression();
                 }
-            }else if (pass(nuevo.Concat(literalOptions).ToArray()))
+            }else if (pass(nuevo.Concat(literalOptions).Concat(primitiveTypes).ToArray()))
             {
                 primary_expression();
             }
@@ -59,6 +59,7 @@ namespace Compiler
             {
                 throwError("unary-operator, casting or primary-expression");
             }
+            return null;
         }
 
         private void primary_expression()
@@ -103,6 +104,14 @@ namespace Compiler
                 if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
                     TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                     primary_expression_p();
+            }else if (pass(primitiveTypes))
+            {
+                consumeToken();
+                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                    primary_expression_p();
+                else
+                    throwError("Function call");
             }
             else
             {

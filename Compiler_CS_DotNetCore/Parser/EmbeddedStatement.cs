@@ -2,25 +2,34 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Compiler.Tree;
 namespace Compiler
 {
     public partial class Parser
     {
-        private void jump_statement()
+        private JumpStatementNode jump_statement()
         {
             DebugInfoMethod("jump_statement");
             if(pass(TokenType.RW_BREAK, TokenType.RW_CONTINUE))
             {
+                var token = current_token;
                 consumeToken();
+                return new JumpStatementNode(token);
             }else if (pass(TokenType.RW_RETURN))
             {
+                var token = current_token;
                 consumeToken();
-                optional_expresion();
+                var expression = optional_expresion();
+                return new JumpStatementNode(token, expression);
+            }
+            else
+            {
+                throwError("break, continue or return statement");
+                return null;
             }
         }
 
-        private void optional_expresion()
+        private ExpressionNode optional_expresion()
         {
             DebugInfoMethod("optional_expresion");
             TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
@@ -35,36 +44,38 @@ namespace Compiler
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
                 .Concat(literalOptions).ToArray()))
             {
-                expression();
+                return expression();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void iteration_statement()
+        private EmbeddedStatementNode iteration_statement()
         {
             DebugInfoMethod("iteration_statement");
             if (pass(TokenType.RW_WHILE))
             {
-                while_statement();
+                return while_statement();
             }else if (pass(TokenType.RW_DO))
             {
-                do_statement();
+                return do_statement();
             }else if (pass(TokenType.RW_FOR))
             {
-                for_statement();
+                return for_statement();
             }else if (pass(TokenType.RW_FOREACH))
             {
-                foreach_statement();
+                return foreach_statement();
             }else
             {
                 throwError("while, do, for or foreach");
+                return null;
             }
         }
 
-        private void foreach_statement()
+        private ForeachStatementNode foreach_statement()
         {
             DebugInfoMethod("foreach_statement");
             if (!pass(TokenType.RW_FOREACH))
@@ -75,29 +86,38 @@ namespace Compiler
                 throwError("open parenthesis '('");
             consumeToken();
 
+            TypeDefinitionNode type = null; 
             if (pass(TokenType.RW_VAR))
+            {
+                var token = current_token;
                 consumeToken();
+                type = new VarType(token);
+            }
             else
-                types();
+            {
+                type  = types();
+            }
 
             if (!pass(TokenType.ID))
                 throwError("identifier");
+            var id = new IdentifierNode(current_token);
             consumeToken();
 
             if (!pass(TokenType.RW_IN))
                 throwError("in");
             consumeToken();
 
-            expression();
+            var collection = expression();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
             consumeToken();
 
-            embedded_statement();
+            var body = embedded_statement();
+            return new ForeachStatementNode(type, id, collection, body);
         }
 
-        private void for_statement()
+        private ForStatementNode for_statement()
         {
             DebugInfoMethod("for_statement");
             if (!pass(TokenType.RW_FOR))
@@ -108,63 +128,67 @@ namespace Compiler
                 throwError("open parenthesis '('");
             consumeToken();
 
-            optional_for_initializer();
+            var initializer = optional_for_initializer();
 
             if (!pass(TokenType.END_STATEMENT))
                 throwError("end statement ';'");
             consumeToken();
 
-            optional_expresion();
+            var expresion = optional_expresion();
 
             if (!pass(TokenType.END_STATEMENT))
                 throwError("end statement ';'");
             consumeToken();
 
-            optional_statement_expression_list();
+            var iterative = optional_statement_expression_list();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
             consumeToken();
 
-            embedded_statement();
+            var body = embedded_statement();
+            return new ForStatementNode(initializer, expresion, iterative, body);
         }
 
-        private void optional_statement_expression_list()
+        private List<Statement> optional_statement_expression_list()
         {
             DebugInfoMethod("optional_statement_expression_list");
             if (pass(unaryExpressionOptions.Concat(unaryOperatorOptions).Concat(literalOptions).ToArray()))
             {
-                statement_expression_list();
+                return statement_expression_list();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void statement_expression_list()
+        private List<Statement> statement_expression_list()
         {
             DebugInfoMethod("statement_expression_list");
-            statement_expression();
-            statement_expression_list_p();
+            var stmt = statement_expression();
+            var lista = statement_expression_list_p();
+            lista.Insert(0, stmt);
+            return lista;
         }
 
-        private void statement_expression_list_p()
+        private List<Statement> statement_expression_list_p()
         {
             DebugInfoMethod("statement_expression_list_p");
             if (pass(TokenType.OP_COMMA))
             {
                 consumeToken();
-                statement_expression();
-                statement_expression_list_p();
+                return statement_expression_list();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<Statement>();
             }
         }
 
-        private void optional_for_initializer()
+        private List<Statement> optional_for_initializer()
         {
             TokenType[] var = { TokenType.RW_VAR };
                 DebugInfoMethod("optional_for_initializer");
@@ -209,25 +233,29 @@ namespace Compiler
                 (placeholder.type == TokenType.OPEN_SQUARE_BRACKET
                 && (look_ahead[index2].type == TokenType.CLOSE_SQUARE_BRACKET
                 || look_ahead[index2].type == TokenType.OP_COMMA))))
-               ) { 
-                local_variable_declaration();
+               ) {
+                var localVariable = local_variable_declaration();
+                var lista = new List<Statement>();
+                lista.Add(localVariable);
+                return lista;
             }else if (pass(unaryExpressionOptions.Concat(unaryOperatorOptions).Concat(literalOptions).ToArray()))
             {
-                statement_expression_list();
+                return statement_expression_list();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void do_statement()
+        private DoStatementNode do_statement()
         {
             DebugInfoMethod("do_statement");
             if (!pass(TokenType.RW_DO))
                 throwError("do");
             consumeToken();
-            embedded_statement();
+            var body = embedded_statement();
 
             if (!pass(TokenType.RW_WHILE))
                 throwError("while");
@@ -237,7 +265,7 @@ namespace Compiler
                 throwError("open parenthesis '('");
             consumeToken();
 
-            expression();
+            var conditionExpression = expression();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
@@ -246,9 +274,10 @@ namespace Compiler
             if (!pass(TokenType.END_STATEMENT))
                 throwError("end statement ';'");
             consumeToken();
+            return new DoStatementNode(body, conditionExpression);
         }
 
-        private void while_statement()
+        private WhileStatementNode while_statement()
         {
             DebugInfoMethod("while_statement");
             if (!pass(TokenType.RW_WHILE))
@@ -259,28 +288,30 @@ namespace Compiler
                 throwError("open parenthesis '('");
             consumeToken();
 
-            expression();
+            var conditionExpression = expression();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
             consumeToken();
-            embedded_statement();
+            var body = embedded_statement();
+            return new WhileStatementNode(conditionExpression, body);
         }
 
-        private void selection_statement()
+        private EmbeddedStatementNode selection_statement()
         {
             DebugInfoMethod("selection_statement");
             if (pass(TokenType.RW_IF))
-                if_statement();
+                return if_statement();
             else if (pass(TokenType.RW_SWITCH))
-                switch_statement();
+                return switch_statement();
             else
             {
                 throwError("if, or switch");
+                return null;
             }
         }
 
-        private void switch_statement()
+        private SwitchStatementNode switch_statement()
         {
             DebugInfoMethod("switch_statement");
             if (!pass(TokenType.RW_SWITCH))
@@ -291,7 +322,7 @@ namespace Compiler
                 throwError("open parenthesis '('");
             consumeToken();
 
-            expression();
+            var constantExpression =expression();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
@@ -301,71 +332,83 @@ namespace Compiler
                 throwError("open curly bracket '{'");
             consumeToken();
 
-            optional_switch_section_list();
+            var cases = optional_switch_section_list();
 
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '}'");
             consumeToken();
+            return new SwitchStatementNode(constantExpression, cases);
         }
 
-        private void optional_switch_section_list()
+        private List<CaseStatementNode> optional_switch_section_list()
         {
             DebugInfoMethod("optional_switch_section_list");
             if(pass(TokenType.RW_CASE, TokenType.RW_DEFAULT))
             {
-                switch_label_list();
-                statement_list();
-                optional_switch_section_list();
+                var caseLabel =  switch_label_list();
+                var body = statement_list();
+                var lista = optional_switch_section_list();
+                lista.Insert(0, new CaseStatementNode(caseLabel, body));
+                return lista;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<CaseStatementNode>();
             }
         }
 
-        private void switch_label_list()
+        private List<CaseLabel> switch_label_list()
         {
             DebugInfoMethod("switch_label_list");
-            switch_label();
+             var caseLabel = switch_label();
 
             if (!pass(TokenType.OP_COLON))
                 throwError("colon ':'");
             consumeToken();
 
-            switch_label_list_p();
+            var lista = switch_label_list_p();
+            lista.Insert(0, caseLabel);
+            return lista;
         }
 
-        private void switch_label_list_p()
+        private List<CaseLabel> switch_label_list_p()
         {
             DebugInfoMethod("switch_label_list_p");
             if (pass(TokenType.RW_CASE, TokenType.RW_DEFAULT))
             {
-                switch_label_list();
+                return switch_label_list();
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return new List<CaseLabel>();
             }
         }
 
-        private void switch_label()
+        private CaseLabel switch_label()
         {
             DebugInfoMethod("switch_label");
             if (pass(TokenType.RW_CASE))
             {
+                var token = current_token;
                 consumeToken();
-                expression();
+                var expr= expression();
+                return new CaseLabel(token, expr);
             }else if (pass(TokenType.RW_DEFAULT))
             {
+                var token = current_token;
                 consumeToken();
+                return new CaseLabel(token);
             }
             else
             {
                 throwError("case or default");
+                return null;
             }
         }
 
-        private void if_statement()
+        private IfStatementNode if_statement()
         {
             DebugInfoMethod("if_statement");
             if (!pass(TokenType.RW_IF))
@@ -376,75 +419,57 @@ namespace Compiler
                 throwError("open parenthesis '('");
             consumeToken();
 
-            expression();
+            var expr = expression();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))
                 throwError("close parenthesis ')'");
             consumeToken();
-            embedded_statement();
-
+            var body = embedded_statement();
+            ElseStatementNode elseStatement = null;
             if (pass(TokenType.RW_ELSE))
             {
-                optional_else_part();
+                elseStatement = optional_else_part();
             }
+            return new IfStatementNode(expr, body, elseStatement);
         }
 
-        private void optional_else_part()
+        private ElseStatementNode optional_else_part()
         {
             DebugInfoMethod("optional_else_part");
             if (pass(TokenType.RW_ELSE))
             {
                 consumeToken();
-                embedded_statement();
+                var Body = embedded_statement();
+                return new ElseStatementNode(Body);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return null;
             }
         }
 
-        private void statement_expression()
+        private StatementExpressionNode statement_expression()
         {
             DebugInfoMethod("statement_expression");
-            unary_expression();
-            statement_expression_factorized();
+            var unary = unary_expression();
+            return new StatementExpressionNode(statement_expression_factorized(unary));
         }
 
-        private void statement_expression_factorized()
+        private ExpressionNode statement_expression_factorized(UnaryExpressionNode leftValue)
         {
             DebugInfoMethod("statement_expression_factorized");
             if (pass(assignmentOperatorOptions))
             {
+                var assigmentOperator = current_token;
                 consumeToken();
-                expression();
-                statement_expression_p();
-            }
-            else
-            {
-                statement_expression_p();
-            }
-        }
-
-        private void statement_expression_p()
-        {
-            DebugInfoMethod("statement_expression_p");
-            if (pass(TokenType.OPEN_PARENTHESIS))
-            {
-                consumeToken();
-
-                argument_list();
-
-                if (!pass(TokenType.CLOSE_PARENTHESIS))
-                    throwError("close parenthesis ')'");
-                consumeToken();
-            }
-            else if(pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT))
-            {
-                consumeToken();
+                var expr = expression();
+                return new AssignmentNode(leftValue, assigmentOperator, expr);
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return leftValue;
             }
         }
     }

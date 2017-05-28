@@ -481,6 +481,32 @@
             <v>expresion</v>
           </assignment>
         </FieldNode>
+        <FieldNode>
+          <encapsulation />
+          <type xsi:type="PrimitiveType">
+            <token_type>
+              <type>RW_INT</type>
+              <column>13</column>
+              <row>35</row>
+              <lexema>int</lexema>
+            </token_type>
+            <arrayNode>
+              <arrayOfArrays>0</arrayOfArrays>
+              <dimensions>0</dimensions>
+            </arrayNode>
+          </type>
+          <id>
+            <token>
+              <type>ID</type>
+              <column>17</column>
+              <row>35</row>
+              <lexema>x</lexema>
+            </token>
+          </id>
+          <assignment xsi:type="ExpressionNode">
+            <v>expresion</v>
+          </assignment>
+        </FieldNode>
       </fields>
       <methods>
         <MethodNode>
@@ -496,160 +522,4 @@
               <dimensions>0</dimensions>
             </arrayNode>
           </returnType>
-          <id>
-            <token>
-              <type>ID</type>
-              <column>26</column>
-              <row>29</row>
-              <lexema>metodo</lexema>
-            </token>
-          </id>
-          <parameters>
-            <Parameter>
-              <type xsi:type="PrimitiveType">
-                <token_type>
-                  <type>RW_INT</type>
-                  <column>33</column>
-                  <row>29</row>
-                  <lexema>int</lexema>
-                </token_type>
-                <arrayNode>
-                  <arrayOfArrays>0</arrayOfArrays>
-                  <dimensions>0</dimensions>
-                </arrayNode>
-              </type>
-              <id>
-                <token>
-                  <type>ID</type>
-                  <column>37</column>
-                  <row>29</row>
-                  <lexema>paramenterA</lexema>
-                </token>
-              </id>
-            </Parameter>
-            <Parameter>
-              <type xsi:type="PrimitiveType">
-                <token_type>
-                  <type>RW_STRING</type>
-                  <column>50</column>
-                  <row>29</row>
-                  <lexema>string</lexema>
-                </token_type>
-                <arrayNode>
-                  <arrayOfArrays>1</arrayOfArrays>
-                  <dimensions>0</dimensions>
-                </arrayNode>
-              </type>
-              <id>
-                <token>
-                  <type>ID</type>
-                  <column>59</column>
-                  <row>29</row>
-                  <lexema>paremeterB</lexema>
-                </token>
-              </id>
-            </Parameter>
-          </parameters>
-          <encapsulation />
-          <modifier>
-            <token>
-              <type>RW_OVERRIDE</type>
-              <column>13</column>
-              <row>29</row>
-              <lexema>override</lexema>
-            </token>
-          </modifier>
-        </MethodNode>
-      </methods>
-      <constructors>
-        <ConstructorNode>
-          <encapsulation />
-          <id>
-            <token>
-              <type>ID</type>
-              <column>13</column>
-              <row>31</row>
-              <lexema>Constructor</lexema>
-            </token>
-          </id>
-          <parameters>
-            <Parameter>
-              <type xsi:type="PrimitiveType">
-                <token_type>
-                  <type>RW_INT</type>
-                  <column>25</column>
-                  <row>31</row>
-                  <lexema>int</lexema>
-                </token_type>
-                <arrayNode>
-                  <arrayOfArrays>0</arrayOfArrays>
-                  <dimensions>0</dimensions>
-                </arrayNode>
-              </type>
-              <id>
-                <token>
-                  <type>ID</type>
-                  <column>29</column>
-                  <row>31</row>
-                  <lexema>a</lexema>
-                </token>
-              </id>
-            </Parameter>
-          </parameters>
-          <base_init>
-            <argumentList>
-              <ExpressionNode>
-                <v>expresion</v>
-              </ExpressionNode>
-            </argumentList>
-          </base_init>
-        </ConstructorNode>
-        <ConstructorNode>
-          <encapsulation />
-          <id>
-            <token>
-              <type>ID</type>
-              <column>14</column>
-              <row>32</row>
-              <lexema>Constructor2</lexema>
-            </token>
-          </id>
-          <parameters>
-            <Parameter>
-              <type xsi:type="PrimitiveType">
-                <token_type>
-                  <type>RW_INT</type>
-                  <column>28</column>
-                  <row>32</row>
-                  <lexema>int</lexema>
-                </token_type>
-                <arrayNode>
-                  <arrayOfArrays>0</arrayOfArrays>
-                  <dimensions>0</dimensions>
-                </arrayNode>
-              </type>
-              <id>
-                <token>
-                  <type>ID</type>
-                  <column>32</column>
-                  <row>32</row>
-                  <lexema>a</lexema>
-                </token>
-              </id>
-            </Parameter>
-          </parameters>
-        </ConstructorNode>
-      </constructors>
-      <encapsulation />
-      <isAbstract>false</isAbstract>
-      <id>
-        <token>
-          <type>ID</type>
-          <column>16</column>
-          <row>26</row>
-          <lexema>ClasePrivada</lexema>
-        </token>
-      </id>
-    </TypeDefinitionNode>
-  </typeList>
-</CompilationNode>
+       

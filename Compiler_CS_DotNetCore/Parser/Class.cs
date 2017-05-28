@@ -126,13 +126,13 @@ namespace Compiler
             {
                 init = constructor_initializer();
             }
-            var statements = maybe_empty_block();
+            var bodyStatements = maybe_empty_block();
             if (clase.constructors == null)
                 clase.constructors = new List<ConstructorNode>();
-            clase.constructors.Add(new ConstructorNode(encapsulation, id, parameters, init, statements));
+            clase.constructors.Add(new ConstructorNode(encapsulation, id, parameters, init, bodyStatements));
         }
 
-        private List<Statement> maybe_empty_block()
+        private BodyStatement maybe_empty_block()
         {
             DebugInfoMethod("maybe_empty_block");
             if (pass(TokenType.OPEN_CURLY_BRACKET))
@@ -142,7 +142,7 @@ namespace Compiler
                 if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                     throwError("close curly bracket '}'");
                 consumeToken();
-                return lista;
+                return new BodyStatement(lista);
             }else if (pass(TokenType.END_STATEMENT)){
                 consumeToken();
                 return null;

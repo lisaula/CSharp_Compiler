@@ -20,7 +20,7 @@ namespace Compiler
             if (!pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
                 Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
-                .Concat(literalOptions).ToArray() ))
+                .Concat(literalOptions).Concat(primitiveTypes).ToArray() ))
                 throwError("Operator, identifier or literal in expression");
             conditional_expression();
             return new ExpressionNode("expresion");

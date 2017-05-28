@@ -27,6 +27,14 @@ namespace Compiler
             TokenType.RW_FLOAT,
             TokenType.RW_DICTIONARY
         };
+        TokenType[] primitiveTypes =
+        {
+            TokenType.RW_INT,
+            TokenType.RW_CHAR,
+            TokenType.RW_STRING,
+            TokenType.RW_BOOL,
+            TokenType.RW_FLOAT
+        };
         TokenType[] optionalModifiersOptions = {
             TokenType.RW_STATIC,
             TokenType.RW_VIRTUAL,
