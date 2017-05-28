@@ -4,11 +4,11 @@ namespace Compiler.Tree
 {
     public class FieldNode
     {
-        private EncapsulationNode encapsulation;
-        private ModifierNode modifier;
-        private TypeDefinitionNode type;
-        private IdentifierNode id;
-        private VariableInitializer assignment;
+        public EncapsulationNode encapsulation;
+        public ModifierNode modifier;
+        public TypeDefinitionNode type;
+        public IdentifierNode id;
+        public VariableInitializer assignment;
 
         public FieldNode(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, VariableInitializer assignment)
         {
@@ -17,6 +17,10 @@ namespace Compiler.Tree
             this.type = type;
             this.id = id;
             this.assignment = assignment;
+        }
+        public FieldNode()
+        {
+
         }
     }
 }

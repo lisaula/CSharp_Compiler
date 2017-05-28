@@ -4,10 +4,10 @@ namespace Compiler.Tree
 {
     public class InterfaceNode : TypeDefinitionNode
     {
-        internal InheritanceNode inheritance;
-        internal List<MethodNode> methods;
-        private Token token_identifier;
-        private EncapsulationNode encapsulation;
+        public InheritanceNode inheritance;
+        public List<MethodNode> methods;
+        public Token token_identifier;
+        public EncapsulationNode encapsulation;
 
         public InterfaceNode()
         {

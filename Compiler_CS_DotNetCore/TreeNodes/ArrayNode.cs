@@ -2,7 +2,7 @@
 {
     public class ArrayNode
     {
-        internal int arrayOfArrays;
-        internal int dimensions;
+        public int arrayOfArrays;
+        public int dimensions;
     }
 }

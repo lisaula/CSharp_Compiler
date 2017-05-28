@@ -14,6 +14,10 @@
             this.row = row;
             this.column = column;
         }
+        public Token()
+        {
+
+        }
 
         public override string ToString()
         {

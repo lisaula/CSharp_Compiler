@@ -2,11 +2,15 @@
 {
     public class IdentifierNode
     {
-        private Token token;
+        public Token token;
 
         public IdentifierNode(Token token)
         {
             this.token = token;
+        }
+        public IdentifierNode()
+        {
+
         }
     }
 }

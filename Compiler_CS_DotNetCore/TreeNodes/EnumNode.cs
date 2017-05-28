@@ -4,13 +4,17 @@ namespace Compiler.Tree
 {
     public class EnumNode
     {
-        private IdentifierNode identifier;
-        private ExpressionNode expressionNode;
+        public IdentifierNode identifier;
+        public ExpressionNode expressionNode;
 
         public EnumNode(IdentifierNode identifier, ExpressionNode expressionNode)
         {
             this.identifier = identifier;
             this.expressionNode = expressionNode;
+        }
+        public EnumNode()
+        {
+
         }
     }
 }

@@ -2,11 +2,15 @@
 {
     public class ModifierNode
     {
-        private Token token;
+        public Token token;
 
         public ModifierNode(Token token)
         {
             this.token = token;
+        }
+        public ModifierNode()
+        {
+
         }
     }
 }

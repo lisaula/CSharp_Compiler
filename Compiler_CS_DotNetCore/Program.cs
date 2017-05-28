@@ -51,12 +51,26 @@ private class ClasePrivada {
             try
             {
                 tree = parser.parse();
+                SerializeTree(tree);
             }
             catch(System.Exception e)
             {
                 System.Console.Out.WriteLine(e);
             }
             System.Console.ReadKey();
+        }
+
+        private static void SerializeTree(CompilationNode tree)
+        {
+            System.Type[] types = { typeof(UsingNode), typeof(NamespaceNode), typeof(EnumDefinitionNode)
+            , typeof(EnumNode), typeof(InterfaceNode), typeof(ClassDefinitionNode), typeof(FieldNode)
+            , typeof(MethodNode), typeof(ConstructorNode),typeof(ConstructorInitializerNode), typeof(IdentifierNode), typeof(Token)
+            , typeof(ExpressionNode), typeof(Parameter), typeof(ModifierNode), typeof(PrimitiveType), typeof(DictionaryTypeNode)};
+            var serializer = new XmlSerializer(typeof(CompilationNode),types);
+            var logPath = System.IO.Path.GetTempFileName();
+            var logFile = System.IO.File.Create("hola.xml");
+            var writer = new System.IO.StreamWriter(logFile);
+            serializer.Serialize(writer, tree);
         }
     }
 }

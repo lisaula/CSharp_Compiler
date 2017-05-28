@@ -7,10 +7,10 @@ namespace Compiler.Tree
         public  List<FieldNode> fields;
         public List<MethodNode> methods;
         public List<ConstructorNode> constructors;
-        private EncapsulationNode encapsulation;
-        private bool isAbstract;
-        private IdentifierNode id;
-        private InheritanceNode inheritance;
+        public EncapsulationNode encapsulation;
+        public bool isAbstract;
+        public IdentifierNode id;
+        public InheritanceNode inheritance;
 
         public ClassDefinitionNode(EncapsulationNode encapsulation, bool isAbstract, IdentifierNode id, InheritanceNode inheritance)
         {
@@ -19,6 +19,10 @@ namespace Compiler.Tree
             this.id = id;
             this.inheritance = inheritance;
             fields = new List<FieldNode>();
+        }
+        public ClassDefinitionNode()
+        {
+
         }
     }
 }
