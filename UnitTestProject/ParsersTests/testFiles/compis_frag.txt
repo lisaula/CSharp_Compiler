@@ -4,6 +4,8 @@ namespace Heap_sort
 	{
 		public static void Main (string[] args)
 		{
+			mama();
+			cont++;
 			var dict = new Dictionary<string, Dictionary<string, int> >();
 			mama.estado = mijo.estaencasa()? feliz() : reganiar();  
 			a1.x1[a2.x2[0,0].y].setX(getY(x3[fn(1,2)]));
