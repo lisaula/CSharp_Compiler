@@ -1,8 +1,8 @@
 ﻿namespace Compiler.Tree
 {
-    internal class VoidTypeNode : TypeDefinitionNode
+    public class VoidTypeNode : TypeDefinitionNode
     {
-        private Token token_type;
+        public Token token_type;
         public ArrayNode arrayNode;
         public VoidTypeNode(Token token_type)
         {
@@ -13,6 +13,10 @@
         {
             this.token_type = token_type;
             arrayNode = array;
+        }
+        public VoidTypeNode()
+        {
+
         }
     }
 }

@@ -29,8 +29,8 @@ private class ClasePrivada {
         Clase x = new Clase();
     }
 }
-                ";
-            var inputString = new InputString(s);
+";
+            var inputString = new InputString(txt);
             var lexer = new LexicalAnalyzer(inputString);
             var parser = new Parser(lexer);
             CompilationNode tree;
@@ -56,7 +56,9 @@ private class ClasePrivada {
             , typeof(ReferenceAccessNode), typeof(ForStatementNode), typeof(ForeachStatementNode), typeof(WhileStatementNode)
             , typeof(DoStatementNode), typeof(IfStatementNode),typeof(SwitchStatementNode) , typeof(BodyStatement), typeof(LocalVariableDefinitionNode)
             , typeof(EmbeddedStatementNode), typeof(IdentifierTypeNode), typeof(ClassInstantiation), typeof(ArrayInstantiation), typeof(ConditionExpression)
-            , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(ExpressionUnaryNode)};
+            , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(ExpressionUnaryNode),
+            typeof(VoidTypeNode), typeof(ArrayAccessNode), typeof(ParenthesizedExpressionNode), typeof(ArithmeticExpression), typeof(VarType)
+            , typeof(BinaryExpression), typeof(TernaryExpressionNode), typeof(JumpStatementNode), typeof(CastingExpressionNode)};
             var serializer = new XmlSerializer(typeof(CompilationNode),types);
             var logPath = System.IO.Path.GetTempFileName();
             var logFile = System.IO.File.Create("hola.xml");

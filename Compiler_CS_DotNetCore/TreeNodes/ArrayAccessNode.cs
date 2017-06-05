@@ -4,8 +4,8 @@ namespace Compiler.Tree
 {
     public class ArrayAccessNode : PrimaryExpressionNode
     {
-        private PrimaryExpressionNode primary;
-        private List<List<ExpressionNode>> lista;
+        public PrimaryExpressionNode primary;
+        public List<List<ExpressionNode>> lista;
 
         public ArrayAccessNode()
         {

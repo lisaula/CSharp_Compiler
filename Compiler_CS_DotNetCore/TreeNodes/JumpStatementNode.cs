@@ -13,5 +13,9 @@
         {
             this.expression = expression;
         }
+        public JumpStatementNode()
+        {
+
+        }
     }
 }
