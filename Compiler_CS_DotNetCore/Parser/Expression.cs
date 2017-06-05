@@ -94,7 +94,7 @@ namespace Compiler
                 consumeToken();
                 var conditionExpression = conditional_and_expression();
                 
-                return conditional_or_expression_p(new ConditionExpression(condition, conditionalOperator, conditionExpression));
+                return conditional_or_expression_p(new LogicalExpression(condition,conditionalOperator, conditionExpression));
             }
             else
             {
@@ -119,7 +119,7 @@ namespace Compiler
                 consumeToken();
                 var rightExpression =inclusive_or_expression();
                 
-                return conditional_and_expression_p(new ConditionExpression(leftExpression, Operator, rightExpression));
+                return conditional_and_expression_p(new LogicalExpression(leftExpression, Operator,rightExpression));
             }
             else
             {
@@ -143,7 +143,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = exclusive_or_expression();
-                return inclusive_or_expression_p(new BinaryExpression(leftExpression, Operator, rightExpression));
+                return inclusive_or_expression_p(new BitwiseExpression(leftExpression, Operator, rightExpression));
             }
             else
             {
@@ -167,7 +167,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = and_expression();
-                return exclusive_or_expression_p(new BinaryExpression(LeftExpression, Operator, rightExpression));
+                return exclusive_or_expression_p(new BitwiseExpression(LeftExpression, Operator, rightExpression));
             }
             else
             {
@@ -191,7 +191,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = equality_expression();
-                return and_expression_p(new BinaryExpression(leftExpression, Operator, rightExpression));
+                return and_expression_p(new BitwiseExpression(leftExpression, Operator, rightExpression));
             }
             else
             {
@@ -215,7 +215,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = relational_expression();
-                return equality_expression_p(new ConditionExpression(leftExpression, Operator, rightExpression));
+                return equality_expression_p(new EqualityExpression(leftExpression,Operator, rightExpression));
 
             }
             else
@@ -240,7 +240,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = shift_expression();
-                return relational_expression_p(new ConditionExpression(leftExpression, Operator, rightExpression));
+                return relational_expression_p(new RelationalExpression(leftExpression, Operator, rightExpression));
             }else if (pass(Is_AsOperatorOptions))
             {
                 var Operator = current_token;
@@ -253,7 +253,7 @@ namespace Compiler
                     return relational_expression_p(new CastingExpressionNode(type, list));
                 }
                 else
-                    return relational_expression_p(new ConditionExpression(leftExpression, Operator, type));
+                    return relational_expression_p(new IsExpression(leftExpression, type));
             }
             else
             {
@@ -277,7 +277,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rigtExpression = additive_expression();
-                return shift_expression_p(new BinaryExpression(leftExpression, Operator, rigtExpression));
+                return shift_expression_p(new BitwiseExpression(leftExpression, Operator, rigtExpression));
             }
             else
             {
@@ -301,7 +301,10 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = multiplicative_expression();
-                return additive_expression_p(new ArithmeticExpression(leftExpression, Operator, rightExpression));
+                if(Operator.type == TokenType.OP_SUM)
+                    return additive_expression_p(new SumExpression(leftExpression, rightExpression));
+                else
+                    return additive_expression_p(new SubExpression(leftExpression, rightExpression));
             }
             else
             {
@@ -325,7 +328,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = expression();
-                return multiplicative_expression_p(new AssignmentNode(unary, Operator, rightExpression));
+                return multiplicative_expression_p(new AssignmentNode(unary,Operator, rightExpression));
             }else
             {
                 return multiplicative_expression_p(unary);
@@ -340,7 +343,12 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = unary_expression();
-                return multiplicative_expression_p(new ArithmeticExpression(leftExpression, Operator, rightExpression));
+                if (Operator.type == TokenType.OP_MULTIPLICATION)
+                    return multiplicative_expression_p(new MultExpression(leftExpression, rightExpression));
+                else if(Operator.type == TokenType.OP_DIVISION)
+                    return multiplicative_expression_p(new DivExpression(leftExpression, rightExpression));
+                else
+                    return multiplicative_expression_p(new ModExpression(leftExpression, rightExpression));
             }
             else
             {

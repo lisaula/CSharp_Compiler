@@ -13,12 +13,10 @@ namespace Compiler
             var s = @"
 private class ClasePrivada {
     public Constructor(int a ) : base(a){
-        if(a == null){
-            a = new int[3];
-        }
-        
-        while(a is int){
-            a++;
+        int x = y = z += t;
+        bool boleano = ((5+3) * 8+5 / 10 %20 );
+        if(x is int){
+            
         }
     }
     private Constructor2 (int a ){
@@ -30,7 +28,7 @@ private class ClasePrivada {
     }
 }
 ";
-            var inputString = new InputString(txt);
+            var inputString = new InputString(s);
             var lexer = new LexicalAnalyzer(inputString);
             var parser = new Parser(lexer);
             CompilationNode tree;
@@ -59,10 +57,11 @@ private class ClasePrivada {
             , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(PreExpressionNode),
             typeof(VoidTypeNode), typeof(ArrayAccessNode), typeof(ParenthesizedExpressionNode), typeof(ArithmeticExpression), typeof(VarType)
             , typeof(BinaryExpression), typeof(TernaryExpressionNode), typeof(JumpStatementNode), typeof(CastingExpressionNode)
-            , typeof(InlineExpressionNode)};
+            , typeof(InlineExpressionNode),typeof(SubExpression), typeof(SumExpression), typeof(MultExpression), typeof(DivExpression), typeof(LogicalExpression),
+            typeof(RelationalExpression), typeof(EqualityExpression), typeof(ModExpression), typeof(IsExpression)};
             var serializer = new XmlSerializer(typeof(CompilationNode),types);
             var logPath = System.IO.Path.GetTempFileName();
-            var logFile = System.IO.File.Create("compi_frag.xml");
+            var logFile = System.IO.File.Create("prueba_expr.xml");
             var writer = new System.IO.StreamWriter(logFile);
             serializer.Serialize(writer, tree);
         }

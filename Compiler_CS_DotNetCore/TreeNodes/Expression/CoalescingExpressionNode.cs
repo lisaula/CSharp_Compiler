@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class CoalescingExpressionNode : ExpressionNode
     {
@@ -13,6 +15,11 @@
         public CoalescingExpressionNode()
         {
 
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Compiler.Tree;
 
-namespace Compiler
+namespace Compiler.Tree
 {
     public class InlineExpressionNode : UnaryExpressionNode
     {

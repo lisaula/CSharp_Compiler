@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class TernaryExpressionNode : ExpressionNode
     {
@@ -15,6 +17,11 @@
         public TernaryExpressionNode()
         {
 
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            throw new NotImplementedException();
         }
     }
 }
