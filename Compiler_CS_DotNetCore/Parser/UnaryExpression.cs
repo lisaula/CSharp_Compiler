@@ -20,7 +20,7 @@ namespace Compiler
                 consumeToken();
 
                 var unaryExpression = unary_expression();
-                return new ExpressionUnaryNode(unaryOperator, unaryExpression);
+                return new PreExpressionNode(unaryOperator, unaryExpression);
             }else if (pass(TokenType.OPEN_PARENTHESIS))
             {
                 addLookAhead(lexer.getNextToken());
@@ -53,11 +53,12 @@ namespace Compiler
                 }
                 else
                 {
-                    return primary_expression();
+
+                    return new InlineExpressionNode(primary_expression());
                 }
             }else if (pass(nuevo.Concat(literalOptions).Concat(primitiveTypes).ToArray()))
             {
-                return primary_expression();
+                return new InlineExpressionNode(primary_expression());
             }
             else
             {
@@ -66,49 +67,52 @@ namespace Compiler
             }
         }
 
-        private PrimaryExpressionNode primary_expression()
+        private List<ExpressionNode> primary_expression()
         {
             DebugInfoMethod("primary_expression");
             if (pass(TokenType.RW_NEW))
             {
                 consumeToken();
                 PrimaryExpressionNode instance =  instance_expression();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT, 
-                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
-                    instance = primary_expression_p(instance);
-                return instance;
+                //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT, 
+                //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                var right = primary_expression_p();
+                right.Insert(0, instance);
+                return right;
             }
             else if (pass(literalOptions))
             {
                 var token = current_token;
                 consumeToken();
                 PrimaryExpressionNode literal = new LiteralNode(token);
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
-                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
-                    literal = primary_expression_p(literal);
-                return literal;
+                //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                var list = primary_expression_p();
+                list.Insert(0, literal);
+                return list;
             }else if (pass(TokenType.ID))
             {
                 PrimaryExpressionNode id = new IdentifierNode(current_token);
                 consumeToken();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
-                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
-                    id = primary_expression_p(id);
-                return id;
+                //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                var list = primary_expression_p();
+                is_function_or_array(ref list, id);
+                return list;
             }else if (pass(TokenType.RW_BASE))
             {
                 PrimaryExpressionNode r_base = new ReferenceAccessNode(current_token);
                 consumeToken();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
-                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
-                    r_base = primary_expression_p(r_base);
-                return r_base;
+                //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                var list = primary_expression_p();
+                list.Insert(0, r_base);
+                return list;
             }
             else if (pass(TokenType.OPEN_PARENTHESIS))
             {
                 DebugInfoMethod("Entro parenthesized expression");
                 consumeToken();
-
                 var expr= expression();
 
                 if (!pass(TokenType.CLOSE_PARENTHESIS))
@@ -116,30 +120,35 @@ namespace Compiler
                 DebugInfoMethod("consumiendo close parenthesis");
                 consumeToken();
                 PrimaryExpressionNode parenthisized = new ParenthesizedExpressionNode(expr);
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
-                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
-                    parenthisized=primary_expression_p(parenthisized);
-                return parenthisized;
+                //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                var list =primary_expression_p();
+                //list.Insert(0, parenthisized);
+                is_function_or_array(ref list, parenthisized);
+                return list;
             }
             else if(pass(TokenType.RW_THIS))
             {
                 PrimaryExpressionNode r_this = new ReferenceAccessNode(current_token);
                 consumeToken();
-                if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
-                    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
-                    r_this=primary_expression_p(r_this);
-                return r_this;
+                //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                var list =primary_expression_p();
+                list.Insert(0, r_this);
+                return list;
             }
             else if (pass(primitiveTypes))
             {
                 PrimaryExpressionNode primitive = new ReferenceAccessNode(current_token);
                 consumeToken();
+                List<ExpressionNode> list = null;
                 if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
                     TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
-                    primitive=primary_expression_p(primitive);
+                    list = primary_expression_p();
                 else
                     throwError("Function call");
-                return primitive;
+                list.Insert(0, primitive);
+                return list;
             }
             else
             {
@@ -148,7 +157,61 @@ namespace Compiler
             }
         }
 
-        private PrimaryExpressionNode primary_expression_p(PrimaryExpressionNode primary)
+        private void is_function_or_array(ref List<ExpressionNode> list, PrimaryExpressionNode id)
+        {
+            if(list.Count>0 && 
+                list[0] is FunctionCallExpression && ((FunctionCallExpression)list[0]).primary == null)
+            {
+                if(id is AccessMemory)
+                {
+                    var r_id = ((AccessMemory)id).expression;
+                    ((FunctionCallExpression)list[0]).primary = r_id;
+                    ((AccessMemory)id).expression = list[0] as PrimaryExpressionNode;
+                    list[0] =id;
+                }
+                else
+                {
+                    ((FunctionCallExpression)list[0]).primary = id;
+                }
+
+            }
+            else if(list.Count > 0 &&
+                list[0] is ArrayAccessNode && ((ArrayAccessNode)list[0]).primary == null)
+            {
+                if (id is AccessMemory)
+                {
+                    var r_id = ((AccessMemory)id).expression;
+                    ((ArrayAccessNode)list[0]).primary = r_id;
+                    ((AccessMemory)id).expression = list[0] as PrimaryExpressionNode;
+                    list[0] = id;
+                }
+                else
+                {
+                    ((ArrayAccessNode)list[0]).primary = id;
+                }
+            }
+            else if(list.Count > 0 &&
+                list[0] is PostAdditiveExpressionNode && ((PostAdditiveExpressionNode)list[0]).primary == null)
+            {
+                if (id is AccessMemory)
+                {
+                    var r_id = ((AccessMemory)id).expression;
+                    ((PostAdditiveExpressionNode)list[0]).primary = r_id;
+                    ((AccessMemory)id).expression = list[0] as PrimaryExpressionNode;
+                    list[0] = id;
+                }
+                else
+                {
+                    ((PostAdditiveExpressionNode)list[0]).primary = id;
+                }
+            }
+            else
+            {
+                list.Insert(0, id);
+            }
+        }
+
+        private List<ExpressionNode> primary_expression_p()
         {
             DebugInfoMethod("primary_expression_p");
             if (pass(TokenType.OP_DOT))
@@ -158,27 +221,35 @@ namespace Compiler
                 if (!pass(TokenType.ID))
                     throwError("identifier");
                 var id = current_token;
+                var left = new AccessMemory(new IdentifierNode(id));
                 consumeToken();
-                return primary_expression_p(new AccessMemory(primary, id));
+                var list = primary_expression_p();
+                is_function_or_array(ref list, left);
+                return list;
             }else if(pass(TokenType.OPEN_PARENTHESIS, TokenType.OPEN_SQUARE_BRACKET))
             {
-                var funcOrArray = optional_funct_or_array_call(primary);
-                return primary_expression_p(funcOrArray);
+                var funcOrArray = optional_funct_or_array_call();
+                var list = primary_expression_p() ;
+                list.Insert(0, funcOrArray);
+                return list;
             }
             else if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT))
             {
                 var Operator = current_token;
                 consumeToken();
-                return primary_expression_p(new PostAdditiveExpressionNode(primary, Operator));
+                var left = new PostAdditiveExpressionNode(Operator);
+                var list = primary_expression_p();
+                list.Insert(0, left);
+                return list;
             }
             else
             {
                 DebugInfoMethod("epsilon");
-                return primary;
+                return new List<ExpressionNode>();
             }
         }
 
-        private PrimaryExpressionNode optional_funct_or_array_call(PrimaryExpressionNode primary)
+        private PrimaryExpressionNode optional_funct_or_array_call()
         {
             DebugInfoMethod("optional_funct_or_array_call");
             if (pass(TokenType.OPEN_PARENTHESIS))
@@ -189,11 +260,11 @@ namespace Compiler
                 if (!pass(TokenType.CLOSE_PARENTHESIS))
                     throwError("close parenthesis ')'");
                 consumeToken();
-                return new FunctionCallExpression(primary, arguments);
+                return new FunctionCallExpression(arguments);
             }else if (pass(TokenType.OPEN_SQUARE_BRACKET))
             {
                 var lista = optional_array_access_list();
-                return new ArrayAccessNode(primary, lista);
+                return new ArrayAccessNode(lista);
             }
             else
             {

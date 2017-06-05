@@ -1,14 +1,16 @@
-﻿namespace Compiler.Tree
+﻿using System.Collections.Generic;
+
+namespace Compiler.Tree
 {
     public class CastingExpressionNode : UnaryExpressionNode
     {
         public TypeDefinitionNode targetType;
-        public ExpressionNode expression;
+        public List<ExpressionNode> primary;
 
-        public CastingExpressionNode(TypeDefinitionNode targetType, ExpressionNode expression)
+        public CastingExpressionNode(TypeDefinitionNode targetType, List<ExpressionNode> primary)
         {
             this.targetType = targetType;
-            this.expression = expression;
+            this.primary = primary;
         }
         public CastingExpressionNode()
         {

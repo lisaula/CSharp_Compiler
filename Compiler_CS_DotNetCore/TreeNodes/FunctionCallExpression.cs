@@ -16,5 +16,10 @@ namespace Compiler.Tree
         {
 
         }
+
+        public FunctionCallExpression(List<ExpressionNode> arguments)
+        {
+            this.arguments = arguments;
+        }
     }
 }

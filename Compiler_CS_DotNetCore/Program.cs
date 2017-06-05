@@ -9,7 +9,7 @@ namespace Compiler
     {
         static void Main(string[] args)
         {
-            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\compiiiss1.txt");
+            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\compis_frag.txt");
             var s = @"
 private class ClasePrivada {
     public Constructor(int a ) : base(a){
@@ -56,12 +56,13 @@ private class ClasePrivada {
             , typeof(ReferenceAccessNode), typeof(ForStatementNode), typeof(ForeachStatementNode), typeof(WhileStatementNode)
             , typeof(DoStatementNode), typeof(IfStatementNode),typeof(SwitchStatementNode) , typeof(BodyStatement), typeof(LocalVariableDefinitionNode)
             , typeof(EmbeddedStatementNode), typeof(IdentifierTypeNode), typeof(ClassInstantiation), typeof(ArrayInstantiation), typeof(ConditionExpression)
-            , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(ExpressionUnaryNode),
+            , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(PreExpressionNode),
             typeof(VoidTypeNode), typeof(ArrayAccessNode), typeof(ParenthesizedExpressionNode), typeof(ArithmeticExpression), typeof(VarType)
-            , typeof(BinaryExpression), typeof(TernaryExpressionNode), typeof(JumpStatementNode), typeof(CastingExpressionNode)};
+            , typeof(BinaryExpression), typeof(TernaryExpressionNode), typeof(JumpStatementNode), typeof(CastingExpressionNode)
+            , typeof(InlineExpressionNode)};
             var serializer = new XmlSerializer(typeof(CompilationNode),types);
             var logPath = System.IO.Path.GetTempFileName();
-            var logFile = System.IO.File.Create("hola.xml");
+            var logFile = System.IO.File.Create("compi_frag.xml");
             var writer = new System.IO.StreamWriter(logFile);
             serializer.Serialize(writer, tree);
         }

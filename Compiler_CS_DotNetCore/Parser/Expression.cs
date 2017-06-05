@@ -247,7 +247,11 @@ namespace Compiler
                 consumeToken();
                 TypeDefinitionNode type = types();
                 if (Operator.type == TokenType.RW_AS)
-                    return relational_expression_p(new CastingExpressionNode(type, leftExpression));
+                {
+                    var list = new List<ExpressionNode>();
+                    list.Add(leftExpression);
+                    return relational_expression_p(new CastingExpressionNode(type, list));
+                }
                 else
                     return relational_expression_p(new ConditionExpression(leftExpression, Operator, type));
             }

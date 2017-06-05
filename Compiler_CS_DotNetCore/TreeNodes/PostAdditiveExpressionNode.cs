@@ -14,5 +14,10 @@
         {
 
         }
+
+        public PostAdditiveExpressionNode(Token @operator)
+        {
+            this.@operator = @operator;
+        }
     }
 }

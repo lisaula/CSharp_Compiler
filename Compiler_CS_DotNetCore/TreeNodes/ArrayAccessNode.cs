@@ -12,6 +12,11 @@ namespace Compiler.Tree
 
         }
 
+        public ArrayAccessNode(List<List<ExpressionNode>> lista)
+        {
+            this.lista = lista;
+        }
+
         public ArrayAccessNode(PrimaryExpressionNode primary, List<List<ExpressionNode>> lista)
         {
             this.primary = primary;
