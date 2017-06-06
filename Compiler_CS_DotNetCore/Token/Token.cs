@@ -21,7 +21,7 @@
 
         public override string ToString()
         {
-            return lexema + " of type " + type + " row: " +row+ " column: "+column;
+            return " row: " +row+ " column: "+column;
         }
     }
 }

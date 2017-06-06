@@ -13,7 +13,7 @@ namespace Compiler
             DebugInfoMethod("parser");
             var tree = code();
             if (current_token.type != TokenType.EOF)
-                throwError("EOF. Not all tokens were consumed.");
+                throwError("EOF. Not all tokens were consumed. Current token: "+current_token.type);
             Console.Out.WriteLine("Successful");
             return tree;
         }

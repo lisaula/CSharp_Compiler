@@ -16,5 +16,15 @@ namespace Compiler.Tree
         {
 
         }
+
+        public override string ToString()
+        {
+            List<string> name = new List<string>();
+            foreach(IdentifierNode id in identifierList)
+            {
+                name.Add(id.token.lexema);
+            }
+            return string.Join(".",name);
+        }
     }
 }

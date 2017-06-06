@@ -4,6 +4,9 @@ namespace Compiler
 {
     public class ParserException : Exception
     {
+        private string expected;
+        private int row;
+        private int column;
 
         public ParserException()
         {
@@ -17,11 +20,10 @@ namespace Compiler
         {
         }
 
-        public ParserException(string expected, int row, int column)
+        public ParserException(string filename ,string expected, int row, int column)
         {
-            string message = "Parser Exception: expected \"" + expected + "\" in line " + row + " and column " + column;
+            string message = filename+": "+"Parser Exception: expected \"" + expected + "\" in line " + row + " and column " + column;
             throw new ParserException(message);
         }
-
     }
 }

@@ -23,5 +23,9 @@ namespace Compiler.Tree
             this.encapsulation = encapsulation;
             this.token_identifier = token;
         }
+        public override string ToString()
+        {
+            return token_identifier.lexema;
+        }
     }
 }

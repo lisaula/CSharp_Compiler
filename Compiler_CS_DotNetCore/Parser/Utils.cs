@@ -131,7 +131,8 @@ namespace Compiler
 
         void throwError(string expected)
         {
-            throw new ParserException(expected, current_token.row, current_token.column);
+
+            throw new ParserException(filename,expected, current_token.row, current_token.column);
         }
 
         void consumeToken()
