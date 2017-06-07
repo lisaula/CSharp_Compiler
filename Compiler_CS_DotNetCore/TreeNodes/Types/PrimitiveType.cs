@@ -2,7 +2,7 @@
 
 namespace Compiler.Tree
 {
-    public class PrimitiveType : TypeDefinitionNode
+    public abstract class PrimitiveType : TypeDefinitionNode
     {
         public Token token_type;
         public ArrayNode arrayNode;

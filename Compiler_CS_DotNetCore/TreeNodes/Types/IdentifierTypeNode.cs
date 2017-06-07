@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Compiler.Tree
 {
@@ -23,6 +24,11 @@ namespace Compiler.Tree
                 names.Add(id.token.lexema);
             }
             return string.Join(".", names);
+        }
+
+        public override void Evaluate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

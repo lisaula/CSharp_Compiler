@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class DictionaryTypeNode : TypeDefinitionNode
     {
@@ -18,6 +20,11 @@
         public override string ToString()
         {
             return "Dictionary<" + t1.ToString() + "," + t2.ToString() + ">";
+        }
+
+        public override void Evaluate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

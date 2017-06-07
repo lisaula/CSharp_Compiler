@@ -36,27 +36,57 @@ namespace Compiler_CS_DotNetCore.Semantic
             return trees;
         }
 
-        public void setClassesOnTableType(ref Dictionary<string, TypeDefinitionNode> tableTypes, string filename,CompilationNode tree)
+        internal void setNamespacesOnTableNms(string filename, CompilationNode tree)
+        {
+            this.file = filename;
+            setNamespacesHerarchyOnTableNms(new List<string>(), tree.namespaceList);
+
+        }
+
+        private void setNamespacesHerarchyOnTableNms(List<string> namespace_, List<NamespaceNode> namespaceList)
+        {
+            foreach(NamespaceNode nms in namespaceList)
+            {
+                string key = getIdentifierListAsString(".", nms.identifierList);
+                namespace_.Add(key);
+                if(!Singleton.tableNamespaces.ContainsKey(key))
+                    Singleton.tableNamespaces[key] = string.Join(".", namespace_);
+                setNamespacesHerarchyOnTableNms(namespace_, nms.namespaceList);
+                namespace_.Remove(key);
+            }
+        }
+
+        public string getIdentifierListAsString(string sep, List<IdentifierNode> identifiers)
+        {
+            List<string> name = new List<string>();
+            foreach(IdentifierNode id in identifiers)
+            {
+                name.Add(id.token.lexema);
+            }
+            return string.Join(sep, name);
+        }
+
+        public void setClassesOnTableType( string filename,CompilationNode tree)
         {
             this.file = filename;
             var name = new List<string>();
             name.Add("blank");
-            setTypeListOnTableType(ref tableTypes,name, tree.typeList);
-            setNamespacesOnTableType(ref tableTypes, new List<string>(), tree.namespaceList);
+            setTypeListOnTableType(name, tree.typeList);
+            setNamespacesOnTableType(new List<string>(), tree.namespaceList);
         }
 
-        private void setNamespacesOnTableType(ref Dictionary<string, TypeDefinitionNode> tableTypes, List<string> namespace_,List<NamespaceNode> namespaceList)
+        private void setNamespacesOnTableType(List<string> namespace_,List<NamespaceNode> namespaceList)
         {
             foreach (NamespaceNode nms in namespaceList)
             {
                 namespace_.Add(nms.ToString());
-                setTypeListOnTableType(ref tableTypes, namespace_, nms.typeList);
-                setNamespacesOnTableType(ref tableTypes, namespace_, nms.namespaceList);
+                setTypeListOnTableType(namespace_, nms.typeList);
+                setNamespacesOnTableType(namespace_, nms.namespaceList);
                 namespace_.Remove(nms.ToString());
             }
         }
 
-        private void setTypeListOnTableType(ref Dictionary<string, TypeDefinitionNode> tableTypes,List<string> namespaces_, List<TypeDefinitionNode> typeList)
+        private void setTypeListOnTableType(List<string> namespaces_, List<TypeDefinitionNode> typeList)
         {
             foreach (TypeDefinitionNode type in typeList)
             {
@@ -66,18 +96,18 @@ namespace Compiler_CS_DotNetCore.Semantic
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
-                    if (tableTypes.ContainsKey(fullname))
+                    if (Singleton.tableTypeContains(fullname))
                         throwSemanticErrot(fullname + " of type "+ t.GetType() + "already exist on " + t.id.token.ToString());
-                    tableTypes[fullname] = t;
+                    Singleton.tableTypes[fullname] = t;
                 }else if(type is EnumDefinitionNode)
                 {
                     var t = type as EnumDefinitionNode;
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
-                    if (tableTypes.ContainsKey(fullname))
+                    if ((Singleton.tableTypeContains(fullname)))
                         throwSemanticErrot(fullname + " of type "+ t.GetType() + " already exist on " + t.identifier.token.ToString());
-                    tableTypes[fullname] = t;
+                    Singleton.tableTypes[fullname] = t;
                 }
                 else if(type is InterfaceNode)
                 {
@@ -85,9 +115,9 @@ namespace Compiler_CS_DotNetCore.Semantic
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
-                    if (tableTypes.ContainsKey(fullname))
+                    if (Singleton.tableTypeContains(fullname))
                         throwSemanticErrot(fullname + " of type "+t.GetType()+"already exist on " + t.token_identifier.ToString());
-                    tableTypes[fullname] = t;
+                    Singleton.tableTypes[fullname] = t;
                 }
             }
         }

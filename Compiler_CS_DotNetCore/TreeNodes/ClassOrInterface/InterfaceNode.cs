@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Compiler.Tree
 {
@@ -23,6 +24,12 @@ namespace Compiler.Tree
             this.encapsulation = encapsulation;
             this.token_identifier = token;
         }
+
+        public override void Evaluate()
+        {
+            throw new NotImplementedException();
+        }
+
         public override string ToString()
         {
             return token_identifier.lexema;

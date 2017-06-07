@@ -1,4 +1,5 @@
-﻿using Compiler.Tree;
+﻿using System;
+using Compiler.Tree;
 
 namespace Compiler
 {
@@ -18,6 +19,11 @@ namespace Compiler
         public override string ToString()
         {
             return this.GetType().Name;
+        }
+
+        public override void Evaluate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

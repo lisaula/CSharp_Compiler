@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Compiler.Tree
 {
@@ -28,6 +29,11 @@ namespace Compiler.Tree
         public override string ToString()
         {
             return id.token.lexema;
+        }
+
+        public override void Evaluate()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -321,9 +321,9 @@ namespace Compiler
             }
             else
             {
-                var token = current_token;
-                consumeToken();
-                type = new PrimitiveType(token);
+                //var token = current_token;
+                //consumeToken();
+                type = built_in_type();
             }
             return instance_expression_factorized(type);
         }
