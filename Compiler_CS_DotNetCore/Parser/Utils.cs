@@ -109,6 +109,19 @@ namespace Compiler
             TokenType.RW_THIS, TokenType.RW_BASE
         };
 
+        public Token getNextLookAhead(int count)
+        {
+            if(look_ahead.Count==0)
+            {
+                addLookAhead(lexer.getNextToken());
+                count = 0;
+            }else if(count >= look_ahead.Count)
+            {
+                addLookAhead(lexer.getNextToken());
+            }
+            return look_ahead[count];
+        }
+
         public void addLookAhead(Token token)
         {
             look_ahead.Add(token);
@@ -137,7 +150,7 @@ namespace Compiler
 
         void consumeToken()
         {
-            DebugInfoMethod("\t->consumio " + current_token.type+" lexema: "+current_token.lexema);
+            DebugInfoMethod("\t->consumio " + current_token.type+" lexema: "+current_token.lexema+" row "+current_token.row + " col "+ current_token.column);
             if (look_ahead.Count > 0)
             {
                 current_token = look_ahead[0];
@@ -147,7 +160,7 @@ namespace Compiler
             {
                 current_token = lexer.getNextToken();
             }
-            DebugInfoMethod("\t->nuevo token " + current_token.type + " lexema: " + current_token.lexema);
+            DebugInfoMethod("\t->nuevo token " + current_token.type + " lexema: " + current_token.lexema + " row " + current_token.row + " col " + current_token.column);
         }
 #if DEBUG
         private bool doDebugOnlyCode = false;

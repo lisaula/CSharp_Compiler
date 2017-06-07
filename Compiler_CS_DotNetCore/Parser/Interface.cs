@@ -93,7 +93,7 @@ namespace Compiler
             DebugInfoMethod("type_or_void");
             if (pass(TokenType.RW_VOID))
             {
-                var t = new VoidTypeNode(current_token, null);
+                var t = new VoidTypeNode(current_token);
                 consumeToken();
                 return t;
             }
@@ -158,18 +158,45 @@ namespace Compiler
             return new DictionaryTypeNode(t1, t2);
         }
 
+        /*TokenType.RW_CHAR,
+            TokenType.RW_STRING,
+            TokenType.RW_BOOL,
+            TokenType.RW_FLOAT)*/
         private PrimitiveType built_in_type()
         {
             DebugInfoMethod("built_in_type");
-            if (!pass(TokenType.RW_INT,
-            TokenType.RW_CHAR,
-            TokenType.RW_STRING,
-            TokenType.RW_BOOL,
-            TokenType.RW_FLOAT))
+            if (pass(TokenType.RW_INT)){
+                var token = current_token;
+                consumeToken();
+                return new IntType(token);
+            }
+            else if (pass(TokenType.RW_CHAR))
+            {
+                var token = current_token;
+                consumeToken();
+                return new CharType(token);
+            }
+            else if (pass(TokenType.RW_STRING))
+            {
+                var token = current_token;
+                consumeToken();
+                return new StringType(token);
+            }
+            else if (pass(TokenType.RW_BOOL))
+            {
+                var token = current_token;
+                consumeToken();
+                return new BoolType(token);
+            }
+            else if (pass(TokenType.RW_FLOAT))
+            {
+                var token = current_token;
+                consumeToken();
+                return new FloatType(token);
+            }
+            else
                 throwError("a primitive type");
-            var token = current_token;
-            consumeToken();
-            return new PrimitiveType(token);
+            return null;
         }
 
         private List<IdentifierNode> qualified_identifier()

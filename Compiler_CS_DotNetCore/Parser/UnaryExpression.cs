@@ -23,22 +23,29 @@ namespace Compiler
                 return new PreExpressionNode(unaryOperator, unaryExpression);
             }else if (pass(TokenType.OPEN_PARENTHESIS))
             {
-                addLookAhead(lexer.getNextToken());
-                int first = look_ahead.Count() - 1;
-                Token placehold = look_ahead[look_ahead.Count() - 1];
+                DebugInfoMethod("Empezo");
+                //if(look_ahead.Count == 0)addLookAhead(lexer.getNextToken());
+                int count = 0;
+                Token placehold = getNextLookAhead(count);// look_ahead[look_ahead.Count() - 1];
+                int first = look_ahead.IndexOf(placehold);//look_ahead.Count() - 1;
                 bool accept = false;
                 while (typesOptions.Contains(placehold.type) || placehold.type == TokenType.OP_DOT
                     || placehold.type == TokenType.OPEN_SQUARE_BRACKET || placehold.type == TokenType.CLOSE_SQUARE_BRACKET
                     || placehold.type == TokenType.OP_LESS_THAN || placehold.type == TokenType.OP_GREATER_THAN
                     || placehold.type == TokenType.OP_COMMA)
                 {
-                    addLookAhead(lexer.getNextToken());
-                    placehold = look_ahead[look_ahead.Count() - 1];
+                    count++;
+                    placehold = getNextLookAhead(count);
                     accept = true;
                 }
-                DebugInfoMethod("PH" + placehold.type+ " "+look_ahead[first].type);
+                Token after_closing = getNextLookAhead(count+1);
+                DebugInfoMethod("AC " + after_closing.type + " " + look_ahead[first].type);
+                DebugInfoMethod("PH " + placehold.type+ " "+look_ahead[first].type);
                 if (typesOptions.Contains(look_ahead[first].type) && accept && 
-                    (placehold.type == TokenType.CLOSE_PARENTHESIS))
+                    (placehold.type == TokenType.CLOSE_PARENTHESIS) 
+                    && (after_closing.type != TokenType.OP_INCREMENT
+                    && after_closing.type != TokenType.OP_DECREMENT
+                    && after_closing.type != TokenType.OP_DOT) )
                 {
                     consumeToken();
                     if (!pass(typesOptions))
@@ -53,7 +60,7 @@ namespace Compiler
                 }
                 else
                 {
-
+                    DebugInfoMethod("Aqui entro"); 
                     return new InlineExpressionNode(primary_expression());
                 }
             }else if (pass(nuevo.Concat(literalOptions).Concat(primitiveTypes).ToArray()))

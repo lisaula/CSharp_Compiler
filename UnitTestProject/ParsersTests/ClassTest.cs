@@ -68,9 +68,9 @@ namespace A{
 using Compiler.Parser.Nada;
 using jamones;
 public class kevin : Nexer{
-    public int x, y, z, c = 3;
+    public int x, y, z0, c = 3;
     public static float y1, z1, r;
-    public float x1 = y1, z= z1,r = r2,f = 4;
+    public float x1 = y1, z= z1,r2 = r2,f = 4;
 
 }
 ");

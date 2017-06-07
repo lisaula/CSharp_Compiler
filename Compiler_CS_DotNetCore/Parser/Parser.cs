@@ -22,7 +22,7 @@ namespace Compiler
             this.lexer = lexer;
             current_token = lexer.getNextToken();
             look_ahead = new List<Token>();
-            doDebugOnlyCode = false ;
+            //doDebugOnlyCode = true ;
         }
 
     }

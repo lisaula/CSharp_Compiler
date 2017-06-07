@@ -327,7 +327,7 @@ namespace UnitTestProject.ParsersTests
     public int funcion = persona.methodo(x=3).metodo;
     float f = persona.tryParse(x);
     Persona persona = this.atributo;
-    Persona persona = this.method(x,y,r,nada);
+    Persona persona2 = this.method(x,y,r,nada);
 }");
             var lexer = new LexicalAnalyzer(inputString);
             var parser = new Parser(lexer);
@@ -357,10 +357,10 @@ namespace UnitTestProject.ParsersTests
             var inputString = new InputString(@"public class kevin : Javier
 {
     float mana = new int[2][][][];
-    private int arreglo =  new float[]{ 5,3,5}; 
-    int arreglo = new int[2]{ 5,7 };
-    int arreglo = new int[2][]{ new int[5],new int[8]};
-    int arreglo = { new int[5], new int[4], array };
+    private int arreglo2 =  new float[]{ 5,3,5}; 
+    int arreglo1 = new int[2]{ 5,7 };
+    int arreglo3 = new int[2][]{ new int[5],new int[8]};
+    int arreglo4 = { new int[5], new int[4], array };
     int value = new Persona(x,y,w).array[2];
     int[,,,] x = new int[5,5,3,4];
 }");

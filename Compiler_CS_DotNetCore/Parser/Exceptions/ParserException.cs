@@ -4,10 +4,6 @@ namespace Compiler
 {
     public class ParserException : Exception
     {
-        private string expected;
-        private int row;
-        private int column;
-
         public ParserException()
         {
         }

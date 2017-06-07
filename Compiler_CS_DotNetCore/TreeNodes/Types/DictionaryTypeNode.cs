@@ -14,5 +14,10 @@
         {
 
         }
+
+        public override string ToString()
+        {
+            return "Dictionary<" + t1.ToString() + "," + t2.ToString() + ">";
+        }
     }
 }

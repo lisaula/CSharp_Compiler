@@ -15,5 +15,14 @@ namespace Compiler.Tree
 
         public ArrayNode arrayNode;
         public List<IdentifierNode> Identifiers { get; internal set; }
+        public override string ToString()
+        {
+            List<string> names = new List<string>();
+            foreach(IdentifierNode id in Identifiers)
+            {
+                names.Add(id.token.lexema);
+            }
+            return string.Join(".", names);
+        }
     }
 }

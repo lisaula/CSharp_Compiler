@@ -4,8 +4,8 @@ namespace Compiler.Tree
 {
     public class ClassDefinitionNode : TypeDefinitionNode
     {
-        public  List<FieldNode> fields;
-        public List<MethodNode> methods;
+        public Dictionary<string,FieldNode> fields;
+        public Dictionary<string,MethodNode> methods;
         public List<ConstructorNode> constructors;
         public EncapsulationNode encapsulation;
         public bool isAbstract;
@@ -18,7 +18,8 @@ namespace Compiler.Tree
             this.isAbstract = isAbstract;
             this.id = id;
             this.inheritance = inheritance;
-            fields = new List<FieldNode>();
+            fields = new Dictionary<string, FieldNode>();
+            methods = new Dictionary<string, MethodNode>();
         }
         public ClassDefinitionNode()
         {
