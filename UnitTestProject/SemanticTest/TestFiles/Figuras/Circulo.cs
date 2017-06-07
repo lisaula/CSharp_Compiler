@@ -1,4 +1,4 @@
-using System;
+using N1;
 
 namespace Figuras{
 	public class Circulo : Figura{

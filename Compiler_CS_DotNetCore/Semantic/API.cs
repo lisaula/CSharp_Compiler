@@ -36,6 +36,17 @@ namespace Compiler_CS_DotNetCore.Semantic
             return trees;
         }
 
+        internal void setUsingsOnNamespace(List<UsingNode> usingList, List<NamespaceNode> namespaceList)
+        {
+            if (namespaceList == null)
+                return;
+            foreach(NamespaceNode nms in namespaceList)
+            {
+                nms.usingList.AddRange(usingList);
+                setUsingsOnNamespace(nms.usingList, nms.namespaceList);
+            }
+        }
+
         internal void setNamespacesOnTableNms(string filename, CompilationNode tree)
         {
             this.file = filename;
@@ -49,8 +60,12 @@ namespace Compiler_CS_DotNetCore.Semantic
             {
                 string key = getIdentifierListAsString(".", nms.identifierList);
                 namespace_.Add(key);
-                if(!Singleton.tableNamespaces.ContainsKey(key))
-                    Singleton.tableNamespaces[key] = string.Join(".", namespace_);
+                string value = string.Join(".", namespace_);
+                if (!Singleton.tableNamespaces.ContainsKey(key))
+                    Singleton.tableNamespaces[key] = value ;
+                if(!Singleton.tableNamespaces.ContainsKey(value))
+                    Singleton.tableNamespaces[value] = value;
+
                 setNamespacesHerarchyOnTableNms(namespace_, nms.namespaceList);
                 namespace_.Remove(key);
             }

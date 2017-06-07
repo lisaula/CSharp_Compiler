@@ -1,4 +1,4 @@
-using System;
+using Figuras;
 
 namespace N1{
 	public class myClase{
