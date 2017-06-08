@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 
 namespace Compiler.Tree
 {
@@ -22,7 +23,7 @@ namespace Compiler.Tree
             return "Dictionary<" + t1.ToString() + "," + t2.ToString() + ">";
         }
 
-        public override void Evaluate()
+        public override void Evaluate(API api)
         {
             throw new NotImplementedException();
         }

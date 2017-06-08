@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 using System.Collections.Generic;
 
 namespace Compiler.Tree
@@ -26,7 +27,7 @@ namespace Compiler.Tree
             return string.Join(".", names);
         }
 
-        public override void Evaluate()
+        public override void Evaluate(API api)
         {
             throw new NotImplementedException();
         }

@@ -20,10 +20,23 @@ namespace Compiler.Tree
             {
                 us.evaluate(api);
             }
-            /*foreach(TypeDefinitionNode t in typeList)
+            foreach(TypeDefinitionNode t in typeList)
             {
-                t.Evaluate();
-            }*/
+                try
+                {
+                    t.Evaluate(api);
+                }
+                catch (NotImplementedException nie) { }
+            }
+
+            foreach (NamespaceNode nms in namespaceList)
+            {
+                try
+                {
+                    nms.Evaluate(api);
+                }
+                catch (NotImplementedException nie) { }
+            }
 
         }
     }

@@ -6,6 +6,8 @@
 
         public EncapsulationNode()
         {
+            token = new Token();
+            token.type = TokenType.RW_PRIVATE;
         }
 
         public EncapsulationNode(Token token)

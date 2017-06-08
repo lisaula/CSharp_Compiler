@@ -91,7 +91,31 @@ namespace Compiler
             {
                 var token = current_token;
                 consumeToken();
-                PrimaryExpressionNode literal = new LiteralNode(token);
+                PrimaryExpressionNode literal = null;
+                if (token.type == TokenType.LIT_CHAR)
+                {
+                    literal = new LiteralChar(token);
+                }
+                else if (token.type == TokenType.LIT_INT)
+                {
+                    literal = new LiteralInt(token);
+                }
+                else if (token.type == TokenType.LIT_FLOAT)
+                {
+                    literal = new LiteralFloat(token);
+                }
+                else if (token.type == TokenType.LIT_STRING)
+                {
+                    literal = new LiteralString(token);
+                }
+                else if (token.type == TokenType.LIT_BOOL)
+                {
+                    literal = new LiteralBool(token);
+                }
+                else
+                {
+                    literal = new LiteralString(token);
+                }
                 //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
                 //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
                 var list = primary_expression_p();

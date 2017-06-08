@@ -16,7 +16,7 @@
         }
         public Token()
         {
-
+            lexema = null;
         }
 
         public override string ToString()

@@ -4,7 +4,27 @@ namespace Figuras{
 	public abstract class Figura{
 
 	}
+
+	enum DIASDELASEMANA{
+		LUNES = 5,
+		MARTES = -5,
+		MIERCOLES,
+		JUEVES,
+		VIERNES,
+		SABADO,
+		DOMINGO
+	}
 }
+
+public enum DIASDELASEMANA2{
+		LUNES = 5,
+		MARTES = -5,
+		MIERCOLES = 10,
+		JUEVES = -52,
+		VIERNES,
+		SABADO,
+		DOMINGO
+	}
 
 public class myClaseAloneFiguras{
 	

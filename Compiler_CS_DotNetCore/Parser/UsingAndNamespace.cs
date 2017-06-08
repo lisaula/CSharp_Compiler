@@ -164,7 +164,7 @@ namespace Compiler
             else
             {
                 DebugInfoMethod("epsilon");
-                return null;
+                return new EncapsulationNode();
             }
         }
 

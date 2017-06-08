@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 using System.Collections.Generic;
 
 namespace Compiler.Tree
@@ -25,7 +26,7 @@ namespace Compiler.Tree
             this.token_identifier = token;
         }
 
-        public override void Evaluate()
+        public override void Evaluate(API api)
         {
             throw new NotImplementedException();
         }

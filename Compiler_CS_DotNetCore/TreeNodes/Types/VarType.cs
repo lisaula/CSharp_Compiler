@@ -1,5 +1,6 @@
 ﻿using System;
 using Compiler.Tree;
+using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler
 {
@@ -21,7 +22,7 @@ namespace Compiler
             return this.GetType().Name;
         }
 
-        public override void Evaluate()
+        public override void Evaluate(API api)
         {
             throw new NotImplementedException();
         }

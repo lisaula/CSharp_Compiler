@@ -36,6 +36,11 @@ namespace Compiler_CS_DotNetCore.Semantic
             return trees;
         }
 
+        internal TokenType getEncapsulation(EncapsulationNode encapsulation)
+        {
+            return encapsulation.token.type;
+        }
+
         internal void setUsingsOnNamespace(List<UsingNode> usingList, List<NamespaceNode> namespaceList)
         {
             if (namespaceList == null)

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
 {
@@ -25,6 +27,11 @@ namespace Compiler.Tree
                 name.Add(id.token.lexema);
             }
             return string.Join(".",name);
+        }
+
+        internal void Evaluate(API api)
+        {
+            
         }
     }
 }
