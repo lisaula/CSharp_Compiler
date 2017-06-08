@@ -9,15 +9,15 @@ namespace Compiler.Tree
         public List<EnumNode> enumNodeList;
         public EncapsulationNode encapsulation;
         public IdentifierNode identifier;
-
-        public EnumDefinitionNode(EncapsulationNode encapsulation, IdentifierNode identifier)
+        int initialization;
+        public EnumDefinitionNode(EncapsulationNode encapsulation, IdentifierNode identifier): this()
         {
             this.encapsulation = encapsulation;
             this.identifier = identifier;
         }
         public EnumDefinitionNode()
         {
-
+            initialization = -1;
         }
         public override string ToString()
         {
@@ -44,14 +44,42 @@ namespace Compiler.Tree
                 if(names.Contains(n.identifier.token.lexema))
                     throw new SemanticException(n.identifier.token.lexema + " already exist in enum " + identifier.token.lexema + ". " + n.identifier.token.ToString());
                 names.Add(n.identifier.token.lexema);
-                checkExpression(n);
+                checkExpression(ref n);
             }
         }
 
-        private void checkExpression(EnumNode enum_)
+        private void checkExpression(ref EnumNode enum_)
         {
             if (enum_.expressionNode == null)
+            {
+                if (initialization + 1 >= 0)
+                {
+                    enum_.expressionNode = new InlineExpressionNode();
+                    var token = new Token();
+                    token.type = TokenType.LIT_INT;
+                    int n = initialization + 1;
+                    token.lexema = "" + n;
+                    var l = new LiteralInt(token);
+                    ((InlineExpressionNode)enum_.expressionNode).list.Add(l);
+                }
+                else
+                {
+                    var token = new Token();
+                    token.type = TokenType.LIT_INT;
+                    int n = initialization + 1;
+                    n = Math.Abs(n);
+                    token.lexema = "" + n;
+                    var l = new LiteralInt(token);
+                    var op = new Token();
+                    op.type = TokenType.OP_SUBSTRACT;
+                    op.lexema = "-";
+                    var inline = new InlineExpressionNode();
+                    inline.list.Add(l);
+                    enum_.expressionNode = new PreExpressionNode(op,inline);
+                }
                 return;
+            }
+                
             if (enum_.expressionNode is InlineExpressionNode)
             {
                 InlineExpressionNode ex = enum_.expressionNode as InlineExpressionNode;
@@ -59,6 +87,8 @@ namespace Compiler.Tree
                 {
                     if (!(ex.list[0] is LiteralInt))
                         throw new SemanticException("Not a constant expression." + enum_.identifier.token.ToString());
+                    initialization = int.Parse(((LiteralInt)ex.list[0]).token.lexema);
+
                 }else
                     throw new SemanticException("Not a constant expression." + enum_.identifier.token.ToString());
             }
@@ -74,6 +104,7 @@ namespace Compiler.Tree
                 {
                     if (!(ex.list[0] is LiteralInt))
                         throw new SemanticException("Not a constant expression." + enum_.identifier.token.ToString());
+                    initialization = - int.Parse(((LiteralInt)ex.list[0]).token.lexema);
                 }
                 else
                     throw new SemanticException("Not a constant expression." + enum_.identifier.token.ToString());

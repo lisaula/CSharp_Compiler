@@ -14,7 +14,7 @@ namespace Compiler.Tree
 
         public InlineExpressionNode()
         {
-
+            list = new List<ExpressionNode>();
         }
     }
 }

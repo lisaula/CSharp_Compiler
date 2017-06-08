@@ -19,10 +19,10 @@ namespace Figuras{
 public enum DIASDELASEMANA2{
 		LUNES = 5,
 		MARTES = -5,
-		MIERCOLES = 10,
+		MIERCOLES,
 		JUEVES = -52,
 		VIERNES,
-		SABADO,
+		SABADO=10,
 		DOMINGO
 	}
 
