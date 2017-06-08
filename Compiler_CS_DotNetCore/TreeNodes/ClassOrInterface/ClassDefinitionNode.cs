@@ -13,8 +13,9 @@ namespace Compiler.Tree
         public bool isAbstract;
         public IdentifierNode id;
         public InheritanceNode inheritance;
+        public string parent_namespace;
 
-        public ClassDefinitionNode(EncapsulationNode encapsulation, bool isAbstract, IdentifierNode id, InheritanceNode inheritance)
+        public ClassDefinitionNode(EncapsulationNode encapsulation, bool isAbstract, IdentifierNode id, InheritanceNode inheritance):this()
         {
             this.encapsulation = encapsulation;
             this.isAbstract = isAbstract;
@@ -25,7 +26,7 @@ namespace Compiler.Tree
         }
         public ClassDefinitionNode()
         {
-
+            parent_namespace = null;
         }
         public override string ToString()
         {

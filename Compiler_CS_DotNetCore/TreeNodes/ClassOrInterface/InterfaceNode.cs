@@ -10,9 +10,11 @@ namespace Compiler.Tree
         public List<MethodNode> methods;
         public Token token_identifier;
         public EncapsulationNode encapsulation;
+        internal string parent_namespace;
 
         public InterfaceNode()
         {
+            parent_namespace = null;
         }
 
         public InterfaceNode(Token token)

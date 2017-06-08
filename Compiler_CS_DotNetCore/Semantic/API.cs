@@ -41,14 +41,32 @@ namespace Compiler_CS_DotNetCore.Semantic
             return encapsulation.token.type;
         }
 
-        internal void setUsingsOnNamespace(List<UsingNode> usingList, List<NamespaceNode> namespaceList)
+        internal void setUsingsOnNamespace(List<UsingNode> usingList, List<NamespaceNode> namespaceList, List<string> namespaces)
         {
             if (namespaceList == null)
                 return;
+
             foreach(NamespaceNode nms in namespaceList)
             {
+                setNamespacesInUsingList(ref nms.usingList, namespaces);
+                string nms_name = getIdentifierListAsString(".", nms.identifierList);
+                namespaces.Add(nms_name);
                 nms.usingList.AddRange(usingList);
-                setUsingsOnNamespace(nms.usingList, nms.namespaceList);
+                setUsingsOnNamespace(nms.usingList, nms.namespaceList, namespaces);
+                namespaces.Remove(nms_name);
+            }
+        }
+
+        private void setNamespacesInUsingList(ref List<UsingNode> usingList, List<string> namespaces)
+        {
+            foreach(string nms in namespaces)
+            {
+                var token = new Token();
+                token.lexema = nms;
+                var id = new IdentifierNode(token);
+                var un = new UsingNode();
+                un.identifierList.Add(id);
+                usingList.Insert(0, un);
             }
         }
 
@@ -113,6 +131,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                 if(type is ClassDefinitionNode)
                 {
                     var t = type as ClassDefinitionNode;
+                    t.parent_namespace = string.Join(".", namespaces_);
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
@@ -122,6 +141,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                 }else if(type is EnumDefinitionNode)
                 {
                     var t = type as EnumDefinitionNode;
+                    t.parent_namespace = string.Join(".", namespaces_);
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
@@ -132,6 +152,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                 else if(type is InterfaceNode)
                 {
                     var t = type as InterfaceNode;
+                    t.parent_namespace = string.Join(".", namespaces_);
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());

@@ -10,6 +10,8 @@ namespace Compiler.Tree
         public EncapsulationNode encapsulation;
         public IdentifierNode identifier;
         int initialization;
+        public string parent_namespace;
+
         public EnumDefinitionNode(EncapsulationNode encapsulation, IdentifierNode identifier): this()
         {
             this.encapsulation = encapsulation;
@@ -18,6 +20,7 @@ namespace Compiler.Tree
         public EnumDefinitionNode()
         {
             initialization = -1;
+            parent_namespace = null;
         }
         public override string ToString()
         {
@@ -28,7 +31,7 @@ namespace Compiler.Tree
         {
             if (this.evaluated)
                 return;
-            Console.WriteLine("Evaluatiog " +identifier.token.lexema);
+            Debug.printMessage("Evaluatiog " +identifier.token.lexema);
             if (api.getEncapsulation(encapsulation) != TokenType.RW_PUBLIC && encapsulation.token.lexema !=null)
                 throw new SemanticException("Enum " + identifier.token.lexema + " can't be accesible due to its encapsulation level." + identifier.token.ToString());
             enumNodes();

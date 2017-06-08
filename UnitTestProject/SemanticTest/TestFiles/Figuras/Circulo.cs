@@ -10,3 +10,7 @@ namespace Figuras{
 		}
 	}
 }
+
+public interface myInterface : insideFiguras{
+	void getNombre(int index);
+}

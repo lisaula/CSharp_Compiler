@@ -13,6 +13,7 @@ namespace Compiler.Tree
         }
         public UsingNode()
         {
+            identifierList = new List<IdentifierNode>();
         }
 
         internal void evaluate(API api)

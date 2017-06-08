@@ -12,6 +12,7 @@ namespace Compiler_CS_DotNetCore.Semantic
         private API api;
         public Evaluator(List<string> paths)
         {
+            Debug.print = true;
             api = new API(paths);
             trees = api.buildTrees();
             setTables();
@@ -25,7 +26,7 @@ namespace Compiler_CS_DotNetCore.Semantic
         {
             foreach (KeyValuePair<string, CompilationNode> tree in trees)
             {
-                api.setUsingsOnNamespace(tree.Value.usingList, tree.Value.namespaceList);
+                api.setUsingsOnNamespace(tree.Value.usingList, tree.Value.namespaceList, new List<string>());
             }
         }
 
@@ -45,19 +46,19 @@ namespace Compiler_CS_DotNetCore.Semantic
 
         private static void printTableNamespaces()
         {
-            Console.WriteLine("Table Namespaces");
+            Debug.printMessage("Table Namespaces");
             foreach (KeyValuePair<string, string> entry in Singleton.tableNamespaces)
             {
-                Console.Out.WriteLine(entry.Key + " - " + entry.Value);
+                Debug.printMessage(entry.Key + " - " + entry.Value);
             }
         }
 
         private static void printTableTypes()
         {
-            Console.WriteLine("Table Types");
+            Debug.printMessage("Table Types");
             foreach (KeyValuePair<string, TypeDefinitionNode> entry in Singleton.tableTypes)
             {
-                Console.Out.WriteLine(entry.Key + " - " + entry.Value.GetType());
+                Debug.printMessage(entry.Key + " - " + entry.Value.GetType());
             }
         }
 
