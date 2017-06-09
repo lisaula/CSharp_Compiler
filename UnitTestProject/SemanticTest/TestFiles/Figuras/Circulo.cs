@@ -13,7 +13,7 @@ namespace Figuras{
 		}
 	}
 }
-public interface myInterface : Types, Types{
+public interface myInterface : Types{
 	void getNombre(int index);
 	void getNompre(string name);
 	int setIndex(int index);

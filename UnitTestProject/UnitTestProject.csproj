@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="SemanticTest\interfaceInheritance.cs" />
     <Compile Remove="SemanticTest\TestFiles\Figuras\Circulo.cs" />
     <Compile Remove="SemanticTest\TestFiles\Figuras\Figura.cs" />
     <Compile Remove="SemanticTest\TestFiles\Main.cs" />

@@ -10,10 +10,25 @@ namespace Compiler_CS_DotNetCore.Semantic
     {
         public Dictionary<string, NamespaceNode> trees;
         private API api;
-        public Evaluator(List<string> paths)
+
+        public Evaluator()
         {
             Debug.print = true;
-            api = new API(paths);
+        }
+        public Evaluator(List<string> paths, API api, Compiler.InputString input) : this()
+        {
+            this.api = api;
+            trees = api.buildTreesFromInput(input);
+            setTables();
+            printTableTypes();
+            printTableNamespaces();
+            setUsingsInAllNamespaces();
+            evaluateProject();
+        }
+
+        public Evaluator(List<string> paths) : this()
+        {
+            this.api = new API(paths);
             trees = api.buildTrees();
             setTables();
             printTableTypes();

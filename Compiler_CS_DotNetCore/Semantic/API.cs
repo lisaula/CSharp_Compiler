@@ -36,6 +36,18 @@ namespace Compiler_CS_DotNetCore.Semantic
             return trees;
         }
 
+        internal Dictionary<string, NamespaceNode> buildTreesFromInput(InputString input)
+        {
+            Dictionary<string, NamespaceNode> trees = new Dictionary<string, NamespaceNode>();
+            var inputString = input;
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer, "Prueba");
+            NamespaceNode tree;
+            tree = parser.parse();
+            trees["Prueba"] = tree;
+            return trees;
+        }
+
         internal TokenType getEncapsulation(EncapsulationNode encapsulation)
         {
             return encapsulation.token.type;

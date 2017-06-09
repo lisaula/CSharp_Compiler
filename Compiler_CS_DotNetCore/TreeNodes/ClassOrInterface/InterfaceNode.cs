@@ -15,6 +15,7 @@ namespace Compiler.Tree
         {
             parent_namespace = null;
             methods = new Dictionary<string, MethodNode>();
+            parents = null;
         }
 
         public InterfaceNode(Token token):this()
@@ -37,14 +38,27 @@ namespace Compiler.Tree
                 throw new SemanticException("Interface "+identifier.token.lexema+"naccessible due to its encapsulation level. ",identifier.token);
             }
             checkInheritanceExistance(api);
+            checkParents(api);
             evaluated = true;
+        }
+
+        private void checkParents(API api)
+        {
+            if (parents == null)
+                return;
+            foreach(KeyValuePair<string, TypeDefinitionNode> parent in parents)
+            {
+                if (!(parent.Value is InterfaceNode))
+                    throw new SemanticException("Type '" + parent.Key + "' in " + identifier.token.lexema + " is not an interface",identifier.token);
+                ((InterfaceNode)parent.Value).Evaluate(api);
+            }
         }
 
         private void checkInheritanceExistance(API api)
         {
-            parents = new Dictionary<string, TypeDefinitionNode>();
             if (inheritance == null || inheritance.identifierList == null)
                 return;
+            parents = new Dictionary<string, TypeDefinitionNode>();
             foreach (List<IdentifierNode> parent in inheritance.identifierList)
             {
                 string name = api.getIdentifierListAsString(".",parent);
