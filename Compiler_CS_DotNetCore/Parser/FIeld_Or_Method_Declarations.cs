@@ -16,7 +16,7 @@ namespace Compiler
                 var assignment = field_declaration(encapsulation, modifier, type, ref clase);
                 var field = new FieldNode(encapsulation, modifier, type, id, assignment);
                 if (clase.fields.ContainsKey(id.token.lexema))
-                    throw new SemanticException("Field "+id.token.lexema+" already exist in class "+clase.id.token.lexema, filename);
+                    throw new SemanticException("Field "+id.token.lexema+" already exist in class "+clase.identifier.token.lexema);
                 clase.fields[id.token.lexema]= field;
                 //clase.fields.Add(field);
             } else if (pass(TokenType.OPEN_PARENTHESIS))
@@ -48,7 +48,7 @@ namespace Compiler
             //clase.methods.Add(method);
             string methodName = Utils.getMethodName(method);
             if (clase.methods.ContainsKey(methodName))
-                throw new SemanticException("Methods " + methodName + " already exist in class " + clase.id.token.lexema, filename);
+                throw new SemanticException("Methods " + methodName + " already exist in class " + clase.identifier.token.lexema);
             clase.methods[methodName] = method;
         }
 
@@ -62,7 +62,7 @@ namespace Compiler
             foreach(FieldNode f in list)
             {
                 if (clase.fields.ContainsKey(f.id.token.lexema))
-                    throw new SemanticException("Field " + f.id.token.lexema + " already exist in class " + clase.id.token.lexema, filename);
+                    throw new SemanticException("Field " + f.id.token.lexema + " already exist in class " + clase.identifier.token.lexema);
                 clase.fields[f.id.token.lexema] = f;
             }
             if (!pass(TokenType.END_STATEMENT))

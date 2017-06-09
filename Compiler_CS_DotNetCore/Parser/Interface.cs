@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Compiler.Tree;
+using Compiler_CS_DotNetCore.Semantic;
+
 namespace Compiler
 {
     public partial class Parser
@@ -24,28 +26,26 @@ namespace Compiler
                 interfaceNode.inheritance =  inheritance_base();
             }
 
-            interfaceNode.methods = interface_body();
+            interface_body(ref interfaceNode);
             optional_body_end();
             return interfaceNode;
         }
 
-        private List<MethodNode> interface_body()
+        private void interface_body(ref InterfaceNode interfaceNode)
         {
             DebugInfoMethod("interface_body");
             if (!pass(TokenType.OPEN_CURLY_BRACKET))
                 throwError("open curly bracket '{'");
             consumeToken();
 
-            var lista =  interface_method_declaration_list();
+            interface_method_declaration_list(ref interfaceNode);
 
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '}'");
             consumeToken();
-
-            return lista;
         }
 
-        private List<MethodNode> interface_method_declaration_list()
+        private void interface_method_declaration_list(ref InterfaceNode interfaceNode)
         {
             DebugInfoMethod("interface_method_declaration_list");
             TokenType[] nuevo = {TokenType.RW_VOID };
@@ -55,15 +55,15 @@ namespace Compiler
                 if (!pass(TokenType.END_STATEMENT))
                     throwError(";");
                 consumeToken();
-
-                var lista = interface_method_declaration_list();
-                lista.Insert(0, method);
-                return lista;
+                string methodName = Utils.getMethodName(method);
+                if (interfaceNode.methods.ContainsKey(methodName))
+                    throw new SemanticException("Methods " + methodName + " already exist in interface " + interfaceNode.identifier.token.lexema,method.id.token);
+                interfaceNode.methods[methodName] = method;
+                interface_method_declaration_list(ref interfaceNode);
             }
             else
             {
                 DebugInfoMethod("epsilon");
-                return new List<MethodNode>();
             }
         }
 

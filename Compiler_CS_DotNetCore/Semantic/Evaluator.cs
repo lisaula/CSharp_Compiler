@@ -8,7 +8,7 @@ namespace Compiler_CS_DotNetCore.Semantic
 
     public class Evaluator
     {
-        public Dictionary<string, CompilationNode> trees;
+        public Dictionary<string, NamespaceNode> trees;
         private API api;
         public Evaluator(List<string> paths)
         {
@@ -24,7 +24,7 @@ namespace Compiler_CS_DotNetCore.Semantic
 
         private void setUsingsInAllNamespaces()
         {
-            foreach (KeyValuePair<string, CompilationNode> tree in trees)
+            foreach (KeyValuePair<string, NamespaceNode> tree in trees)
             {
                 api.setUsingsOnNamespace(tree.Value.usingList, tree.Value.namespaceList, new List<string>());
             }
@@ -32,7 +32,7 @@ namespace Compiler_CS_DotNetCore.Semantic
 
         private void evaluateProject()
         {
-            foreach (KeyValuePair<string, CompilationNode> tree in trees)
+            foreach (KeyValuePair<string, NamespaceNode> tree in trees)
             {
                 try
                 {
@@ -44,16 +44,17 @@ namespace Compiler_CS_DotNetCore.Semantic
             }
         }
 
-        private static void printTableNamespaces()
+        private void printTableNamespaces()
         {
             Debug.printMessage("Table Namespaces");
-            foreach (KeyValuePair<string, string> entry in Singleton.tableNamespaces)
+            foreach (KeyValuePair<string, NamespaceNode> entry in Singleton.tableNamespaces)
             {
-                Debug.printMessage(entry.Key + " - " + entry.Value);
+                string name = api.getIdentifierListAsString(".", entry.Value.identifierList);
+                Debug.printMessage(entry.Key + " - "+name);
             }
         }
 
-        private static void printTableTypes()
+        private void printTableTypes()
         {
             Debug.printMessage("Table Types");
             foreach (KeyValuePair<string, TypeDefinitionNode> entry in Singleton.tableTypes)
@@ -64,7 +65,7 @@ namespace Compiler_CS_DotNetCore.Semantic
 
         private void setTables()
         {
-            foreach (KeyValuePair<string, CompilationNode> tree in trees)
+            foreach (KeyValuePair<string, NamespaceNode> tree in trees)
             {
                 api.setClassesOnTableType(tree.Key, tree.Value);
                 api.setNamespacesOnTableNms(tree.Key, tree.Value);

@@ -20,7 +20,7 @@ namespace Compiler.Tree
         {
             string name = api.getIdentifierListAsString(".", identifierList);
             if (!Singleton.tableNamespaces.ContainsKey(name))
-                throw new SemanticException("Could not be found a namespace with using " + name+identifierList[0].token.ToString());
+                throw new SemanticException("Could not be found a namespace with using "+name,identifierList[0].token);
         }
     }
 }

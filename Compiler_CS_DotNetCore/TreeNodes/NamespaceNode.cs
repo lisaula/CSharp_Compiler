@@ -17,6 +17,7 @@ namespace Compiler.Tree
         public NamespaceNode()
         {
             usingList = new List<UsingNode>();
+            identifierList = new List<IdentifierNode>();
         }
 
         public override string ToString()
@@ -31,7 +32,27 @@ namespace Compiler.Tree
 
         internal void Evaluate(API api)
         {
-            
+            foreach (UsingNode us in usingList)
+            {
+                us.evaluate(api);
+            }
+            foreach (TypeDefinitionNode t in typeList)
+            {
+                try
+                {
+                    t.Evaluate(api);
+                }
+                catch (NotImplementedException nie) { }
+            }
+
+            foreach (NamespaceNode nms in namespaceList)
+            {
+                try
+                {
+                    nms.Evaluate(api);
+                }
+                catch (NotImplementedException nie) { }
+            }
         }
     }
 }

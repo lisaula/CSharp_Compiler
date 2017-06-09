@@ -8,7 +8,7 @@ namespace Compiler
 {
     public partial class Parser
     {
-        public CompilationNode parse()
+        public NamespaceNode parse()
         {
             DebugInfoMethod("parser");
             var tree = code();
@@ -18,15 +18,15 @@ namespace Compiler
             return tree;
         }
 
-        private CompilationNode code()
+        private NamespaceNode code()
         {
             DebugInfoMethod("code");
             return compilation_unit();
         }
 
-        private CompilationNode compilation_unit()
+        private NamespaceNode compilation_unit()
         {
-            CompilationNode compilationNode = new CompilationNode();
+            NamespaceNode compilationNode = new NamespaceNode();
             DebugInfoMethod("compilation_unit");
             var usingList = new List<UsingNode>();
             compilationNode.usingList = optional_using_directive(ref usingList);
@@ -64,7 +64,7 @@ namespace Compiler
                 return optional_namespace_member_declaration(ref namespaceList, ref typeList);
             }else if (pass(encapsulationTypes.Concat(typesDeclarationOptions).ToArray()))
             {
-                typeList = type_declaration_list();
+                typeList.AddRange(type_declaration_list());
                 return optional_namespace_member_declaration(ref namespaceList, ref typeList);
             }
             else

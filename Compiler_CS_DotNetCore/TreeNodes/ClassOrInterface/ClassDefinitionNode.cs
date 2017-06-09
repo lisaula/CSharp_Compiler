@@ -11,15 +11,13 @@ namespace Compiler.Tree
         public List<ConstructorNode> constructors;
         public EncapsulationNode encapsulation;
         public bool isAbstract;
-        public IdentifierNode id;
         public InheritanceNode inheritance;
-        public string parent_namespace;
 
         public ClassDefinitionNode(EncapsulationNode encapsulation, bool isAbstract, IdentifierNode id, InheritanceNode inheritance):this()
         {
             this.encapsulation = encapsulation;
             this.isAbstract = isAbstract;
-            this.id = id;
+            this.identifier = id;
             this.inheritance = inheritance;
             fields = new Dictionary<string, FieldNode>();
             methods = new Dictionary<string, MethodNode>();
@@ -30,7 +28,7 @@ namespace Compiler.Tree
         }
         public override string ToString()
         {
-            return id.token.lexema;
+            return identifier.token.lexema;
         }
 
         public override void Evaluate(API api)

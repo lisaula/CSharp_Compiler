@@ -7,35 +7,62 @@ namespace Compiler.Tree
     public class InterfaceNode : TypeDefinitionNode
     {
         public InheritanceNode inheritance;
-        public List<MethodNode> methods;
-        public Token token_identifier;
+        public Dictionary<string, MethodNode> methods;
         public EncapsulationNode encapsulation;
-        internal string parent_namespace;
+        public Dictionary<string, TypeDefinitionNode> parents;
 
         public InterfaceNode()
         {
             parent_namespace = null;
+            methods = new Dictionary<string, MethodNode>();
         }
 
-        public InterfaceNode(Token token)
+        public InterfaceNode(Token token):this()
         {
-            this.token_identifier = token;
+            this.identifier = new IdentifierNode(token);
         }
 
-        public InterfaceNode(EncapsulationNode encapsulation, Token token)
+        public InterfaceNode(EncapsulationNode encapsulation, Token token):this(token)
         {
             this.encapsulation = encapsulation;
-            this.token_identifier = token;
         }
 
         public override void Evaluate(API api)
         {
-            throw new NotImplementedException();
+            if (evaluated)
+                return;
+            Debug.printMessage("Evaluating " + identifier.token.lexema);
+            if(encapsulation.token.type != TokenType.RW_PUBLIC)
+            {
+                throw new SemanticException("Interface "+identifier.token.lexema+"naccessible due to its encapsulation level. ",identifier.token);
+            }
+            checkInheritanceExistance(api);
+            evaluated = true;
+        }
+
+        private void checkInheritanceExistance(API api)
+        {
+            parents = new Dictionary<string, TypeDefinitionNode>();
+            if (inheritance == null || inheritance.identifierList == null)
+                return;
+            foreach (List<IdentifierNode> parent in inheritance.identifierList)
+            {
+                string name = api.getIdentifierListAsString(".",parent);
+                NamespaceNode nms = api.getParentNamespace(this);
+                TypeDefinitionNode tdn =  api.findTypeInList(nms.typeList, name);
+                if(tdn == null)
+                {
+                    tdn = api.findTypeInUsings(nms.usingList, name);
+                }
+                if (parents.ContainsKey(name))
+                    throw new SemanticException("Redundant Inheritance. " + name + " was found twice as inheritance in " + identifier.token.lexema, identifier.token);
+                parents[name] = tdn;
+            }
         }
 
         public override string ToString()
         {
-            return token_identifier.lexema;
+            return identifier.token.lexema;
         }
     }
 }

@@ -20,16 +20,16 @@ namespace Compiler_CS_DotNetCore.Semantic
             throw new SemanticException(msg, file);
         }
 
-        public Dictionary<string, CompilationNode> buildTrees()
+        public Dictionary<string, NamespaceNode> buildTrees()
         {
-            Dictionary<string, CompilationNode> trees = new Dictionary<string, CompilationNode>();
+            Dictionary<string, NamespaceNode> trees = new Dictionary<string, NamespaceNode>();
             foreach (string s in paths)
             {
                 var txt = System.IO.File.ReadAllText(s);
                 var inputString = new InputString(txt);
                 var lexer = new LexicalAnalyzer(inputString);
                 var parser = new Parser(lexer, s);
-                CompilationNode tree;   
+                NamespaceNode tree;   
                 tree = parser.parse();
                 trees[s] =tree;
             }
@@ -57,6 +57,15 @@ namespace Compiler_CS_DotNetCore.Semantic
             }
         }
 
+        internal NamespaceNode getParentNamespace(TypeDefinitionNode t)
+        {
+            if (t.parent_namespace == "blank")
+            {
+                return Singleton.tableNamespaces[t.file];
+            }
+            return Singleton.tableNamespaces[t.parent_namespace];
+        }
+
         private void setNamespacesInUsingList(ref List<UsingNode> usingList, List<string> namespaces)
         {
             foreach(string nms in namespaces)
@@ -70,11 +79,37 @@ namespace Compiler_CS_DotNetCore.Semantic
             }
         }
 
-        internal void setNamespacesOnTableNms(string filename, CompilationNode tree)
+        internal TypeDefinitionNode findTypeInUsings(List<UsingNode> usingList, string name)
+        {
+            foreach(UsingNode us in usingList)
+            {
+                string fname = getIdentifierListAsString(".",us.identifierList);
+                fname += "." + name;
+                if (Singleton.tableTypes.ContainsKey(fname))
+                    return Singleton.tableTypes[fname];
+            }
+            string fullname = "blank." + name;
+            if (Singleton.tableTypes.ContainsKey(fullname))
+                return Singleton.tableTypes[fullname];
+
+            throw new SemanticException("Could not find Type " + name + " in the current context");
+        }
+
+        internal TypeDefinitionNode findTypeInList(List<TypeDefinitionNode> typeList, string name)
+        {
+            foreach(TypeDefinitionNode tdn in typeList)
+            {
+                if (tdn.identifier.token.lexema == name)
+                    return tdn;
+            }
+            return null;
+        }
+
+        internal void setNamespacesOnTableNms(string filename, NamespaceNode tree)
         {
             this.file = filename;
+            Singleton.tableNamespaces[file] = tree;
             setNamespacesHerarchyOnTableNms(new List<string>(), tree.namespaceList);
-
         }
 
         private void setNamespacesHerarchyOnTableNms(List<string> namespace_, List<NamespaceNode> namespaceList)
@@ -85,9 +120,9 @@ namespace Compiler_CS_DotNetCore.Semantic
                 namespace_.Add(key);
                 string value = string.Join(".", namespace_);
                 if (!Singleton.tableNamespaces.ContainsKey(key))
-                    Singleton.tableNamespaces[key] = value ;
+                    Singleton.tableNamespaces[key] = nms ;
                 if(!Singleton.tableNamespaces.ContainsKey(value))
-                    Singleton.tableNamespaces[value] = value;
+                    Singleton.tableNamespaces[value] = nms;
 
                 setNamespacesHerarchyOnTableNms(namespace_, nms.namespaceList);
                 namespace_.Remove(key);
@@ -104,7 +139,7 @@ namespace Compiler_CS_DotNetCore.Semantic
             return string.Join(sep, name);
         }
 
-        public void setClassesOnTableType( string filename,CompilationNode tree)
+        public void setClassesOnTableType( string filename,NamespaceNode tree)
         {
             this.file = filename;
             var name = new List<string>();
@@ -132,16 +167,18 @@ namespace Compiler_CS_DotNetCore.Semantic
                 {
                     var t = type as ClassDefinitionNode;
                     t.parent_namespace = string.Join(".", namespaces_);
+                    t.file = this.file;
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
                     if (Singleton.tableTypeContains(fullname))
-                        throwSemanticErrot(fullname + " of type "+ t.GetType() + "already exist on " + t.id.token.ToString());
+                        throwSemanticErrot(fullname + " of type "+ t.GetType() + "already exist on " + t.identifier.token.ToString());
                     Singleton.tableTypes[fullname] = t;
                 }else if(type is EnumDefinitionNode)
                 {
                     var t = type as EnumDefinitionNode;
                     t.parent_namespace = string.Join(".", namespaces_);
+                    t.file = this.file;
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
@@ -153,11 +190,12 @@ namespace Compiler_CS_DotNetCore.Semantic
                 {
                     var t = type as InterfaceNode;
                     t.parent_namespace = string.Join(".", namespaces_);
+                    t.file = this.file;
                     namespaces_.Add(t.ToString());
                     string fullname = String.Join(".", namespaces_);
                     namespaces_.Remove(t.ToString());
                     if (Singleton.tableTypeContains(fullname))
-                        throwSemanticErrot(fullname + " of type "+t.GetType()+"already exist on " + t.token_identifier.ToString());
+                        throwSemanticErrot(fullname + " of type "+t.GetType()+"already exist on " + t.identifier.token.ToString());
                     Singleton.tableTypes[fullname] = t;
                 }
             }
