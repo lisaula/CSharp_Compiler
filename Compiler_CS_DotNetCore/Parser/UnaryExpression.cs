@@ -378,7 +378,7 @@ namespace Compiler
 
         private ArrayInstantiation instance_expression_factorized_p(TypeDefinitionNode type)
         {
-            var arrayNode = new ArrayNode();
+            ArrayNode arrayNode = new ArrayNode();
             DebugInfoMethod("instance_expression_factorized_p");
             TokenType[] nuevo = { TokenType.OP_TER_NULLABLE, TokenType.OP_COLON,
                 TokenType.OP_NULLABLE, TokenType.OP_LOG_OR,
@@ -391,22 +391,37 @@ namespace Compiler
                 Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
                 Concat(multiplicativeOperatorOptions).Concat(assignmentOperatorOptions).Concat(unaryOperatorOptions)
                 .Concat(literalOptions).ToArray()))
-            {
-                
-                var primaryExpressionBracket = expression_list();
-
+            {                    
+                arrayNode.expression_list = expression_list();
+                arrayNode.dimensions = arrayNode.expression_list.Count;
                 if (!pass(TokenType.CLOSE_SQUARE_BRACKET))
                     throwError("close square bracket ']'");
                 consumeToken();
-                
+                arrayNode.arrayOfArrays = 1;
                 optional_rank_specifier_list(ref arrayNode);
                 var initialization = optional_array_initializer();
-                return new ArrayInstantiation(type, primaryExpressionBracket, arrayNode, initialization);
+                if (type is IdentifierTypeNode)
+                {
+                    ((IdentifierTypeNode)type).arrayNode = arrayNode;
+                }
+                else if (type is PrimitiveType)
+                {
+                    ((PrimitiveType)type).arrayNode = arrayNode;
+                }
+                return new ArrayInstantiation(type, initialization);
             }else if (pass(TokenType.OP_COMMA,TokenType.CLOSE_SQUARE_BRACKET))
             {
                 rank_specifier_list(ref arrayNode);
                 var initialization = array_initializer();
-                return new ArrayInstantiation(type, arrayNode, initialization);
+                if (type is IdentifierTypeNode)
+                {
+                    ((IdentifierTypeNode)type).arrayNode = arrayNode;
+                }
+                else if (type is PrimitiveType)
+                {
+                    ((PrimitiveType)type).arrayNode = arrayNode;
+                }
+                return new ArrayInstantiation(type, initialization);
             }
             else
             {
@@ -501,6 +516,8 @@ namespace Compiler
             DebugInfoMethod("optional_comma_list");
             if (pass(TokenType.OP_COMMA))
             {
+                if(arrayNode.dimensions == 0)
+                    arrayNode.dimensions = 1;
                 consumeToken();
                 arrayNode.dimensions++;
                 optional_comma_list(ref arrayNode);
@@ -527,11 +544,11 @@ namespace Compiler
 
         private void optional_rank_specifier_list(ref ArrayNode arrayNode)
         {
-            if (arrayNode == null)
-                arrayNode = new ArrayNode();
             DebugInfoMethod("optional_rank_specifier_list");
             if (pass(TokenType.OPEN_SQUARE_BRACKET))
             {
+                if (arrayNode == null)
+                    arrayNode = new ArrayNode();
                 consumeToken();
                 rank_specifier_list(ref arrayNode);
             }

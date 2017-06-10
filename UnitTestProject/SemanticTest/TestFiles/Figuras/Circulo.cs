@@ -7,7 +7,7 @@ namespace Figuras{
 		public static float field3;
 		public bool field4;
 		private Types t;
-		myClase[,,] field5 = new myClase[5,10][][];
+		myClase[,,][][] field5 = new myClase[3,2][][]{{5,2}, {2,3}, {4,5}};
 
 	}
 	namespace insideFiguras{
