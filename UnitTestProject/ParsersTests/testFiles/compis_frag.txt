@@ -9,6 +9,10 @@ namespace Heap_sort
 			var dict = new Dictionary<string, Dictionary<string, int> >();
 			mama.estado = mijo.estaencasa()? feliz() : reganiar();  
 			a1.x1[a2.x2[0,0].y].setX(getY(x3[fn(1,2)]));
+			this.atributo = 5;
+			this.funcion(cont, this.atributo);
+			base.funcionPadre();
+			int.Parse("10");
 			int[] mykeys = new int[] {2, 5, -4, 11, 0, 18, 22, 67, 51, 6};
 
 			float[] mykeys = new float[] {2.22f, 0.5f, 2.7f, -1.0f, 11.2f};

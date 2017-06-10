@@ -15,5 +15,10 @@ namespace Compiler.Tree
         {
             return this.GetType().Name;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is IntType;
+        }
     }
 }

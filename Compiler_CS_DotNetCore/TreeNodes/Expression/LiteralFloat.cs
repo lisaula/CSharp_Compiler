@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class LiteralFloat : LiteralNode
     { 
@@ -9,6 +11,11 @@
         public LiteralFloat()
         {
 
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            return new FloatType();
         }
     }
 }

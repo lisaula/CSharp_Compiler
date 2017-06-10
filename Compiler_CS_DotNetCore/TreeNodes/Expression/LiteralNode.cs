@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Tree
 {
-    public class LiteralNode : PrimaryExpressionNode
+    public abstract class LiteralNode : PrimaryExpressionNode
     {
         public Token token;
 

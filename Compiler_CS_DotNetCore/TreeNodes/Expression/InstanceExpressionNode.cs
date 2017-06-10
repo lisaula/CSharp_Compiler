@@ -1,6 +1,8 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
-    public class InstanceExpressionNode: PrimaryExpressionNode
+    public abstract class InstanceExpressionNode: PrimaryExpressionNode
     {
         public InstanceExpressionNode()
         {

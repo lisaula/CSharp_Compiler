@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public  class ParenthesizedExpressionNode : PrimaryExpressionNode
     {
@@ -11,6 +13,11 @@
         public ParenthesizedExpressionNode()
         {
 
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            return expr.evaluateType();
         }
     }
 }

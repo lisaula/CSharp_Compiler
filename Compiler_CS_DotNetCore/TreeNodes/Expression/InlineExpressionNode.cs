@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Compiler.Tree;
 
 namespace Compiler.Tree
@@ -15,6 +16,11 @@ namespace Compiler.Tree
         public InlineExpressionNode()
         {
             list = new List<ExpressionNode>();
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -8,14 +8,17 @@ namespace Compiler.Tree
     {
         public IdentifierTypeNode()
         {
+            Identifiers = new List<IdentifierNode>();
         }
 
         public IdentifierTypeNode(List<IdentifierNode> list)
         {
             this.Identifiers = list;
         }
-
-        public ArrayNode arrayNode;
+        public IdentifierTypeNode(IdentifierNode id): this()
+        {
+            this.Identifiers.Add(id);
+        }
         public List<IdentifierNode> Identifiers { get; internal set; }
         public override string ToString()
         {
@@ -30,6 +33,24 @@ namespace Compiler.Tree
         public override void Evaluate(API api)
         {
             throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is IdentifierTypeNode)
+            {
+                var o = obj as IdentifierTypeNode;
+                if(o.Identifiers.Count == Identifiers.Count)
+                {
+                    for(int i = 0; i < Identifiers.Count;i++)
+                    {
+                        if (!Identifiers[i].Equals(o.Identifiers[i]))
+                            return false;
+                    }
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

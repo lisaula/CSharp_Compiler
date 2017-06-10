@@ -397,30 +397,16 @@ namespace Compiler
                 if (!pass(TokenType.CLOSE_SQUARE_BRACKET))
                     throwError("close square bracket ']'");
                 consumeToken();
-                arrayNode.arrayOfArrays = 1;
-                optional_rank_specifier_list(ref arrayNode);
+                type = new ArrayTypeNode(type);
+                ((ArrayTypeNode)type).indexes.Add(arrayNode);
+                type = optional_rank_specifier_list(type);
                 var initialization = optional_array_initializer();
-                if (type is IdentifierTypeNode)
-                {
-                    ((IdentifierTypeNode)type).arrayNode = arrayNode;
-                }
-                else if (type is PrimitiveType)
-                {
-                    ((PrimitiveType)type).arrayNode = arrayNode;
-                }
                 return new ArrayInstantiation(type, initialization);
             }else if (pass(TokenType.OP_COMMA,TokenType.CLOSE_SQUARE_BRACKET))
             {
-                rank_specifier_list(ref arrayNode);
+                type = new ArrayTypeNode(type);
+                rank_specifier_list(ref type);
                 var initialization = array_initializer();
-                if (type is IdentifierTypeNode)
-                {
-                    ((IdentifierTypeNode)type).arrayNode = arrayNode;
-                }
-                else if (type is PrimitiveType)
-                {
-                    ((PrimitiveType)type).arrayNode = arrayNode;
-                }
                 return new ArrayInstantiation(type, initialization);
             }
             else
@@ -493,22 +479,25 @@ namespace Compiler
             }
         }
 
-        private void rank_specifier_list(ref ArrayNode arrayNode)
+        private void rank_specifier_list(ref TypeDefinitionNode atn)
         {
             DebugInfoMethod("rank_specifier_list");
-            rank_specifier(ref arrayNode);
-            optional_rank_specifier_list(ref arrayNode);
+            ArrayNode an = rank_specifier();
+            ((ArrayTypeNode)atn).indexes.Add(an);
+            atn = optional_rank_specifier_list(atn);
         }
 
-        private void rank_specifier(ref ArrayNode arrayNode)
+        private ArrayNode rank_specifier()
         {
             DebugInfoMethod("rank_specifier");
-            optional_comma_list(ref arrayNode);
+
+            var an = new ArrayNode();
+            optional_comma_list(ref an);
 
             if (!pass(TokenType.CLOSE_SQUARE_BRACKET))
                 throwError("close square bracket ']'");
             consumeToken();
-            arrayNode.arrayOfArrays++;
+            return an;
         }
 
         private void optional_comma_list(ref ArrayNode arrayNode)
@@ -542,19 +531,22 @@ namespace Compiler
             }
         }
 
-        private void optional_rank_specifier_list(ref ArrayNode arrayNode)
+        private TypeDefinitionNode optional_rank_specifier_list(TypeDefinitionNode type)
         {
             DebugInfoMethod("optional_rank_specifier_list");
             if (pass(TokenType.OPEN_SQUARE_BRACKET))
             {
-                if (arrayNode == null)
-                    arrayNode = new ArrayNode();
                 consumeToken();
-                rank_specifier_list(ref arrayNode);
+                if(!(type is ArrayTypeNode))
+                    type = new ArrayTypeNode(type);
+
+                rank_specifier_list(ref type );
+                return type;
             }
             else
             {
                 DebugInfoMethod("epsilon");
+                return type;
             }
         }
 

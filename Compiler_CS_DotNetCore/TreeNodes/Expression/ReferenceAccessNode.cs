@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class ReferenceAccessNode : PrimaryExpressionNode
     {
@@ -11,6 +13,11 @@
         public ReferenceAccessNode()
         {
 
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

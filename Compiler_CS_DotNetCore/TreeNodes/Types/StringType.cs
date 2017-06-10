@@ -14,5 +14,10 @@
         {
             return this.GetType().Name;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is StringType;
+        }
     }
 }

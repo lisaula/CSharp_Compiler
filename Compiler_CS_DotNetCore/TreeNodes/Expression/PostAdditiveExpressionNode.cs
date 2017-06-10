@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class PostAdditiveExpressionNode : PrimaryExpressionNode
     {
@@ -18,6 +20,11 @@
         public PostAdditiveExpressionNode(Token @operator)
         {
             this.@operator = @operator;
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

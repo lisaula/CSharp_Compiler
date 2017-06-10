@@ -16,5 +16,10 @@ namespace Compiler.Tree
             this.Operator = unaryOperator;
             this.expression = unary_expression;
         }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

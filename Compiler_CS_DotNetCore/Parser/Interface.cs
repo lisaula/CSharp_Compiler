@@ -117,19 +117,16 @@ namespace Compiler
             {
                 var id = new IdentifierTypeNode();
                 id.Identifiers = qualified_identifier();
-                optional_rank_specifier_list(ref id.arrayNode);
-                return id;
+                return optional_rank_specifier_list(id);
             }else if (pass(TokenType.RW_DICTIONARY))
             {
                 var dict = dictionary();
-                optional_rank_specifier_list(ref dict.arrayNode);
-                return dict;
+                return optional_rank_specifier_list(dict);
             }
             else
             {
                 var primitive = built_in_type();
-                optional_rank_specifier_list(ref primitive.arrayNode);
-                return primitive;
+                return optional_rank_specifier_list(primitive); ;
             }
         }
 

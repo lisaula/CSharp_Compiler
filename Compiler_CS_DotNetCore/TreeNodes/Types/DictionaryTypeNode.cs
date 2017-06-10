@@ -7,7 +7,6 @@ namespace Compiler.Tree
     {
         public TypeDefinitionNode t1;
         public TypeDefinitionNode t2;
-        public ArrayNode arrayNode;
         public DictionaryTypeNode(TypeDefinitionNode t1, TypeDefinitionNode t2)
         {
             this.t1 = t1;
@@ -26,6 +25,16 @@ namespace Compiler.Tree
         public override void Evaluate(API api)
         {
             throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is DictionaryTypeNode)
+            {
+                DictionaryTypeNode d = obj as DictionaryTypeNode;
+                return  (d.t1.Equals(t1) && d.t2.Equals(t2));
+            }
+            return false;
         }
     }
 }

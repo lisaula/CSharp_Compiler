@@ -16,6 +16,16 @@ namespace Compiler_CS_DotNetCore.Semantic
             return string.Join(",",name);
         }
 
+        internal static string indexesToString(List<ArrayNode> indexes)
+        {
+            string name = "";
+            foreach (ArrayNode an in indexes)
+            {
+                name += an.ToString();
+            }
+            return name;
+        }
+
         public static string getMethodName(MethodNode method)
         {
             string name = method.id.token.lexema + "(" + getParametersName(method.parameters) + ")";

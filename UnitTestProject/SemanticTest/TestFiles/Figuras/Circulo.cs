@@ -19,6 +19,8 @@ namespace Figuras{
 public interface myInterface : Types, outsideInterface{
 	void getNombre(int index);
 	void getNompre(string name);
+	void getNombre(int[] index);
+	void getNombre(int[,,][] index);
 	int setIndex(int index);
 }
 

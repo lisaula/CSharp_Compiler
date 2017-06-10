@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Compiler.Tree
 {
@@ -20,6 +21,11 @@ namespace Compiler.Tree
         public FunctionCallExpression(List<ExpressionNode> arguments)
         {
             this.arguments = arguments;
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

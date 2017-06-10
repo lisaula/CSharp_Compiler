@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class LiteralString : LiteralNode
     {
@@ -8,6 +10,11 @@
         public LiteralString()
         {
 
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            return new StringType();
         }
     }
 }

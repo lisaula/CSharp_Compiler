@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Compiler.Tree
 {
@@ -21,6 +22,11 @@ namespace Compiler.Tree
         {
             this.primary = primary;
             this.lista = lista;
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            return primary.evaluateType();
         }
     }
 }

@@ -73,6 +73,15 @@ namespace Compiler.Tree
             }
         }
 
+        public override bool Equals(object obj)
+        {
+            if(obj is ClassDefinitionNode)
+            {
+                var t = obj as ClassDefinitionNode;
+                return identifier.Equals(t.identifier);
+            }
+            return false;
+        }
 
     }
 }

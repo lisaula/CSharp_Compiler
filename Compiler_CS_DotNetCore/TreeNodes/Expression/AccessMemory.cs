@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class AccessMemory : PrimaryExpressionNode
     {
@@ -12,6 +14,11 @@
         public AccessMemory(PrimaryExpressionNode id)
         {
             this.expression = id;
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            return expression.evaluateType();
         }
     }
 }

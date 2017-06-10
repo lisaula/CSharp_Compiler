@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class LiteralChar : LiteralNode
     {
@@ -9,6 +11,11 @@
         public LiteralChar()
         {
 
+        }
+
+        public override TypeDefinitionNode evaluateType()
+        {
+            return new CharType();
         }
     }
 }

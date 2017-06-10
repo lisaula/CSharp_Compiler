@@ -39,7 +39,7 @@ namespace Compiler
                     }
                 }
             }
-            //var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\compis_frag.txt");
+            var txt = System.IO.File.ReadAllText(@"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\ParsersTests\testFiles\compis_frag.txt");
             var s = @"
 private class ClasePrivada {
     public Constructor(int a ) : base(a){
@@ -58,8 +58,13 @@ private class ClasePrivada {
     }
 }
 ";
+            NamespaceNode tree = null;
             try
             {
+                /*var input = new InputString(txt);
+                var lexer = new LexicalAnalyzer(input);
+                var parser = new Parser(lexer,"prueba");
+                tree = parser.parse();*/
                 var semanticEvaluator = new Evaluator(paths);
             }
             catch(System.Exception e)
