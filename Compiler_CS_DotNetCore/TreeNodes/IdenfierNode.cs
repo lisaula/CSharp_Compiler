@@ -12,5 +12,10 @@
         {
 
         }
+
+        public override string ToString()
+        {
+            return token.lexema;
+        }
     }
 }

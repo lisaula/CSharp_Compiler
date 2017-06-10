@@ -9,7 +9,7 @@ namespace Compiler
     public partial class Parser
     {
         TokenType[] encapsulationTypes = { TokenType.RW_PUBLIC, TokenType.RW_PRIVATE, TokenType.RW_PROTECTED };
-        TokenType[] typesDeclarationOptions = { TokenType.RW_ABSTRACT, TokenType.RW_CLASS, TokenType.RW_ENUM, TokenType.RW_INTERFACE };
+        TokenType[] typesDeclarationOptions = { TokenType.RW_CLASS, TokenType.RW_ENUM, TokenType.RW_INTERFACE };
         TokenType[] typesOptions = {
             TokenType.RW_INT,
             TokenType.RW_CHAR,

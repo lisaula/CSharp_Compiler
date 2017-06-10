@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Compiler.Tree;
+using Compiler_CS_DotNetCore.Semantic;
+
 namespace Compiler
 {
     public partial class Parser
@@ -127,9 +129,11 @@ namespace Compiler
                 init = constructor_initializer();
             }
             var bodyStatements = maybe_empty_block();
-            if (clase.constructors == null)
-                clase.constructors = new List<ConstructorNode>();
-            clase.constructors.Add(new ConstructorNode(encapsulation, id, parameters, init, bodyStatements));
+            var cons = new ConstructorNode(encapsulation, id, parameters, init, bodyStatements);
+            string name = Utils.getConstructorName(cons);
+            if (clase.constructors.ContainsKey(name))
+                throw new SemanticException("Constructor " + name + " already exist in " + clase.identifier.ToString(), cons.id.token);
+            clase.constructors[name] = cons;
         }
 
         private BodyStatement maybe_empty_block()
@@ -161,8 +165,9 @@ namespace Compiler
             {
                 consumeToken();
 
-                if (!pass(TokenType.RW_BASE))
-                    throwError("reserved word \"base\"");
+                if (!pass(TokenType.RW_BASE, TokenType.RW_THIS))
+                    throwError("reserved word \"base\" or \"this\"");
+                var reference = current_token;
                 consumeToken();
 
                 if (!pass(TokenType.OPEN_PARENTHESIS))
@@ -174,7 +179,7 @@ namespace Compiler
                 if (!pass(TokenType.CLOSE_PARENTHESIS))
                     throwError("close parenthesis ')'");
                 consumeToken();
-                return new ConstructorInitializerNode(argumentList);
+                return new ConstructorInitializerNode(reference, argumentList);
             }
             else
             {

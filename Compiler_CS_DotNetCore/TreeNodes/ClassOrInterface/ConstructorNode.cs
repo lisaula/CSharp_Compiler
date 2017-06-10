@@ -22,5 +22,9 @@ namespace Compiler.Tree
         {
 
         }
+        public override string ToString()
+        {
+            return id.token.lexema;
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace Compiler
         {
             DebugInfoMethod("optional_namespace_member_declaration");
             TokenType[] nuevo = { TokenType.RW_NAMEESPACE };
-            if (pass(encapsulationTypes.Concat(nuevo).Concat(typesDeclarationOptions).ToArray()))
+            if (pass(encapsulationTypes.Concat(nuevo).Concat(typesDeclarationOptions).Concat(optionalModifiersOptions).ToArray()))
             {
                 if (namespaceList == null)
                     namespaceList = new List<NamespaceNode>();
@@ -62,7 +62,7 @@ namespace Compiler
             {
                 namespaceList.Add(namespace_declaration());
                 return optional_namespace_member_declaration(ref namespaceList, ref typeList);
-            }else if (pass(encapsulationTypes.Concat(typesDeclarationOptions).ToArray()))
+            }else if (pass(encapsulationTypes.Concat(typesDeclarationOptions).Concat(optionalModifiersOptions).ToArray()))
             {
                 typeList.AddRange(type_declaration_list());
                 return optional_namespace_member_declaration(ref namespaceList, ref typeList);
@@ -108,7 +108,7 @@ namespace Compiler
         private List<TypeDefinitionNode> type_declaration_list()
         {
             DebugInfoMethod("type_declaration_list");
-            if (pass(encapsulationTypes.Concat(typesDeclarationOptions).ToArray()))
+            if (pass(encapsulationTypes.Concat(typesDeclarationOptions).Concat(optionalModifiersOptions).ToArray()))
             {
                 var typeDefinition = type_declaration();
                 var typeList = type_declaration_list();
@@ -127,14 +127,14 @@ namespace Compiler
         {
             DebugInfoMethod("type_declaration");
             var encapsulationNode = encapsulation_modifier();
-            if (!pass(typesDeclarationOptions))
+            if (!pass(typesDeclarationOptions.Concat(optionalModifiersOptions).ToArray()))
                 throwError("Class, Interface or Enum");
             return group_declaration(encapsulationNode);
         }
 
         private TypeDefinitionNode group_declaration(EncapsulationNode encapsulation)
         {
-            if (pass(TokenType.RW_ABSTRACT, TokenType.RW_CLASS))
+            if (pass(TokenType.RW_ABSTRACT, TokenType.RW_STATIC, TokenType.RW_VIRTUAL, TokenType.RW_CLASS))
             {
                 return class_declaration(encapsulation);
             }else if (pass(TokenType.RW_INTERFACE))

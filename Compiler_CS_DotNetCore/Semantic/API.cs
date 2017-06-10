@@ -10,7 +10,20 @@ namespace Compiler_CS_DotNetCore.Semantic
     {
         private List<string> paths;
         private string file;
-        public API(List<string> paths)
+        public Dictionary<string, NamespaceNode> trees;
+        public API()
+        {
+            trees = new Dictionary<string, NamespaceNode>();
+
+            //geting include tree
+            var inputString = new InputString(Utils.txtIncludes);
+            var lexer = new LexicalAnalyzer(inputString);
+            var parser = new Parser(lexer, "IncludesDefault");
+            NamespaceNode tree;
+            tree = parser.parse();
+            trees["IncludesDefault"] = tree;
+        }
+        public API(List<string> paths): this()
         {
             this.paths = paths;
         }
@@ -22,7 +35,6 @@ namespace Compiler_CS_DotNetCore.Semantic
 
         public Dictionary<string, NamespaceNode> buildTrees()
         {
-            Dictionary<string, NamespaceNode> trees = new Dictionary<string, NamespaceNode>();
             foreach (string s in paths)
             {
                 var txt = System.IO.File.ReadAllText(s);
@@ -46,6 +58,11 @@ namespace Compiler_CS_DotNetCore.Semantic
             tree = parser.parse();
             trees["Prueba"] = tree;
             return trees;
+        }
+
+        internal bool modifierPass(ModifierNode modifier, TokenType tokentype)
+        {
+            return modifier.token.type == tokentype;
         }
 
         internal TokenType getEncapsulation(EncapsulationNode encapsulation)
@@ -100,6 +117,9 @@ namespace Compiler_CS_DotNetCore.Semantic
                 if (Singleton.tableTypes.ContainsKey(fname))
                     return Singleton.tableTypes[fname];
             }
+            if(Singleton.tableTypes.ContainsKey(name))
+                return Singleton.tableTypes[name];
+
             string fullname = "blank." + name;
             if (Singleton.tableTypes.ContainsKey(fullname))
                 return Singleton.tableTypes[fullname];

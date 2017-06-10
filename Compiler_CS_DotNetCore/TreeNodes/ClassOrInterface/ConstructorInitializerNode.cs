@@ -5,14 +5,16 @@ namespace Compiler.Tree
     public class ConstructorInitializerNode
     {
         public List<ExpressionNode> argumentList;
-
-        public ConstructorInitializerNode(List<ExpressionNode> argumentList)
-        {
-            this.argumentList = argumentList;
-        }
+        public Token reference;
         public ConstructorInitializerNode()
         {
 
+        }
+
+        public ConstructorInitializerNode(Token reference, List<ExpressionNode> argumentList)
+        {
+            this.reference = reference;
+            this.argumentList = argumentList;
         }
     }
 }
