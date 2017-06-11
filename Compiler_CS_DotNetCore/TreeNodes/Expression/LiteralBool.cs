@@ -14,7 +14,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType()
         {
-            return new BoolType();
+            return new BoolType(token);
         }
     }
 }

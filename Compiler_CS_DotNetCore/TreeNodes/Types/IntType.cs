@@ -20,5 +20,10 @@ namespace Compiler.Tree
         {
             return obj is IntType;
         }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
+        }
     }
 }

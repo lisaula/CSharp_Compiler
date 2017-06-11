@@ -265,7 +265,7 @@ namespace Compiler
             {
                 consumeToken();
                 var inheritance = new InheritanceNode();
-                inheritance.identifierList = identifiers_list();
+                inheritance.identifierList.AddRange(identifiers_list());
                 return inheritance;
             }
             else

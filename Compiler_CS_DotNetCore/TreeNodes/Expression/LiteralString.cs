@@ -14,7 +14,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType()
         {
-            return new StringType();
+            return new StringType(token);
         }
     }
 }

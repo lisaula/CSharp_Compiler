@@ -6,11 +6,10 @@ namespace Compiler
 {
     public class VarType : TypeDefinitionNode
     {
-        public Token token;
 
         public VarType(Token token)
         {
-            this.token = token;
+            this.identifier = new IdentifierNode(token);
         }
         public VarType()
         {
@@ -25,6 +24,11 @@ namespace Compiler
         public override void Evaluate(API api)
         {
             throw new NotImplementedException();
+        }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
         }
     }
 }

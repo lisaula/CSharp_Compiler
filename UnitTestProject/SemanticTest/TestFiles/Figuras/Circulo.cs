@@ -11,12 +11,15 @@ namespace Figuras{
 
 	}
 	namespace insideFiguras{
-		public interface Types{
+		public interface Types: myInterface{
 			
 		}
 	}
+	public interface MismoTypes: myInterface,MismoNms, outsideInterface{
+			
+	}
 }
-public interface myInterface : Types, outsideInterface{
+public interface myInterface : Types{
 	void getNombre(int index);
 	void getNompre(string name);
 	void getNombre(int[] index);

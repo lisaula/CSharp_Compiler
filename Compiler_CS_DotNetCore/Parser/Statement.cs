@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Compiler.Tree;
+using Compiler_CS_DotNetCore.Semantic;
+
 namespace Compiler
 {
     public partial class Parser
@@ -147,8 +149,15 @@ namespace Compiler
             } else {
                 type =  types();
             }
+            var local = new LocalVariableDefinitionNode();
             var variables = variable_declarator_list(null,null,type);
-            return new LocalVariableDefinitionNode(variables);
+            foreach (FieldNode f in variables)
+            {
+                if (local.variable.ContainsKey(f.id.token.lexema))
+                    throw new SemanticException("Local variable " + f.id.token.lexema + " already exist in current context",f.id.token);
+                local.variable[f.id.token.lexema] = f;
+            }
+            return local;
         } 
     }
 }

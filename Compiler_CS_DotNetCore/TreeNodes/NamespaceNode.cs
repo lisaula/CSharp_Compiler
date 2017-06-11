@@ -10,6 +10,8 @@ namespace Compiler.Tree
         public List<UsingNode> usingList;
         public List<NamespaceNode> namespaceList;
         public List<TypeDefinitionNode> typeList;
+        public NamespaceNode parent;
+
         public NamespaceNode(List<IdentifierNode> identifier) : this()
         {
             this.identifierList = identifier;

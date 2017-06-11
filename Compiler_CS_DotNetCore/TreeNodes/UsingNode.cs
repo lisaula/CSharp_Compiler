@@ -16,10 +16,18 @@ namespace Compiler.Tree
             identifierList = new List<IdentifierNode>();
         }
 
+        public UsingNode(string nms): this()
+        {
+            var token = new Token();
+            token.lexema = nms;
+            identifierList.Add(new IdentifierNode(token));
+        }
+
         internal void evaluate(API api)
         {
-            string name = api.getIdentifierListAsString(".", identifierList);
-            if (!Singleton.tableNamespaces.ContainsKey(name))
+
+            string name = Utils.GlobalNamespace+"."+api.getIdentifierListAsString(".", identifierList);
+            if (!Singleton.tableNamespaces.Contains(name))
                 throw new SemanticException("Could not be found a namespace with using "+name,identifierList[0].token);
         }
     }

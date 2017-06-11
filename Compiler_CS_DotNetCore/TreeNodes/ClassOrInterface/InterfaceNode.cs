@@ -63,12 +63,12 @@ namespace Compiler.Tree
             foreach (List<IdentifierNode> parent in inheritance.identifierList)
             {
                 string name = api.getIdentifierListAsString(".",parent);
-                NamespaceNode nms = api.getParentNamespace(this);
-                TypeDefinitionNode tdn =  api.findTypeInList(nms.typeList, name);
-                if(tdn == null)
-                {
-                    tdn = api.findTypeInUsings(nms.usingList, name);
-                }
+                string nms = api.getParentNamespace(this);
+                var usings = parent_namespace.usingList;
+                usings.Add(new UsingNode(nms));
+                TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
+                if (tdn == null)
+                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", identifier.token);
                 if (parents.ContainsKey(name))
                     throw new SemanticException("Redundant Inheritance. " + name + " was found twice as inheritance in " + identifier.token.lexema, identifier.token);
                 parents[name] = tdn;
@@ -78,6 +78,11 @@ namespace Compiler.Tree
         public override string ToString()
         {
             return identifier.token.lexema;
+        }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
         }
     }
 }

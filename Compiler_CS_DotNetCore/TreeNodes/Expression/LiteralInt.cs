@@ -10,7 +10,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType()
         {
-            return new IntType();
+            return new IntType(token);
         }
     }
 }

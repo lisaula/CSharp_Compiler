@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 
 namespace Compiler.Tree
 {
@@ -21,7 +22,21 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType()
         {
-            throw new NotImplementedException();
+            if (conditional_expression is ConditionExpression)
+            {
+                TypeDefinitionNode t1 = conditional_expression.evaluateType();
+                if (t1.Equals(new BoolType()))
+                {
+                    TypeDefinitionNode ttrue = true_expression.evaluateType();
+                    TypeDefinitionNode tfalse = false_expression.evaluateType();
+                    if (ttrue.Equals(tfalse))
+                        return ttrue;
+                    throw new SemanticException("Cannot explicitly convert " + ttrue.ToString() + " to " + tfalse.ToString() + " in ternary expression.", ttrue.identifier.token);
+                }
+                throw new SemanticException("Condition expression does not returns a bool in ternary expression.", t1.identifier.token);
+            }
+            TypeDefinitionNode t = conditional_expression.evaluateType();
+            throw new SemanticException("Not a condition expression in ternary expression.",t.identifier.token);
         }
     }
 }

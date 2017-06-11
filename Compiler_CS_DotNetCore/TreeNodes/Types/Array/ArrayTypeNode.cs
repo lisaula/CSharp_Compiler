@@ -47,5 +47,14 @@ namespace Compiler.Tree
             }
             return false;
         }
+        public override void Evaluate(API api)
+        {
+            base.Evaluate(api);
+        }
+
+        public override Token getPrimaryToken()
+        {
+            return type.getPrimaryToken();
+        }
     }
 }

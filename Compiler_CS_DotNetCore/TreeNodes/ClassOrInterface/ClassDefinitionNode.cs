@@ -12,6 +12,7 @@ namespace Compiler.Tree
         public EncapsulationNode encapsulation;
         public bool isAbstract;
         public InheritanceNode inheritance;
+        public Dictionary<string, TypeDefinitionNode> parents;
 
         public ClassDefinitionNode(EncapsulationNode encapsulation, bool isAbstract, IdentifierNode id, InheritanceNode inheritance):this()
         {
@@ -26,6 +27,7 @@ namespace Compiler.Tree
         public ClassDefinitionNode()
         {
             parent_namespace = null;
+            parents = null;
         }
         public override string ToString()
         {
@@ -39,9 +41,46 @@ namespace Compiler.Tree
             Debug.printMessage("Evaluating class " + identifier.ToString());
             if (identifier.ToString() == "Circulo")
                 Console.WriteLine();
-            evaluateFields(api);
+            checkInheritanceExistance(api);
+            //evaluateFields(api);
 
             evaluated = true;
+        }
+
+        private void checkInheritanceExistance(API api)
+        {
+            if(inheritance == null)
+            {
+                inheritance = new InheritanceNode();
+            }
+            inheritance.addObjectInheritance();
+            parents = new Dictionary<string, TypeDefinitionNode>();
+            foreach (List<IdentifierNode> parent in inheritance.identifierList)
+            {
+                string name = api.getIdentifierListAsString(".", parent);
+                string nms = api.getParentNamespace(this);
+                var usings = parent_namespace.usingList;
+                usings.Add(new UsingNode(nms));
+                TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
+                if (tdn == null)
+                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", parent[0].token);
+
+                if (parents.ContainsKey(name))
+                    throw new SemanticException("Redundant Inheritance. " + name + " was found twice as inheritance in " + identifier.token.lexema, parent[0].token);
+                parents[name] = tdn;
+            }
+        }
+
+        private void checkParents(API api)
+        {
+            if (parents == null)
+                return;
+            foreach (KeyValuePair<string, TypeDefinitionNode> parent in parents)
+            {
+                if (!(parent.Value is InterfaceNode))
+                    throw new SemanticException("Type '" + parent.Key + "' in " + identifier.token.lexema + " is not an interface", identifier.token);
+                ((InterfaceNode)parent.Value).Evaluate(api);
+            }
         }
 
         private void evaluateFields(API api)
@@ -60,16 +99,14 @@ namespace Compiler.Tree
                 else if(f.type is IdentifierTypeNode)
                 {
                     string name = f.type.ToString();
-                    NamespaceNode nms = api.getParentNamespace(this);
-                    TypeDefinitionNode tdn = api.findTypeInList(nms.typeList, name);
+                    string nms = api.getParentNamespace(this);
+                    var usings = parent_namespace.usingList;
+                    usings.Add(new UsingNode(nms));
+                    TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
                     if (tdn == null)
-                    {
-                        tdn = api.findTypeInUsings(nms.usingList, name);
-                        tdn.Evaluate(api);
-                    }
+                        throw new SemanticException("Could not find Type '" + name + "' in the current context. ", f.type.getPrimaryToken());
+                    tdn.Evaluate(api);
                 }
-
-
             }
         }
 
@@ -83,5 +120,9 @@ namespace Compiler.Tree
             return false;
         }
 
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
+        }
     }
 }

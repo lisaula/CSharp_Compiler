@@ -36,5 +36,10 @@ namespace Compiler.Tree
             }
             return false;
         }
+
+        public override Token getPrimaryToken()
+        {
+            return t1.getPrimaryToken();
+        }
     }
 }

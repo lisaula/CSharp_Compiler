@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public class StringType : PrimitiveType
     {
@@ -18,6 +20,11 @@
         public override bool Equals(object obj)
         {
             return obj is StringType;
+        }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
         }
     }
 }

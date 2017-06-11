@@ -4,15 +4,11 @@ namespace Compiler.Tree
 {
     public class LocalVariableDefinitionNode : Statement
     {
-        public List<FieldNode> variable;
+        public Dictionary<string,FieldNode> variable;
 
-        public LocalVariableDefinitionNode(List<FieldNode> variables)
-        {
-            this.variable = variables;
-        }
         public LocalVariableDefinitionNode()
         {
-
+            this.variable = new Dictionary<string, FieldNode>();
         }
     }
 }

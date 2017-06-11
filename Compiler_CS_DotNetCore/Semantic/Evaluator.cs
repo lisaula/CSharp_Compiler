@@ -62,10 +62,9 @@ namespace Compiler_CS_DotNetCore.Semantic
         private void printTableNamespaces()
         {
             Debug.printMessage("Table Namespaces");
-            foreach (KeyValuePair<string, NamespaceNode> entry in Singleton.tableNamespaces)
+            foreach (string nms in Singleton.tableNamespaces)
             {
-                string name = api.getIdentifierListAsString(".", entry.Value.identifierList);
-                Debug.printMessage(entry.Key + " - "+name);
+                Debug.printMessage(nms);
             }
         }
 
@@ -82,8 +81,15 @@ namespace Compiler_CS_DotNetCore.Semantic
         {
             foreach (KeyValuePair<string, NamespaceNode> tree in trees)
             {
-                api.setClassesOnTableType(tree.Key, tree.Value);
-                api.setNamespacesOnTableNms(tree.Key, tree.Value);
+                try
+                {
+                    api.setClassesOnTableType(tree.Value);
+                    api.setNamespacesOnTableNms(tree.Value);
+                }
+                catch (SemanticException se)
+                {
+                    throw new SemanticException(tree.Key + ": " + se.Message);
+                }
             }
         }
     }

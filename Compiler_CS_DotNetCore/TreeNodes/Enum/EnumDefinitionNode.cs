@@ -114,5 +114,10 @@ namespace Compiler.Tree
                 throw new SemanticException("Enum must have a constant expression. " ,enum_.identifier.token);
            
         }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
+        }
     }
 }

@@ -20,5 +20,10 @@ namespace Compiler.Tree
         {
             return obj is FloatType;
         }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
+        }
     }
 }

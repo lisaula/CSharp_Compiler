@@ -21,5 +21,10 @@ namespace Compiler.Tree
         {
             return obj is VoidTypeNode;
         }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
+        }
     }
 }

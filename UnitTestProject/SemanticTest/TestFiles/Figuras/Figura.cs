@@ -14,6 +14,10 @@ namespace Figuras{
 		SABADO,
 		DOMINGO
 	}
+
+	public interface MismoNms{
+			
+	}
 }
 
 public enum DIASDELASEMANA2{

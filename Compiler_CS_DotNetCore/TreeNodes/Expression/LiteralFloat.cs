@@ -15,7 +15,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType()
         {
-            return new FloatType();
+            return new FloatType(token);
         }
     }
 }

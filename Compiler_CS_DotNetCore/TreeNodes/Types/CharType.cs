@@ -20,5 +20,10 @@ namespace Compiler.Tree
         {
             return obj is CharType;
         }
+
+        public override Token getPrimaryToken()
+        {
+            return identifier.token;
+        }
     }
 }

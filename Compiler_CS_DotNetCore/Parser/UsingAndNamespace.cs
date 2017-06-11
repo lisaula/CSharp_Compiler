@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Compiler.Tree;
+using Compiler_CS_DotNetCore.Semantic;
+
 namespace Compiler
 {
     public partial class Parser
@@ -26,17 +28,22 @@ namespace Compiler
 
         private NamespaceNode compilation_unit()
         {
-            NamespaceNode compilationNode = new NamespaceNode();
             DebugInfoMethod("compilation_unit");
+
+            NamespaceNode compilationNode = new NamespaceNode();
+            var token = new Token();
+            token.lexema = Utils.GlobalNamespace;
+            compilationNode.identifierList.Add(new IdentifierNode(token));
+
             var usingList = new List<UsingNode>();
             compilationNode.usingList = optional_using_directive(ref usingList);
             var namespaceList = new List<NamespaceNode>();
             compilationNode.typeList = new List<TypeDefinitionNode>();
-            compilationNode.namespaceList = optional_namespace_member_declaration(ref namespaceList, ref compilationNode.typeList);
+            compilationNode.namespaceList = optional_namespace_member_declaration(ref namespaceList, ref compilationNode.typeList, compilationNode);
             return compilationNode;
         }
 
-        private List<NamespaceNode> optional_namespace_member_declaration(ref List<NamespaceNode> namespaceList, ref List<TypeDefinitionNode> typeList)
+        private List<NamespaceNode> optional_namespace_member_declaration(ref List<NamespaceNode> namespaceList, ref List<TypeDefinitionNode> typeList, NamespaceNode parent)
         {
             DebugInfoMethod("optional_namespace_member_declaration");
             TokenType[] nuevo = { TokenType.RW_NAMEESPACE };
@@ -46,7 +53,7 @@ namespace Compiler
                     namespaceList = new List<NamespaceNode>();
                 if (typeList == null)
                     typeList = new List<TypeDefinitionNode>();
-                return namespace_member_declaration(ref namespaceList, ref typeList);
+                return namespace_member_declaration(ref namespaceList, ref typeList, parent);
             }
             else
             {
@@ -55,17 +62,19 @@ namespace Compiler
             } 
         }
 
-        private List<NamespaceNode> namespace_member_declaration(ref List<NamespaceNode> namespaceList, ref List<TypeDefinitionNode> typeList)
+        private List<NamespaceNode> namespace_member_declaration(ref List<NamespaceNode> namespaceList, ref List<TypeDefinitionNode> typeList, NamespaceNode parent)
         {
             DebugInfoMethod("namespace_member_declaration");
             if (pass(TokenType.RW_NAMEESPACE))
             {
-                namespaceList.Add(namespace_declaration());
-                return optional_namespace_member_declaration(ref namespaceList, ref typeList);
+                var nms = namespace_declaration();
+                nms.parent = parent;
+                namespaceList.Add(nms);
+                return optional_namespace_member_declaration(ref namespaceList, ref typeList, parent);
             }else if (pass(encapsulationTypes.Concat(typesDeclarationOptions).Concat(optionalModifiersOptions).ToArray()))
             {
-                typeList.AddRange(type_declaration_list());
-                return optional_namespace_member_declaration(ref namespaceList, ref typeList);
+                typeList.AddRange(type_declaration_list(parent));
+                return optional_namespace_member_declaration(ref namespaceList, ref typeList, parent);
             }
             else
             {
@@ -99,19 +108,20 @@ namespace Compiler
                 throwError("open curly bracket '{'");
             consumeToken();
             namespaceNode.usingList = optional_using_directive(ref namespaceNode.usingList);
-            namespaceNode.namespaceList = optional_namespace_member_declaration(ref namespaceNode.namespaceList, ref namespaceNode.typeList);
+            namespaceNode.namespaceList = optional_namespace_member_declaration(ref namespaceNode.namespaceList, ref namespaceNode.typeList, namespaceNode);
             if (!pass(TokenType.CLOSE_CURLY_BRACKET))
                 throwError("close curly bracket '}'");
             consumeToken();
         }
 
-        private List<TypeDefinitionNode> type_declaration_list()
+        private List<TypeDefinitionNode> type_declaration_list(NamespaceNode parent)
         {
             DebugInfoMethod("type_declaration_list");
             if (pass(encapsulationTypes.Concat(typesDeclarationOptions).Concat(optionalModifiersOptions).ToArray()))
             {
                 var typeDefinition = type_declaration();
-                var typeList = type_declaration_list();
+                typeDefinition.parent_namespace = parent;
+                var typeList = type_declaration_list(parent);
 
                 typeList.Insert(0, typeDefinition);
                 return typeList;
