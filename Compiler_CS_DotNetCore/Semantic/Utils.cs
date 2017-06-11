@@ -32,6 +32,12 @@ namespace Compiler_CS_DotNetCore.Semantic
             return name;
         }
 
+        public static string getMethodWithParentName(MethodNode method, TypeDefinitionNode parent)
+        {
+            string name = parent.ToString()+"."+method.id.token.lexema + "(" + getParametersName(method.parameters) + ")";
+            return name;
+        }
+
         public static string getConstructorName(ConstructorNode cons)
         {
             string name = cons.ToString() + "("+ getParametersName(cons.parameters) + ")";

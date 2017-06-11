@@ -42,9 +42,41 @@ namespace Compiler.Tree
             if (identifier.ToString() == "Circulo")
                 Console.WriteLine();
             checkInheritanceExistance(api);
+            checkParents(api);
+            checkMethodsModifier(api);
             //evaluateFields(api);
 
             evaluated = true;
+        }
+
+        private void checkMethodsModifier(API api)
+        {
+            foreach(KeyValuePair<string, MethodNode> method in methods)
+            {
+                if (method.Value.modifier != null)
+                {
+                    Debug.printMessage("Evaluando methodo " + Utils.getMethodWithParentName(method.Value, this));
+                    if (!method.Value.modifier.evaluated)
+                    {
+                        if (api.modifierPass(method.Value.modifier, TokenType.RW_ABSTRACT))
+                        {
+                            if (isAbstract)
+                            {
+                                if (method.Value.bodyStatements != null)
+                                    throw new SemanticException(Utils.getMethodName(method.Value) + " cannot declare a body because is marked as abstract.", method.Value.modifier.token);
+                            }
+                            else
+                                throw new SemanticException("Abtract method " + Utils.getMethodName(method.Value) + " is contained in " + this.ToString() + " which is a non-abstract class.", method.Value.modifier.token);
+                        }
+                        else if (api.modifierPass(method.Value.modifier, TokenType.RW_OVERRIDE))
+                            throw new SemanticException("Modifier 'override' can't be aplied to the method " + Utils.getMethodWithParentName(method.Value, this));
+                        
+                    }else
+                    {
+                        Debug.printMessage("Evaluado " + method.Value.id.ToString());
+                    }
+                }
+            }
         }
 
         private void checkInheritanceExistance(API api)
@@ -73,15 +105,37 @@ namespace Compiler.Tree
 
         private void checkParents(API api)
         {
-            if (parents == null)
-                return;
             foreach (KeyValuePair<string, TypeDefinitionNode> parent in parents)
             {
-                if (!(parent.Value is InterfaceNode))
-                    throw new SemanticException("Type '" + parent.Key + "' in " + identifier.token.lexema + " is not an interface", identifier.token);
-                ((InterfaceNode)parent.Value).Evaluate(api);
+                if (parent.Value is EnumDefinitionNode)
+                    throw new SemanticException("Enum '" + parent.Key + "' in " + identifier.token.lexema + " can't be used as a inheritance.", identifier.token);
+                if (parent.Value is InterfaceNode)
+                {
+                    ((InterfaceNode)parent.Value).Evaluate(api);
+                }
+                else
+                {
+                    ((ClassDefinitionNode)parent.Value).Evaluate(api);
+                }
+                checkParentMethods(parent.Value, api);
             }
         }
+
+        private void checkParentMethods(TypeDefinitionNode parent, API api)
+        {
+            Dictionary<string, MethodNode> parent_methods = api.getParentMethods(parent);
+            foreach (KeyValuePair<string, MethodNode> method in parent_methods)
+            {
+                if (methods.ContainsKey(method.Key))
+                {
+                    api.checkParentMethodOnMe(methods[method.Key], method.Value, parent);
+                }else if (!isAbstract) {
+                    if((parent is InterfaceNode) || api.modifierPass(method.Value.modifier, TokenType.RW_ABSTRACT))
+                        throw new SemanticException(identifier.ToString() + " does not implement " + parent.ToString() + "." + method.Key, identifier.token);
+                }
+            }
+        }
+
 
         private void evaluateFields(API api)
         {

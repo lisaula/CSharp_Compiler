@@ -73,9 +73,15 @@ namespace Compiler_CS_DotNetCore.Semantic
             return trees;
         }
 
-        internal bool modifierPass(ModifierNode modifier, TokenType tokentype)
+        internal bool modifierPass(ModifierNode modifier, params TokenType[] types)
         {
-            return modifier.token.type == tokentype;
+            if (modifier == null)
+                return false;
+            foreach (TokenType t in types) {
+                if (modifier.token.type == t)
+                    return true;
+            }
+            return false;
         }
 
         internal TokenType getEncapsulation(EncapsulationNode encapsulation)
@@ -116,6 +122,58 @@ namespace Compiler_CS_DotNetCore.Semantic
             if(name != Utils.GlobalNamespace)
                 lista.Add(name);
             return lista;
+        }
+
+        internal void checkParentMethodOnMe(MethodNode mymethodNode, MethodNode parent_method, TypeDefinitionNode parent)
+        {
+            if(parent is InterfaceNode)
+            {
+                if (mymethodNode.modifier != null) {
+                    if (!modifierPass(mymethodNode.modifier, TokenType.RW_VIRTUAL, TokenType.RW_ABSTRACT))
+                        throw new SemanticException("Modifier '" + mymethodNode.modifier.ToString() + "' can't be applied to method "+Utils.getMethodName(mymethodNode)+".", mymethodNode.modifier.token);
+
+                    if (!modifierPass(mymethodNode.modifier, TokenType.RW_ABSTRACT))
+                        mymethodNode.modifier.evaluated = true;
+                }
+            }
+            else if(parent is ClassDefinitionNode)
+            {
+                if(modifierPass(parent_method.modifier, TokenType.RW_ABSTRACT, TokenType.RW_OVERRIDE, TokenType.RW_VIRTUAL)){
+                    if (modifierPass(mymethodNode.modifier, TokenType.RW_OVERRIDE)){
+                        mymethodNode.modifier.evaluated = true;
+                    } else if(modifierPass(parent_method.modifier, TokenType.RW_OVERRIDE, TokenType.RW_VIRTUAL))
+                        throw new SemanticException("Method " + Utils.getMethodName(mymethodNode) + " hide method " + parent.ToString() + "." + Utils.getMethodName(parent_method) + ".", mymethodNode.returnType.getPrimaryToken());
+                }
+                else
+                {
+                    if(parent_method.modifier == null)
+                        throw new SemanticException("Method" + mymethodNode.id.ToString() + " cannot override inherit member " + parent.ToString() + "." + Utils.getMethodName(parent_method) + " becase is not marked as abstract, virtual or override.", mymethodNode.modifier.token);
+                    throw new SemanticException("Method " + Utils.getMethodName(mymethodNode) + " hide method " + parent.ToString() +"."+ Utils.getMethodName(parent_method) + ".", mymethodNode.returnType.getPrimaryToken());
+                }
+            }
+            if (!mymethodNode.returnType.Equals(parent_method.returnType))
+                throw new SemanticException("Method " + Utils.getMethodName(mymethodNode) + " hide method " + parent.ToString() +"."+ Utils.getMethodName(parent_method) + ". Not the same return type.", mymethodNode.returnType.getPrimaryToken());
+        }
+
+        internal Dictionary<string, MethodNode> getParentMethods(TypeDefinitionNode parent)
+        {
+            if(parent is InterfaceNode)
+            {
+                return ((InterfaceNode)parent).methods;
+            }else if(parent is ClassDefinitionNode)
+            {
+                return ((ClassDefinitionNode)parent).methods;
+            }
+            throw new Exception("Not a Class or interface type. Methods couldn't be extracted ");
+        }
+
+        internal bool methodIsAbstract(MethodNode value)
+        {
+            if(value.modifier != null)
+            {
+                return value.modifier.token.type == TokenType.RW_ABSTRACT;
+            }
+            return false;
         }
 
         private void setNamespacesInUsingList(ref List<UsingNode> usingList, List<string> namespaces)

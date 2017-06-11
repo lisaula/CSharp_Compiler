@@ -10,7 +10,6 @@ namespace Compiler.Tree
         public EncapsulationNode encapsulation;
         public ModifierNode modifier;
         public BodyStatement bodyStatements;
-
         public MethodNode(TypeDefinitionNode returnType, IdentifierNode id, List<Parameter> parameters)
         {
             this.returnType = returnType;

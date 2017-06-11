@@ -2,7 +2,11 @@ using N1.N2;
 
 namespace Figuras{
 	public abstract class Figura{
+		public abstract void methodo();
+		public abstract void methodo2();
+		public virtual string virtualmethodo();//{
 
+		//}
 	}
 
 	enum DIASDELASEMANA{

@@ -54,7 +54,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                     tree.Value.Evaluate(api);
                 }catch(Exception ex)
                 {
-                    throw new Exception(tree.Key + ":" + ex.Message);
+                    throw new Exception(tree.Key + ":" + ex.Message + ex.StackTrace);
                 }
             }
         }

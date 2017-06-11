@@ -3,7 +3,7 @@
     public class ModifierNode
     {
         public Token token;
-
+        public bool evaluated { get; set; }
         public ModifierNode(Token token)
         {
             this.token = token;
