@@ -35,14 +35,43 @@ namespace Compiler.Tree
             Debug.printMessage("Evaluating " + identifier.token.lexema);
             if(encapsulation.token.type != TokenType.RW_PUBLIC)
             {
-                throw new SemanticException("Interface "+identifier.token.lexema+"naccessible due to its encapsulation level. ",identifier.token);
+                throw new SemanticException("Interface "+identifier.token.lexema+" unreachable due to its encapsulation level. ",identifier.token);
             }
             checkInheritanceExistance(api);
             checkParents(api);
+            checkMethods(api);
             evaluated = true;
         }
 
+        private void checkMethods(API api)
+        {
+            foreach (KeyValuePair<string, MethodNode> key in methods) {
+                api.checkParametersExistance(this, key.Value.parameters);
+            }
+        }
 
+        public override void verifiCycle(TypeDefinitionNode type, API api)
+        {
+            if (parents == null)
+                return;
+            foreach (KeyValuePair<string, TypeDefinitionNode> p in parents)
+            {
+                if (type.Equals(p.Value) && api.getParentNamespace(type) == api.getParentNamespace(p.Value))
+                    throw new SemanticException("Cycle inheritance detected in " + identifier.ToString() + ".", p.Value.identifier.token);
+                p.Value.verifiCycle(type, api);
+            }
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is InterfaceNode)
+            {
+                var o = obj as InterfaceNode;
+                if (o.identifier.Equals(identifier))
+                    return true;
+            }
+            return false;
+        }
         private void checkParents(API api)
         {
             if (parents == null)
@@ -53,6 +82,26 @@ namespace Compiler.Tree
                     throw new SemanticException("Type '" + parent.Key + "' in " + identifier.token.lexema + " is not an interface",identifier.token);
                 ((InterfaceNode)parent.Value).Evaluate(api);
             }
+            verifiCycle(this, api);
+        }
+
+        internal List<Context> buildEnvironment()
+        {
+            List<Context> contexts = new List<Context>();
+            if (parents != null)
+            {
+                foreach (KeyValuePair<string, TypeDefinitionNode> key in parents)
+                {
+                    contexts.AddRange(((InterfaceNode)key.Value).buildEnvironment());
+                }
+            }
+            contexts.Add(buildContext());
+            return contexts;
+        }
+
+        private Context buildContext()
+        {
+            return new Context(identifier.ToString(), methods);
         }
 
         private void checkInheritanceExistance(API api)

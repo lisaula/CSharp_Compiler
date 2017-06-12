@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 using System.Collections.Generic;
 
 namespace Compiler.Tree
@@ -24,9 +25,9 @@ namespace Compiler.Tree
             this.lista = lista;
         }
 
-        public override TypeDefinitionNode evaluateType()
+        public override TypeDefinitionNode evaluateType(API api)
         {
-            return primary.evaluateType();
+            return primary.evaluateType(api);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
+using System.Collections.Generic;
 
 namespace Compiler.Tree
 {
@@ -14,5 +15,7 @@ namespace Compiler.Tree
         }
 
         public abstract Token getPrimaryToken();
+
+        public virtual void verifiCycle(TypeDefinitionNode classDefinitionNode,API api) { }
     }
 }

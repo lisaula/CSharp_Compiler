@@ -25,6 +25,8 @@ namespace Compiler.Tree
             this.type = type;
         }
 
+
+
         public override string ToString()
         {
             return type.ToString() + Utils.indexesToString(indexes);
@@ -55,6 +57,11 @@ namespace Compiler.Tree
         public override Token getPrimaryToken()
         {
             return type.getPrimaryToken();
+        }
+
+        internal TypeDefinitionNode getArrayType()
+        {
+            return this.type;
         }
     }
 }

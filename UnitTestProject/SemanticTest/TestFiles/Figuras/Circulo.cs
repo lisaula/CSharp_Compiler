@@ -1,20 +1,20 @@
 using N1;
 using N1.N2;
 namespace Figuras{
-	public abstract class Circulo : Figura, MismoTypes{
+	public class Circulo : Figura, MismoTypes{
 		public int field1;
 		public string field2;
 		public static float field3;
 		public bool field4;
 		private Types t;
 		myClase[,,][][] field5 = new myClase[3,2][][]{{5,2}, {2,3}, {4,5}};
-
+		
 		public override void methodo(){}
 		public override void methodo2(){}
 		public override string virtualmethodo();
 
 		public virtual void MismoMethodo(){}
-		public abstract void MismoMethodo2();
+		public void MismoMethodo2(){}
 		public Circulo(Figura f, int n, string name) : base(){
 
 		}
@@ -34,6 +34,8 @@ namespace Figuras{
 			void MismoMethodo2();
 	}
 }
+public interface child{}
+
 public interface myInterface : Types{
 	void getNombre(int index);
 	void getNompre(string name);
@@ -42,6 +44,6 @@ public interface myInterface : Types{
 	int setIndex(int index);
 }
 
-public interface Types{
+public interface Types: child{
 			
 }

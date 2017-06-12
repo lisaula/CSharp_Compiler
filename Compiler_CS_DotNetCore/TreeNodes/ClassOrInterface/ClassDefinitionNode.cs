@@ -45,9 +45,56 @@ namespace Compiler.Tree
             checkParents(api);
             checkMethodHeader(api);
             checkConstructors(api);
-            //evaluateFields(api);
-
+            evaluateFields(api);
+            checkFieldsAssignment(api);
             evaluated = true;
+        }
+
+        private void checkFieldsAssignment(API api)
+        {
+            List<Context> cm = buildEnvironment();
+            api.pushContext(cm.ToArray());
+            foreach(KeyValuePair<string,FieldNode> key in fields)
+            {
+                if(key.Value.assignment != null)
+                {
+                    FieldNode f = key.Value;
+                    TypeDefinitionNode tdn = f.assignment.evaluateType(api);
+                    if (!f.type.Equals(tdn))
+                        throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                }
+            }
+
+            api.popContext(cm.ToArray());
+        }
+
+        private List<Context> buildEnvironment()
+        {
+            List<Context> contexts = new List<Context>();
+            contexts.Add(buildContext());
+            if (parents != null)
+            {
+                foreach (KeyValuePair<string, TypeDefinitionNode> key in parents)
+                {
+                    if (key.Key == "Object")
+                        continue;
+                    if (key.Value is ClassDefinitionNode)
+                    {
+                        contexts.AddRange(((ClassDefinitionNode)key.Value).buildEnvironment());
+                    }
+                    else if (key.Value is InterfaceNode)
+                    {
+                        contexts.AddRange(((InterfaceNode)key.Value).buildEnvironment());
+                    }
+                }
+                contexts.AddRange(((ClassDefinitionNode)parents["Object"]).buildEnvironment());
+            }
+            return contexts;
+        }
+
+        private Context buildContext()
+        {
+            return new Context(identifier.ToString(),fields, methods, constructors);
         }
 
         private void checkConstructors(API api)
@@ -58,21 +105,8 @@ namespace Compiler.Tree
                 ConstructorNode c = ctr.Value;
                 if (!c.id.Equals(identifier))
                     throw new SemanticException("Not a valid constructor. "+c.id.ToString()+" does not match class "+identifier.ToString()+".", c.id.token);
-                checkParametersExistance(c.parameters, api);
+                api.checkParametersExistance(this,c.parameters);
                 c.headerEvaluation = true;
-            }
-        }
-
-        private void checkParametersExistance(List<Parameter> parameters, API api)
-        {
-            foreach (Parameter p in parameters) {
-                string name = p.type.ToString();
-                string nms = api.getParentNamespace(this);
-                var usings = parent_namespace.usingList;
-                usings.Add(new UsingNode(nms));
-                TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
-                if (tdn == null)
-                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", p.id.token);
             }
         }
 
@@ -80,7 +114,7 @@ namespace Compiler.Tree
         {
             foreach(KeyValuePair<string, MethodNode> method in methods)
             {
-                checkParametersExistance(method.Value.parameters, api);
+                api.checkParametersExistance(this,method.Value.parameters);
                 if (method.Value.modifier != null)
                 {
                     Debug.printMessage("Evaluando methodo " + Utils.getMethodWithParentName(method.Value, this));
@@ -130,6 +164,17 @@ namespace Compiler.Tree
                 parents[name] = tdn;
             }
         }
+        public override void verifiCycle(TypeDefinitionNode type, API api)
+        {
+            if (parents == null)
+                return;
+            foreach (KeyValuePair<string, TypeDefinitionNode> p in parents)
+            {
+                if (type.identifier.Equals(p.Value.identifier) && api.getParentNamespace(type) == api.getParentNamespace(p.Value))
+                    throw new SemanticException("Cycle inheritance detected in " + identifier.ToString() + ".", p.Value.identifier.token);
+                p.Value.verifiCycle(type, api);
+            }
+        }
 
         private void checkParents(API api)
         {
@@ -139,14 +184,15 @@ namespace Compiler.Tree
                     throw new SemanticException("Enum '" + parent.Key + "' in " + identifier.token.lexema + " can't be used as a inheritance.", identifier.token);
                 if (parent.Value is InterfaceNode)
                 {
-                    ((InterfaceNode)parent.Value).Evaluate(api);
+                    //((InterfaceNode)parent.Value).Evaluate(api);
                 }
                 else
                 {
-                    ((ClassDefinitionNode)parent.Value).Evaluate(api);
+                    //((ClassDefinitionNode)parent.Value).Evaluate(api);
                 }
                 checkParentMethods(parent.Value, api);
             }
+            verifiCycle(this, api);
         }
 
         private void checkParentMethods(TypeDefinitionNode parent, API api)
@@ -175,20 +221,22 @@ namespace Compiler.Tree
                 if (f.modifier != null)
                     if (!api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
                         throw new SemanticException("The modifier '" + field.Value.modifier.ToString() + "' is not valid for field " + field.Value.id.ToString() + " in class "+identifier.ToString()+".", field.Value.modifier.token);
-                
-                if(f.type is VoidTypeNode)
-                    throw new SemanticException("The type '"+f.type.GetType().Name+"' is not valid for field " + field.Value.id.ToString() + " in class "+identifier.ToString()+".", f.type.identifier.token);
-                else if(f.type is IdentifierTypeNode)
+
+                if (f.type is VoidTypeNode)
+                    throw new SemanticException("The type '" + f.type.GetType().Name + "' is not valid for field " + field.Value.id.ToString() + " in class " + identifier.ToString() + ".", f.type.identifier.token);
+
+                string name = f.type.ToString();
+                if (f.type is ArrayTypeNode)
                 {
-                    string name = f.type.ToString();
-                    string nms = api.getParentNamespace(this);
-                    var usings = parent_namespace.usingList;
-                    usings.Add(new UsingNode(nms));
-                    TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
-                    if (tdn == null)
-                        throw new SemanticException("Could not find Type '" + name + "' in the current context. ", f.type.getPrimaryToken());
-                    tdn.Evaluate(api);
+                    name = ((ArrayTypeNode)f.type).getArrayType().ToString();
                 }
+                string nms = api.getParentNamespace(this);
+                var usings = parent_namespace.usingList;
+                usings.Add(new UsingNode(nms));
+                TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
+                if (tdn == null)
+                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", f.type.getPrimaryToken());
+                //tdn.Evaluate(api);
             }
         }
 

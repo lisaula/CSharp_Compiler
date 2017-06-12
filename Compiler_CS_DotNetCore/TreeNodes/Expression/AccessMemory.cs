@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 
 namespace Compiler.Tree
 {
@@ -16,9 +17,9 @@ namespace Compiler.Tree
             this.expression = id;
         }
 
-        public override TypeDefinitionNode evaluateType()
+        public override TypeDefinitionNode evaluateType(API api)
         {
-            return expression.evaluateType();
+            return expression.evaluateType(api);
         }
     }
 }

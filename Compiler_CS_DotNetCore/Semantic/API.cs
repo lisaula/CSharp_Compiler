@@ -10,6 +10,7 @@ namespace Compiler_CS_DotNetCore.Semantic
     {
         private List<string> paths;
         public Dictionary<string, NamespaceNode> trees;
+        ContextManager contextManager;
         public API()
         {
             trees = new Dictionary<string, NamespaceNode>();
@@ -22,8 +23,25 @@ namespace Compiler_CS_DotNetCore.Semantic
             tree = parser.parse();
             setAllEvaluatesTrue(tree);
             trees["IncludesDefault"] = tree;
+            contextManager = new ContextManager();
         }
-
+        public void checkParametersExistance(TypeDefinitionNode obj,List<Parameter> parameters)
+        {
+            if (parameters == null)
+                return;
+            foreach (Parameter p in parameters)
+            {
+                string name = p.type.ToString();
+                if (p.type is ArrayTypeNode)
+                    name = ((ArrayTypeNode)p.type).getArrayType().ToString();
+                string nms = getParentNamespace(obj);
+                var usings = obj.parent_namespace.usingList;
+                usings.Add(new UsingNode(nms));
+                TypeDefinitionNode tdn = findTypeInUsings(usings, name);
+                if (tdn == null)
+                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", p.id.token);
+            }
+        }
         private void setAllEvaluatesTrue(NamespaceNode tree)
         {
             foreach(TypeDefinitionNode td in tree.typeList)
@@ -59,6 +77,19 @@ namespace Compiler_CS_DotNetCore.Semantic
                 trees[s] =tree;
             }
             return trees;
+        }
+
+        internal void popContext(params Context[] context)
+        {
+            foreach(Context c in context)
+            {
+                contextManager.contexts.Remove(c);
+            }
+        }
+
+        internal void pushContext(params Context[] context)
+        {
+            contextManager.contexts.AddRange(context);
         }
 
         internal Dictionary<string, NamespaceNode> buildTreesFromInput(InputString input)

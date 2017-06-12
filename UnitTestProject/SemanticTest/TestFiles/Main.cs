@@ -2,10 +2,9 @@ using Figuras;
 
 namespace N1{
 
-	public class myClase{
-
+	public class myClase: Circulo{
+		Circulo c;
 		public myClase(){
-
 		}
 		public void metodo(){
 			(count)++;
@@ -33,6 +32,7 @@ namespace N1{
 		
 	}
 }
+
 public class myClaseAlone{
 
 }

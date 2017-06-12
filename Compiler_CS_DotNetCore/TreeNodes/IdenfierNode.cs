@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 
 namespace Compiler.Tree
 {
@@ -20,7 +21,7 @@ namespace Compiler.Tree
             return token.lexema;
         }
 
-        public override TypeDefinitionNode evaluateType()
+        public override TypeDefinitionNode evaluateType(API api)
         {
             throw new NotImplementedException();
         }
