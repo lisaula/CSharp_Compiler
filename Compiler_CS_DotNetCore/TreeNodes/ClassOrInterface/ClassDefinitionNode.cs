@@ -43,16 +43,44 @@ namespace Compiler.Tree
                 Console.WriteLine();
             checkInheritanceExistance(api);
             checkParents(api);
-            checkMethodsModifier(api);
+            checkMethodHeader(api);
+            checkConstructors(api);
             //evaluateFields(api);
 
             evaluated = true;
         }
 
-        private void checkMethodsModifier(API api)
+        private void checkConstructors(API api)
+        {
+            foreach(KeyValuePair<string,ConstructorNode> ctr in constructors)
+            {
+                Debug.printMessage("Evaluando ctr " + ctr.Key);
+                ConstructorNode c = ctr.Value;
+                if (!c.id.Equals(identifier))
+                    throw new SemanticException("Not a valid constructor. "+c.id.ToString()+" does not match class "+identifier.ToString()+".", c.id.token);
+                checkParametersExistance(c.parameters, api);
+                c.headerEvaluation = true;
+            }
+        }
+
+        private void checkParametersExistance(List<Parameter> parameters, API api)
+        {
+            foreach (Parameter p in parameters) {
+                string name = p.type.ToString();
+                string nms = api.getParentNamespace(this);
+                var usings = parent_namespace.usingList;
+                usings.Add(new UsingNode(nms));
+                TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
+                if (tdn == null)
+                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", p.id.token);
+            }
+        }
+
+        private void checkMethodHeader(API api)
         {
             foreach(KeyValuePair<string, MethodNode> method in methods)
             {
+                checkParametersExistance(method.Value.parameters, api);
                 if (method.Value.modifier != null)
                 {
                     Debug.printMessage("Evaluando methodo " + Utils.getMethodWithParentName(method.Value, this));

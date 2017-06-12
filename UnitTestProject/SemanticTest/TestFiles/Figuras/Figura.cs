@@ -4,9 +4,11 @@ namespace Figuras{
 	public abstract class Figura{
 		public abstract void methodo();
 		public abstract void methodo2();
-		public virtual string virtualmethodo();//{
+		public virtual string virtualmethodo();
 
-		//}
+		public Figura(){
+
+		}
 	}
 
 	enum DIASDELASEMANA{

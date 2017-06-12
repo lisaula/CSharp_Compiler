@@ -68,7 +68,7 @@ namespace Compiler.Tree
                 usings.Add(new UsingNode(nms));
                 TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
                 if (tdn == null)
-                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", identifier.token);
+                    throw new SemanticException("Could not find Type '" + name + "' in the current context. ", parent[0].token);
                 if (parents.ContainsKey(name))
                     throw new SemanticException("Redundant Inheritance. " + name + " was found twice as inheritance in " + identifier.token.lexema, identifier.token);
                 parents[name] = tdn;

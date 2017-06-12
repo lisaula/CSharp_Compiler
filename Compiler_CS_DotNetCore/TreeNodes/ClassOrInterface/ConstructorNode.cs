@@ -9,8 +9,8 @@ namespace Compiler.Tree
         public List<Parameter> parameters;
         public ConstructorInitializerNode base_init;
         public BodyStatement bodyStatements;
-
-        public ConstructorNode(EncapsulationNode encapsulation, IdentifierNode id, List<Parameter> parameters, ConstructorInitializerNode base_init, BodyStatement bodyStatements)
+        public bool headerEvaluation { get; set; }
+        public ConstructorNode(EncapsulationNode encapsulation, IdentifierNode id, List<Parameter> parameters, ConstructorInitializerNode base_init, BodyStatement bodyStatements):this()
         {
             this.encapsulation = encapsulation;
             this.id = id;
@@ -20,7 +20,7 @@ namespace Compiler.Tree
         }
         public ConstructorNode()
         {
-
+            headerEvaluation = false;
         }
         public override string ToString()
         {

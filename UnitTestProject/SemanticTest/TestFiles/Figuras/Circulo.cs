@@ -1,5 +1,5 @@
 using N1;
-
+using N1.N2;
 namespace Figuras{
 	public abstract class Circulo : Figura, MismoTypes{
 		public int field1;
@@ -15,6 +15,13 @@ namespace Figuras{
 
 		public virtual void MismoMethodo(){}
 		public abstract void MismoMethodo2();
+		public Circulo(Figura f, int n, string name) : base(){
+
+		}
+
+		public Circulo(myClase2 d){
+
+		}
 
 	}
 	namespace insideFiguras{
