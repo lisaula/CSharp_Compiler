@@ -11,6 +11,41 @@ namespace Compiler_CS_DotNetCore.Semantic
         private List<string> paths;
         public Dictionary<string, NamespaceNode> trees;
         ContextManager contextManager;
+        public TypeDefinitionNode working_type;
+
+        public void setWorkingType(TypeDefinitionNode type)
+        {
+            working_type = type;
+        }
+
+        public TypeDefinitionNode searchType(TypeDefinitionNode type)
+        {
+            if (working_type == null)
+                throw new SemanticException("Working directory has not been set.", type.getPrimaryToken());
+            string name = type.ToString();
+            if (type is ArrayTypeNode)
+            {
+                name = ((ArrayTypeNode)type).getArrayType().ToString();
+            }
+            string nms = getParentNamespace(working_type);
+            var usings = working_type.parent_namespace.usingList;
+            usings.Add(new UsingNode(nms));
+            TypeDefinitionNode tdn = findTypeInUsings(usings, name);
+            if (tdn == null)
+                throw new SemanticException("Could not find Type '" + name + "' in the current context. ", type.getPrimaryToken());
+            return tdn;
+        }
+
+        internal bool TokenPass(Token @operator, params TokenType[] types)
+        {
+            foreach(TokenType t in types)
+            {
+                if (t == @operator.type)
+                    return true;
+            }
+            return false;
+        }
+
         public API()
         {
             trees = new Dictionary<string, NamespaceNode>();
@@ -52,6 +87,15 @@ namespace Compiler_CS_DotNetCore.Semantic
             {
                 setAllEvaluatesTrue(nms);
             }
+        }
+
+        internal bool checkRelationBetween(TypeDefinitionNode tdn, TypeDefinitionNode type)
+        {
+            TypeDefinitionNode placeHolder = working_type;
+            bool found = ((ClassDefinitionNode)tdn).checkRelationWith(type, this);
+            bool found1 = ((ClassDefinitionNode)type).checkRelationWith(type, this);
+            working_type = placeHolder;
+            return found || found1;
         }
 
         public API(List<string> paths): this()

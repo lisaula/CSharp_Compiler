@@ -12,6 +12,15 @@ namespace Compiler.Tree
         {
 
         }
+        /*
+            TokenType.OP_SUM,
+            TokenType.OP_SUBSTRACT,
+            TokenType.OP_INCREMENT,
+            TokenType.OP_DECREMENT,
+            TokenType.OP_DENIAL,
+            TokenType.OP_BIN_ONES_COMPLMTS,
+            TokenType.OP_MULTIPLICATION 
+        */
         public PreExpressionNode(Token unaryOperator, UnaryExpressionNode unary_expression)
         {
             this.Operator = unaryOperator;
@@ -20,7 +29,25 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode t1 = expression.evaluateType(api);
+            if(api.TokenPass(Operator, TokenType.OP_SUM, TokenType.OP_SUBSTRACT, TokenType.OP_INCREMENT, TokenType.OP_DECREMENT))
+            {
+                if (t1.ToString() != Utils.Int && t1.ToString() != Utils.Float && t1.ToString() != Utils.Char)
+                    throw new SemanticException("Invalid pre unary expression. Cant apply " + Operator.ToString() + " to " + t1.ToString(), Operator);
+            }
+            if(api.TokenPass(Operator, TokenType.OP_BIN_ONES_COMPLMTS))
+            {
+                if (t1.ToString() != Utils.Char && t1.ToString() != Utils.Int)
+                    throw new SemanticException("Invalid pre unary expression. Cant apply " + Operator.ToString() + " to " + t1.ToString(), Operator);
+                if (t1.ToString() == Utils.Char)
+                    return new IntType();
+            }
+            if(api.TokenPass(Operator, TokenType.OP_DENIAL))
+            {
+                if(t1.ToString() != Utils.Bool)
+                    throw new SemanticException("Invalid pre unary expression. Cant apply " + Operator.ToString() + " to " + t1.ToString(), Operator);
+            }
+            return t1;
         }
     }
 }

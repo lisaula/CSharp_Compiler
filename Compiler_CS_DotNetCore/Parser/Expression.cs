@@ -246,14 +246,7 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 TypeDefinitionNode type = types();
-                if (Operator.type == TokenType.RW_AS)
-                {
-                    var list = new List<ExpressionNode>();
-                    list.Add(leftExpression);
-                    return relational_expression_p(new CastingExpressionNode(type, list));
-                }
-                else
-                    return relational_expression_p(new IsExpression(leftExpression, type));
+                return relational_expression_p(new IsASExpression(leftExpression, type, Operator));
             }
             else
             {
@@ -302,9 +295,9 @@ namespace Compiler
                 consumeToken();
                 var rightExpression = multiplicative_expression();
                 if(Operator.type == TokenType.OP_SUM)
-                    return additive_expression_p(new SumExpression(leftExpression, rightExpression));
+                    return additive_expression_p(new SumExpression(leftExpression, rightExpression, Operator));
                 else
-                    return additive_expression_p(new SubExpression(leftExpression, rightExpression));
+                    return additive_expression_p(new SubExpression(leftExpression, rightExpression,Operator));
             }
             else
             {
@@ -328,7 +321,8 @@ namespace Compiler
                 var Operator = current_token;
                 consumeToken();
                 var rightExpression = expression();
-                return multiplicative_expression_p(new AssignmentNode(unary,Operator, rightExpression));
+                AssignmentNode an = new AssignmentNode(unary, Operator, rightExpression);
+                return multiplicative_expression_p(an);
             }else
             {
                 return multiplicative_expression_p(unary);
@@ -344,11 +338,11 @@ namespace Compiler
                 consumeToken();
                 var rightExpression = unary_expression();
                 if (Operator.type == TokenType.OP_MULTIPLICATION)
-                    return multiplicative_expression_p(new MultExpression(leftExpression, rightExpression));
+                    return multiplicative_expression_p(new MultExpression(leftExpression, rightExpression, Operator));
                 else if(Operator.type == TokenType.OP_DIVISION)
-                    return multiplicative_expression_p(new DivExpression(leftExpression, rightExpression));
+                    return multiplicative_expression_p(new DivExpression(leftExpression, rightExpression, Operator));
                 else
-                    return multiplicative_expression_p(new ModExpression(leftExpression, rightExpression));
+                    return multiplicative_expression_p(new ModExpression(leftExpression, rightExpression, Operator));
             }
             else
             {

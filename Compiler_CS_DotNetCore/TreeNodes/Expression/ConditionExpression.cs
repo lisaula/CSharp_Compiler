@@ -6,7 +6,7 @@ namespace Compiler.Tree
     {
         public TypeDefinitionNode type;
 
-        public ConditionExpression(ExpressionNode leftExpression, ExpressionNode rightExpression) : base (leftExpression, rightExpression)
+        public ConditionExpression(ExpressionNode leftExpression, ExpressionNode rightExpression, Token op) : base (leftExpression, rightExpression, op)
         {
         }
 

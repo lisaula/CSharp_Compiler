@@ -54,6 +54,7 @@ namespace Compiler.Tree
         {
             List<Context> cm = buildEnvironment();
             api.pushContext(cm.ToArray());
+            api.setWorkingType(this);
             foreach(KeyValuePair<string,FieldNode> key in fields)
             {
                 if(key.Value.assignment != null)
@@ -64,7 +65,7 @@ namespace Compiler.Tree
                         throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
                 }
             }
-
+            api.setWorkingType(null);
             api.popContext(cm.ToArray());
         }
 
@@ -182,14 +183,6 @@ namespace Compiler.Tree
             {
                 if (parent.Value is EnumDefinitionNode)
                     throw new SemanticException("Enum '" + parent.Key + "' in " + identifier.token.lexema + " can't be used as a inheritance.", identifier.token);
-                if (parent.Value is InterfaceNode)
-                {
-                    //((InterfaceNode)parent.Value).Evaluate(api);
-                }
-                else
-                {
-                    //((ClassDefinitionNode)parent.Value).Evaluate(api);
-                }
                 checkParentMethods(parent.Value, api);
             }
             verifiCycle(this, api);
@@ -209,7 +202,25 @@ namespace Compiler.Tree
                 }
             }
         }
-
+        public bool checkRelationWith(TypeDefinitionNode type, API api)
+        {
+            if (!evaluated)
+                checkInheritanceExistance(api);
+            if (type.identifier.Equals(identifier) && api.getParentNamespace(type) == api.getParentNamespace(this))
+                return true;
+            foreach (KeyValuePair<string, TypeDefinitionNode> key in parents)
+            {
+                if(key.Value is ClassDefinitionNode)
+                {
+                    if (type.identifier.Equals(key.Value.identifier) && api.getParentNamespace(type) == api.getParentNamespace(key.Value))
+                        return true;
+                    bool found = ((ClassDefinitionNode)key.Value).checkRelationWith(type, api);
+                    if (found)
+                        return true;
+                }
+            }
+            return false;
+        }
 
         private void evaluateFields(API api)
         {

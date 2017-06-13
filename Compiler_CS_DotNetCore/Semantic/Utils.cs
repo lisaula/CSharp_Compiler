@@ -6,6 +6,16 @@ namespace Compiler_CS_DotNetCore.Semantic
 {
     public class Utils
     {
+        public const string Bool = "BoolType";
+        public const string Char = "CharType";
+        public const string Dict = "DictionaryTypeNode";
+        public const string Float = "FloatType";
+        public const string Int = "IntType";
+        public const string String = "StringType";
+        public const string Class = "ClassDefinitionNode";
+        public const string Interface = "InterfaceNode";
+        public const string Enum = "EnumDefinitionNode";
+
         public static string getParametersName(List<Parameter> parameter)
         {
             List<string> name = new List<string>();

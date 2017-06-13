@@ -8,11 +8,25 @@ namespace Compiler.Tree
     {
         public TypeDefinitionNode targetType;
         public List<ExpressionNode> primary;
-
+        public List<string> rules;
         public CastingExpressionNode(TypeDefinitionNode targetType, List<ExpressionNode> primary)
         {
             this.targetType = targetType;
             this.primary = primary;
+            rules = new List<string>();
+            rules.Add(Utils.Int + "," + Utils.Int);
+            rules.Add(Utils.Int + "," + Utils.Float);
+            rules.Add(Utils.Float + "," + Utils.Int);
+            rules.Add(Utils.Int + "," + Utils.Char);
+            rules.Add(Utils.Char + "," + Utils.Int);
+
+            rules.Add(Utils.Char + "," + Utils.Char);
+            rules.Add(Utils.Char + "," + Utils.Float);
+
+            rules.Add(Utils.Float + "," + Utils.Float);
+            rules.Add(Utils.Float + "," + Utils.Char);
+
+            rules.Add(Utils.String + "," + Utils.String);
         }
         public CastingExpressionNode()
         {
@@ -21,7 +35,8 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            throw new NotImplementedException();
+
+            return targetType;
         }
     }
 }

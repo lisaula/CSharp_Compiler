@@ -36,7 +36,7 @@ namespace Compiler.Tree
                 throw new SemanticException("Condition expression does not returns a bool in ternary expression.", t1.identifier.token);
             }
             TypeDefinitionNode t = conditional_expression.evaluateType(api);
-            throw new SemanticException("Not a condition expression in ternary expression.",t.identifier.token);
+            throw new SemanticException("Not a condition expression in ternary expression.",t.getPrimaryToken());
         }
     }
 }

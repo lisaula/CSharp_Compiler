@@ -20,7 +20,11 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode tcondition = conditionalExpression.evaluateType(api);
+            TypeDefinitionNode tnullCoalescing = nullCoalescing.evaluateType(api);
+            if (!tcondition.Equals(tnullCoalescing))
+                throw new SemanticException("Cannot make null coalescing of type '" + tcondition.ToString() + "' and '" + tnullCoalescing.ToString() + "'.", tcondition.getPrimaryToken());
+            return tcondition;
         }
     }
 }

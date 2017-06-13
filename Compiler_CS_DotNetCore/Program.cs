@@ -109,7 +109,7 @@ private class ClasePrivada {
             typeof(VoidTypeNode), typeof(ArrayAccessNode), typeof(ParenthesizedExpressionNode), typeof(ArithmeticExpression), typeof(VarType)
             , typeof(BinaryExpression), typeof(TernaryExpressionNode), typeof(JumpStatementNode), typeof(CastingExpressionNode)
             , typeof(InlineExpressionNode),typeof(SubExpression), typeof(SumExpression), typeof(MultExpression), typeof(DivExpression), typeof(LogicalExpression),
-            typeof(RelationalExpression), typeof(EqualityExpression), typeof(ModExpression), typeof(IsExpression)};
+            typeof(RelationalExpression), typeof(EqualityExpression), typeof(ModExpression), typeof(IsASExpression)};
             var serializer = new XmlSerializer(typeof(CompilationNode),types);
             var logPath = System.IO.Path.GetTempFileName();
             var logFile = System.IO.File.Create("arbol.xml");

@@ -80,7 +80,6 @@ namespace Compiler.Tree
             {
                 if (!(parent.Value is InterfaceNode))
                     throw new SemanticException("Type '" + parent.Key + "' in " + identifier.token.lexema + " is not an interface",identifier.token);
-                ((InterfaceNode)parent.Value).Evaluate(api);
             }
             verifiCycle(this, api);
         }
