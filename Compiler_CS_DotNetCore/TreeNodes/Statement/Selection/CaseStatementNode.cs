@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree     
 {
-    public class CaseStatementNode
+    public class CaseStatementNode : EmbeddedStatementNode
     {
         public  List<CaseLabel> caseLabel;
         public List<Statement> body;
@@ -16,6 +18,11 @@ namespace Compiler.Tree
         {
             this.caseLabel = caseLabel;
             this.body = body;
+        }
+
+        public override void evaluate(API api)
+        {
+            throw new NotImplementedException();
         }
     }
 }

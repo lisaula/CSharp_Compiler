@@ -1,4 +1,7 @@
-﻿namespace Compiler.Tree
+﻿using System;
+using Compiler_CS_DotNetCore.Semantic;
+
+namespace Compiler.Tree
 {
     public class IfStatementNode : EmbeddedStatementNode
     {
@@ -16,6 +19,11 @@
             this.expr = expr;
             this.body = body;
             this.elseStatement = elseStatement;
+        }
+
+        public override void evaluate(API api)
+        {
+            throw new NotImplementedException();
         }
     }
 }

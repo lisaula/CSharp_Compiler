@@ -47,9 +47,27 @@ namespace Compiler.Tree
             checkConstructors(api);
             evaluateFields(api);
             checkFieldsAssignment(api);
+            checkConstructorsBody(api);
             evaluated = true;
         }
 
+        private void checkConstructorsBody(API api)
+        {
+            foreach (var key in constructors)
+            {
+                List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
+                api.pushContext(contexts.ToArray());
+                api.setWorkingType(this);
+                if (key.Value.bodyStatements == null)
+                    throw new SemanticException("Constructor has no body. "+key.Value.id.token);
+                foreach (var s in key.Value.bodyStatements.statements)
+                {
+                    
+                }
+                api.setWorkingType(null);
+                api.popContext(contexts.ToArray());
+            }
+        }
 
         private void checkFieldsAssignment(API api)
         {
@@ -100,7 +118,7 @@ namespace Compiler.Tree
                 var token = new Token();
                 token.type = TokenType.RW_PUBLIC;
                 token.lexema = "public";
-                var ctr = new ConstructorNode(new EncapsulationNode(token), identifier, null, null, null);
+                var ctr = new ConstructorNode(new EncapsulationNode(token), identifier,null, null, new BodyStatement());
                 constructors[key] = ctr;
             }
         }

@@ -1,4 +1,7 @@
-﻿namespace Compiler.Tree
+﻿using System;
+using Compiler_CS_DotNetCore.Semantic;
+
+namespace Compiler.Tree
 {
     public  class DoStatementNode : EmbeddedStatementNode
     {
@@ -14,6 +17,11 @@
         {
             this.body = body;
             this.conditionExpression = conditionExpression;
+        }
+
+        public override void evaluate(API api)
+        {
+            throw new NotImplementedException();
         }
     }
 

@@ -1,6 +1,6 @@
 ﻿namespace Compiler.Tree
 {
-    public class EmbeddedStatementNode: Statement
+    public abstract class EmbeddedStatementNode: Statement
     {
         public EmbeddedStatementNode()
         {

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
 {
@@ -15,6 +17,11 @@ namespace Compiler.Tree
         public SwitchStatementNode()
         {
 
+        }
+
+        public override void evaluate(API api)
+        {
+            throw new NotImplementedException();
         }
     }
 }
