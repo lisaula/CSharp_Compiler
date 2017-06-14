@@ -40,7 +40,8 @@ namespace Figuras{
 		}
 
 		Circulo(myClase2 d){
-
+			int[] jaja = n7[0];
+			int jaja1 = n6[0,0];
 		}
 
 		void meth(){}

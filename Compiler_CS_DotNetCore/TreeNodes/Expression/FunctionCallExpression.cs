@@ -30,7 +30,7 @@ namespace Compiler.Tree
             string functionName = ((IdentifierNode)primary).ToString() +"("+Utils.getTypeName(argumentsType)+")";
             MethodNode m = api.contextManager.findFunction(functionName);
             if (m == null)
-                throw new SemanticException("Function '" + functionName + "' could be found in the current context.");
+                throw new SemanticException("Function '" + functionName + "' could not be found in the current context.");
             return m.returnType;
         }
     }

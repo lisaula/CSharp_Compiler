@@ -55,7 +55,7 @@ namespace Compiler.Tree
         {
             foreach (var key in constructors)
             {
-                if (key.Value.id.ToString() == "myClase")
+                if (key.Value.id.ToString() == "Circulo")
                     Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());
@@ -92,7 +92,7 @@ namespace Compiler.Tree
                     api.setWorkingType(this);
 
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "val")
+                    if (f.id.ToString() == "Circulo")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
