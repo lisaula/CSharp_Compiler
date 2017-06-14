@@ -14,6 +14,7 @@ namespace Compiler.Tree
         {
 
         }
+        public abstract string getComparativeType();
         public abstract Token getPrimaryToken();
         public virtual void verifiCycle(TypeDefinitionNode classDefinitionNode,API api) { }
     }

@@ -27,5 +27,10 @@ namespace Compiler.Tree
         {
             return identifier.token;
         }
+
+        public override string getComparativeType()
+        {
+            return Utils.Void;
+        }
     }
 }

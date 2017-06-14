@@ -94,6 +94,7 @@ namespace Compiler_CS_DotNetCore.Semantic
             tree = parser.parse();
             setAllEvaluatesTrue(tree);
             trees["IncludesDefault"] = tree;
+            setClassesOnTableType(tree);
             contextManager = new ContextManager();
         }
         public void checkParametersExistance(TypeDefinitionNode obj,List<Parameter> parameters)

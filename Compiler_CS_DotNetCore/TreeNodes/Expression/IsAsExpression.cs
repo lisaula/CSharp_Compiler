@@ -15,14 +15,15 @@ namespace Compiler.Tree
             this.leftExpression = leftExpression;
             this.type = type;
             @operator = op;
-        }
-        public IsASExpression()
-        {
             if (@operator.type == TokenType.RW_AS)
             {
                 rules = new List<string>();
                 rules.Add(Utils.String + "," + Utils.String);
+                rules.Add(Utils.Class + "," + Utils.Null);
             }
+        }
+        public IsASExpression()
+        {
         }
         
         public override TypeDefinitionNode evaluateType(API api)
@@ -30,31 +31,32 @@ namespace Compiler.Tree
             TypeDefinitionNode tdn = leftExpression.evaluateType(api);
             if (@operator.type == TokenType.RW_AS)
             {
-                if (tdn is DictionaryTypeNode || type is DictionaryTypeNode)
+                if (tdn.getComparativeType() == Utils.Dict || type is DictionaryTypeNode)
                     throw new SemanticException("Cannot implicitly conver Dictionary.", type.getPrimaryToken());
 
-                if (rules.Contains(tdn.ToString() + "," + type.ToString()))
+                if (rules.Contains(tdn.getComparativeType() + "," + type.ToString()))
                     return type;
                 else
                 {
                     TypeDefinitionNode targetType = null;
-                    if(targetType is ArrayTypeNode)
+                    if(type is ArrayTypeNode)
                     {
                         targetType = api.searchType(((ArrayTypeNode)type).type);
                     }
-                    if (targetType is NullTypeNode)
+                    if (type is NullTypeNode)
                         throw new SemanticException("Cannot implicitly convert null to '"+tdn.ToString()+"'.", type.getPrimaryToken());
 
                     if (targetType is PrimitiveType || tdn is PrimitiveType || type is PrimitiveType)
                         throw new SemanticException("Cannot use a primity type with this operation.", type.getPrimaryToken());
 
-                    if (targetType is InterfaceNode)
+                    if (type is InterfaceNode)
                     {
                         throw new SemanticException("Cannot implicitly convert type '" + tdn.ToString() + "' to interface '" + targetType.ToString() + "'.", type.getPrimaryToken());
-                    }else if(tdn is InterfaceNode)
+                    }else if(tdn.getComparativeType() == Utils.Interface)
                     {
                         throw new SemanticException("Cannot implicitly convert interface '" + tdn.ToString() + "' to object '" + targetType.ToString() + "'.", type.getPrimaryToken());
                     }
+                    targetType = api.searchType(type);
                     if(api.checkRelationBetween(tdn, targetType))
                     {
                         return targetType;
@@ -64,7 +66,7 @@ namespace Compiler.Tree
             }
             else
             {
-                if (tdn is VoidTypeNode)
+                if (tdn.getComparativeType() == Utils.Void)
                     throw new SemanticException("Invalid is Expression. Left expression shold not be 'void'.", @operator);
                 TypeDefinitionNode t = null;
                 if (type is ArrayTypeNode)
@@ -74,9 +76,9 @@ namespace Compiler.Tree
                 if(!(type is NullTypeNode))
                     t = api.searchType(type);
 
-                if (t is InterfaceNode)
+                if (t.getComparativeType() == Utils.Interface)
                     throw new SemanticException("Cannot compare an object with interface '" + t.ToString() + "'", type.getPrimaryToken());
-                return new BoolType();
+                return Singleton.tableTypes[Utils.GlobalNamespace+"."+Utils.Bool];
             }
         }
     }

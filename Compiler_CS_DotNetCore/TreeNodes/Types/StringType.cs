@@ -7,7 +7,10 @@ namespace Compiler.Tree
         public StringType(Token token) : base(token)
         {
         }
+        public StringType()
+        {
 
+        }
         public StringType(TypeDefinitionNode t):base(t)
         {
         }
@@ -24,6 +27,11 @@ namespace Compiler.Tree
         public override Token getPrimaryToken()
         {
             return identifier.token;
+        }
+
+        public override string getComparativeType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

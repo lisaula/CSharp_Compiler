@@ -25,6 +25,7 @@ namespace Compiler.Tree
             rules[Utils.Enum + "," + Utils.Enum] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool];
             rules[Utils.Class + "," + Utils.Null] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool];
             rules[Utils.Null + "," + Utils.Class] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool];
+            rules[Utils.Array + "," + Utils.Array] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool];
         }
         public EqualityExpression()
         {

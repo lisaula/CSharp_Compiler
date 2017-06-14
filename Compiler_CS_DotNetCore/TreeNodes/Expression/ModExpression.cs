@@ -6,17 +6,17 @@ namespace Compiler.Tree
     {
         public ModExpression(ExpressionNode leftExpression, UnaryExpressionNode rightExpression, Token op) : base(leftExpression, rightExpression, op)
         {
-            rules[Utils.Int + "," + Utils.Int] = new IntType();
-            rules[Utils.Char + "," + Utils.Int] = new IntType();
-            rules[Utils.Int + "," + Utils.Char] = new IntType();
-            rules[Utils.Int + "," + Utils.Float] = new FloatType();
-            rules[Utils.Float + "," + Utils.Int] = new FloatType();
+            rules[Utils.Int + "," + Utils.Int] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
+            rules[Utils.Char + "," + Utils.Int] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
+            rules[Utils.Int + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
+            rules[Utils.Int + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
+            rules[Utils.Float + "," + Utils.Int] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
 
-            rules[Utils.Float + "," + Utils.Float] = new FloatType();
-            rules[Utils.Float + "," + Utils.Char] = new FloatType();
-            rules[Utils.Char + "," + Utils.Float] = new FloatType();
+            rules[Utils.Float + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
+            rules[Utils.Float + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
+            rules[Utils.Char + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
 
-            rules[Utils.Char + "," + Utils.Char] = new IntType();
+            rules[Utils.Char + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
         }
         public ModExpression()
         {

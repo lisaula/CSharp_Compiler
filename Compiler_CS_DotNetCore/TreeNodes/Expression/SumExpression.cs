@@ -7,23 +7,23 @@ namespace Compiler.Tree
 
         public SumExpression(ExpressionNode leftExpression, ExpressionNode rightExpression, Token op) : base(leftExpression, rightExpression, op)
         {
-            rules[Utils.Char + "," + Utils.Char] = new IntType();
+            rules[Utils.Char + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
 
-            rules[Utils.Int + "," + Utils.Int] = new IntType();
-            rules[Utils.Int + "," + Utils.Char] = new IntType();
-            rules[Utils.Char + "," + Utils.Int] = new IntType();
+            rules[Utils.Int + "," + Utils.Int] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
+            rules[Utils.Int + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
+            rules[Utils.Char + "," + Utils.Int] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
 
-            rules[Utils.Float + "," + Utils.Float] = new FloatType();
-            rules[Utils.Char + "," + Utils.Float] = new FloatType();
-            rules[Utils.Float + "," + Utils.Char] = new FloatType();
+            rules[Utils.Float + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
+            rules[Utils.Char + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
+            rules[Utils.Float + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
 
-            rules[Utils.Char + "," + Utils.String] = new StringType();
-            rules[Utils.String + "," + Utils.Char] = new StringType();
-            rules[Utils.String + "," + Utils.String] = new StringType();
-            rules[Utils.String + "," + Utils.Int] = new StringType();
-            rules[Utils.Int + "," + Utils.String] = new StringType();
-            rules[Utils.String + "," + Utils.Float] = new StringType();
-            rules[Utils.Float + "," + Utils.String] = new StringType();
+            rules[Utils.Char + "," + Utils.String] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            rules[Utils.String + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            rules[Utils.String + "," + Utils.String] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            rules[Utils.String + "," + Utils.Int] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            rules[Utils.Int + "," + Utils.String] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            rules[Utils.String + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            rules[Utils.Float + "," + Utils.String] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
         }
         public SumExpression()
         {

@@ -40,15 +40,7 @@ namespace Compiler.Tree
             if(obj is IdentifierTypeNode)
             {
                 var o = obj as IdentifierTypeNode;
-                if(o.Identifiers.Count == Identifiers.Count)
-                {
-                    for(int i = 0; i < Identifiers.Count;i++)
-                    {
-                        if (!Identifiers[i].Equals(o.Identifiers[i]))
-                            return false;
-                    }
-                    return true;
-                }
+                return o.typeNode.Equals(typeNode);
             }
             return false;
         }
@@ -56,6 +48,11 @@ namespace Compiler.Tree
         public override Token getPrimaryToken()
         {
             return Identifiers[0].token;
+        }
+
+        public override string getComparativeType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

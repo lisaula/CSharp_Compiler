@@ -4,12 +4,17 @@ namespace N1{
 
 	public class myClase: Circulo{
 		Circulo c = new Circulo();
-		myClase clase = ((Circulo)null);
+		myClase clase = c as Circulo;
 		char ca = 'a';
 		int cat = ((int)ca);
 		bool b = true;
 		bool f = false;
 		bool r = b && f;
+		float f1 = 1.2f;
+		int i1 = 50;
+		float f2 = ((float)1.5);
+		bool r2 = c == null;
+		bool h = clase is Circulo;
 		public myClase(){
 		}
 		public void metodo(){

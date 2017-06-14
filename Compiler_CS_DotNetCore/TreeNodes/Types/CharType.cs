@@ -11,6 +11,10 @@ namespace Compiler.Tree
         {
 
         }
+        public CharType(TypeDefinitionNode t) : base(t)
+        {
+                
+        }
         public override string ToString()
         {
             return this.GetType().Name;
@@ -24,6 +28,11 @@ namespace Compiler.Tree
         public override Token getPrimaryToken()
         {
             return identifier.token;
+        }
+
+        public override string getComparativeType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

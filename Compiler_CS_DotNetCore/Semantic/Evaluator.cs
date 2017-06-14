@@ -83,7 +83,8 @@ namespace Compiler_CS_DotNetCore.Semantic
             {
                 try
                 {
-                    api.setClassesOnTableType(tree.Value);
+                    if(tree.Key != "IncludesDefault")
+                        api.setClassesOnTableType(tree.Value);
                     api.setNamespacesOnTableNms(tree.Value);
                 }
                 catch (SemanticException se)

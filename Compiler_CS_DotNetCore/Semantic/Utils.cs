@@ -133,5 +133,7 @@ public class BoolType{
 ";
 
         public const string GlobalNamespace = "GlobalNamespace";
+
+        public const string Array = "ArrayTypeNode"; 
     }
 }

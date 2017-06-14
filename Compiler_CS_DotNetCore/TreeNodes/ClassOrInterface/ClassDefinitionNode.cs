@@ -39,7 +39,7 @@ namespace Compiler.Tree
             if (evaluated)
                 return;
             Debug.printMessage("Evaluating class " + identifier.ToString());
-            if (identifier.ToString() == "Circulo")
+            if (identifier.ToString() == "myClase")
                 Console.WriteLine();
             checkInheritanceExistance(api);
             checkParents(api);
@@ -61,16 +61,16 @@ namespace Compiler.Tree
                 if(key.Value.assignment != null)
                 {
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "clase")
+                    if (f.id.ToString() == "r2")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
                     {
-                        if(f.type is ClassDefinitionNode && tdn is ClassDefinitionNode)
+                        if(f.type.getComparativeType() == Utils.Class && tdn.getComparativeType() == Utils.Class)
                         {
                             if(!api.checkRelationBetween(f.type, tdn))
                                 throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
-                        }else if ((!(f.type is ClassDefinitionNode || f.type is StringType) && tdn is NullTypeNode))
+                        }else if ((!(f.type.getComparativeType() == Utils.Class || f.type.getComparativeType() == Utils.String) && tdn is NullTypeNode))
                         {
                             throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
                         }
@@ -214,6 +214,8 @@ namespace Compiler.Tree
                 checkInheritanceExistance(api);
             if (type.identifier.Equals(identifier) && api.getParentNamespace(type) == api.getParentNamespace(this))
                 return true;
+            if (parents == null)
+                return false;
             foreach (KeyValuePair<string, TypeDefinitionNode> key in parents)
             {
                 if(key.Value is ClassDefinitionNode)
@@ -255,7 +257,13 @@ namespace Compiler.Tree
                     throw new SemanticException("The type '" + tdn.ToString()+ "' is not valid for field " + field.Value.id.ToString() + " in class " + identifier.ToString() + ".", f.type.getPrimaryToken());
                 if (api.TokenPass(((ClassDefinitionNode)tdn).encapsulation.token, TokenType.RW_PRIVATE))
                     throw new SemanticException("The type '" + f.type.ToString() + "' can't be reached due to encapsulation level.", f.type.getPrimaryToken());
-                f.type.typeNode = tdn;
+                f.type.typeNode = f.type;
+                if (f.type is ArrayTypeNode)
+                {
+                    ((ArrayTypeNode)f.type).type = tdn;
+                }
+                else
+                    f.type = tdn;
                 //tdn.Evaluate(api);
             }
         }
@@ -273,6 +281,17 @@ namespace Compiler.Tree
         public override Token getPrimaryToken()
         {
             return identifier.token;
+        }
+
+        public override string getComparativeType()
+        {
+            string[] primitives = { Utils.Bool, Utils.Char, Utils.Dict, Utils.Float, Utils.String, Utils.Int, Utils.Void };
+            foreach (string s in primitives)
+            {
+                if (identifier.token.lexema == s)
+                    return s;
+            }
+            return Utils.Class;
         }
     }
 }

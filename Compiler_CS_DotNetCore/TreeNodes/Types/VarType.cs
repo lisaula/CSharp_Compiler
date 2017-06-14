@@ -1,8 +1,6 @@
 ﻿using System;
 using Compiler.Tree;
 using Compiler_CS_DotNetCore.Semantic;
-using System.Collections.Generic;
-
 namespace Compiler
 {
     public class VarType : TypeDefinitionNode
@@ -29,6 +27,11 @@ namespace Compiler
         public override Token getPrimaryToken()
         {
             return identifier.token;
+        }
+
+        public override string getComparativeType()
+        {
+            throw new NotImplementedException();
         }
     }
 }

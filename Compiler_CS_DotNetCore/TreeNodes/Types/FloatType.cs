@@ -30,5 +30,10 @@ namespace Compiler.Tree
         {
             return identifier.token;
         }
+
+        public override string getComparativeType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

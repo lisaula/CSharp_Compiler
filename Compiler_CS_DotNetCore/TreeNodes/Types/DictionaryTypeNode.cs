@@ -42,5 +42,10 @@ namespace Compiler.Tree
         {
             return t1.getPrimaryToken();
         }
+
+        public override string getComparativeType()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

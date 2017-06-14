@@ -25,7 +25,7 @@ namespace Compiler.Tree
         {
             TypeDefinitionNode t1 = leftExpression.evaluateType(api);
             TypeDefinitionNode t2 = rightExpression.evaluateType(api);
-            string key = t1.ToString() + "," + t2.ToString();
+            string key = t1.getComparativeType() + "," + t2.getComparativeType();
             if (!rules.ContainsKey(key))
                 throw new SemanticException("Invalid operation '"+@operator.ToString()+"'. Rule not supported '"+key+"'", @operator);
             return rules[key];
