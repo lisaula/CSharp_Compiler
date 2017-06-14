@@ -25,7 +25,7 @@ namespace Compiler.Tree
             if (conditional_expression is ConditionExpression)
             {
                 TypeDefinitionNode t1 = conditional_expression.evaluateType(api);
-                if (t1.Equals(new BoolType()))
+                if (t1.Equals(Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool]))
                 {
                     TypeDefinitionNode ttrue = true_expression.evaluateType(api);
                     TypeDefinitionNode tfalse = false_expression.evaluateType(api);

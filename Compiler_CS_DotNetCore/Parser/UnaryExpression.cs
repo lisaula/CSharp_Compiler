@@ -214,7 +214,6 @@ namespace Compiler
                 {
                     ((FunctionCallExpression)list[0]).primary = id;
                 }
-
             }
             else if(list.Count > 0 &&
                 list[0] is ArrayAccessNode && ((ArrayAccessNode)list[0]).primary == null)

@@ -6,14 +6,14 @@ namespace Compiler.Tree
     public class IdentifierNode : PrimaryExpressionNode
     {
         public Token token;
-
-        public IdentifierNode(Token token)
+        public bool FunctionID;
+        public IdentifierNode(Token token) : this()
         {
             this.token = token;
         }
         public IdentifierNode()
         {
-            
+            FunctionID = false;
         }
 
         public override string ToString()
@@ -23,8 +23,9 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            var id = new IdentifierTypeNode(new IdentifierNode(token));
-            return api.searchType(id);
+            TypeDefinitionNode t = null;
+            t = api.contextManager.findVariable(false, token);
+            return t;
         }
 
         public override bool Equals(object obj)

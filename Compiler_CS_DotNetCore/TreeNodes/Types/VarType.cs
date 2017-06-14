@@ -7,7 +7,6 @@ namespace Compiler
 {
     public class VarType : TypeDefinitionNode
     {
-
         public VarType(Token token)
         {
             this.identifier = new IdentifierNode(token);

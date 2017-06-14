@@ -16,7 +16,7 @@ namespace Compiler_CS_DotNetCore.Semantic
         public const string Interface = "InterfaceNode";
         public const string Enum = "EnumDefinitionNode";
         public const string Null = "NullTypeNode";
-
+        public static string Void = "VoidTypeNode";
         internal static string makeConstructorName(TypeDefinitionNode tdn, List<ExpressionNode> arguments, API api)
         {
             string name = tdn.ToString() + "(" + Utils.getArgumentsNameType(arguments, api) + ")";

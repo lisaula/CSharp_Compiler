@@ -43,9 +43,15 @@ namespace Compiler.Tree
             string key = tdn.ToString() + "," + t1.ToString();
             if (rules.Contains(key))
                 return t1;
-            if(tdn is ClassDefinitionNode && t1 is ClassDefinitionNode)
+            if(t1 is ClassDefinitionNode)
             {
-                if (api.checkRelationBetween(tdn, t1))
+                if (tdn is ClassDefinitionNode)
+                {
+                    if (api.checkRelationBetween(tdn, t1))
+                    {
+                        return t1;
+                    }
+                }else if((tdn is NullTypeNode))
                 {
                     return t1;
                 }

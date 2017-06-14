@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Compiler.Tree;
+using Compiler;
 
 namespace Compiler_CS_DotNetCore.Semantic.Context
 {
@@ -9,10 +10,11 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
     {
         public string name;
         public List<Context> contexts;
-
+        public bool isStatic { get; set; }
         public ContextManager()
         {
             contexts = new List<Context>();
+            isStatic = false;
         }
 
         public ContextManager(string name):this()
@@ -37,10 +39,27 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             throw new SemanticException("Constructor '" + key + "' could not be found in current context '"+context.name+"'");
         }
 
-        internal List<Context> buildEnvironment(TypeDefinitionNode node, ContextType type, API api)
+        internal TypeDefinitionNode findFunction(bool base_reference, Token id)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal TypeDefinitionNode findVariable(bool base_reference, Token id)
+        {
+            TypeDefinitionNode t = null;
+            for (int i = base_reference ? 1:0; i < contexts.Count;i++)
+            {
+                t = contexts[i].findVariable(id);
+                if (t != null)
+                    return t;
+            }
+            throw new SemanticException("Variable '" + id + "' could not be found in the current context.",id);
+        }
+
+        internal List<Context> buildEnvironment(TypeDefinitionNode node, ContextType type, API api, bool isStatic= false)
         {
             List<Context> contexts = new List<Context>();
-            contexts.Add(new Context(node, type, api));
+            contexts.Add(new Context(node, type, api, isStatic));
             Dictionary<string, TypeDefinitionNode> parents = null;
             if (node is ClassDefinitionNode) {
                 if(!(((ClassDefinitionNode)node).evaluated))
@@ -52,13 +71,16 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                     ((InterfaceNode)node).checkInheritanceExistance(api);
                 parents = ((InterfaceNode)node).parents;
             }
-            foreach(KeyValuePair<string, TypeDefinitionNode> key in parents)
+            if (parents != null)
             {
-                contexts.AddRange(buildEnvironment(key.Value, ContextType.PARENT, api));
+                foreach (KeyValuePair<string, TypeDefinitionNode> key in parents)
+                {
+                    contexts.AddRange(buildEnvironment(key.Value, ContextType.PARENT, api, isStatic));
+                }
             }
             if(type == ContextType.CLASS)
             {
-                contexts.Add(new Context(Singleton.tableTypes[Utils.GlobalNamespace+".Object"], ContextType.PARENT, api));
+                contexts.Add(new Context(Singleton.tableTypes[Utils.GlobalNamespace+".Object"], ContextType.PARENT, api, isStatic));
             }
             return contexts;
         }

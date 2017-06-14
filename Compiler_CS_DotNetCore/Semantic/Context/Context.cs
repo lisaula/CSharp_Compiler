@@ -40,7 +40,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             this.constructors = constructors;
         }
 
-        public Context(TypeDefinitionNode node, ContextType type, API api) : this()
+        public Context(TypeDefinitionNode node, ContextType type, API api, bool isStatic = false) : this()
         {
             this.type= type;
             if(node is ClassDefinitionNode)
@@ -50,6 +50,15 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             {
                 buildEnvironment(((InterfaceNode)node), api);
             }
+        }
+
+        internal TypeDefinitionNode findVariable(Token id)
+        {
+            if (variables.ContainsKey(id.lexema))
+            {
+                    return variables[id.lexema].type;
+            }
+            return null;
         }
 
         private void buildEnvironment(ClassDefinitionNode node, API api)

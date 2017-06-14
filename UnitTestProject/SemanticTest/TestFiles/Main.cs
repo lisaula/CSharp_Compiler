@@ -3,7 +3,13 @@ using Figuras;
 namespace N1{
 
 	public class myClase: Circulo{
-		Circulo c;
+		Circulo c = new Circulo();
+		myClase clase = ((Circulo)null);
+		char ca = 'a';
+		int cat = ((int)ca);
+		bool b = true;
+		bool f = false;
+		bool r = b && f;
 		public myClase(){
 		}
 		public void metodo(){

@@ -10,9 +10,9 @@ namespace Compiler.Tree
         public Dictionary<string,FieldNode> fields;
         public Dictionary<string,MethodNode> methods;
         public Dictionary<string,ConstructorNode> constructors;
-        public EncapsulationNode encapsulation;
         public bool isAbstract;
         public InheritanceNode inheritance;
+        public EncapsulationNode encapsulation;
         public Dictionary<string, TypeDefinitionNode> parents;
         public ClassDefinitionNode(EncapsulationNode encapsulation, bool isAbstract, IdentifierNode id, InheritanceNode inheritance):this()
         {
@@ -61,11 +61,22 @@ namespace Compiler.Tree
                 if(key.Value.assignment != null)
                 {
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "n9")
+                    if (f.id.ToString() == "clase")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
-                        throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                    {
+                        if(f.type is ClassDefinitionNode && tdn is ClassDefinitionNode)
+                        {
+                            if(!api.checkRelationBetween(f.type, tdn))
+                                throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                        }else if ((!(f.type is ClassDefinitionNode || f.type is StringType) && tdn is NullTypeNode))
+                        {
+                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                        }
+                        else
+                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                    }
                 }
             }
             api.setWorkingType(null);
