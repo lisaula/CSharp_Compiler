@@ -40,20 +40,12 @@ namespace Compiler.Tree
             }
             foreach (TypeDefinitionNode t in typeList)
             {
-                try
-                {
-                    t.Evaluate(api);
-                }
-                catch (NotImplementedException nie) { }
+                t.Evaluate(api);
             }
 
             foreach (NamespaceNode nms in namespaceList)
             {
-                try
-                {
-                    nms.Evaluate(api);
-                }
-                catch (NotImplementedException nie) { }
+                nms.Evaluate(api);
             }
         }
     }

@@ -11,6 +11,10 @@ namespace Compiler.Tree
             this.current_token = current_token;
         }
 
+        public NullTypeNode()
+        {
+        }
+
         public override Token getPrimaryToken()
         {
             return current_token;

@@ -53,7 +53,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 if (t != null)
                     return t;
             }
-            throw new SemanticException("Variable '" + id + "' could not be found in the current context.",id);
+            return null;
         }
 
         internal List<Context> buildEnvironment(TypeDefinitionNode node, ContextType type, API api, bool isStatic= false)
@@ -83,6 +83,17 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 contexts.Add(new Context(Singleton.tableTypes[Utils.GlobalNamespace+".Object"], ContextType.PARENT, api, isStatic));
             }
             return contexts;
+        }
+
+        internal void pushFront(Context ctr_context)
+        {
+            contexts.Insert(0, ctr_context);
+        }
+
+        internal void addVariableToCurrentContext(FieldNode f)
+        {
+            var ctx = contexts[0];
+            ctx.addVariable(f);
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
     {
         CLASS,
         INTERFACE,
-        PARENT
+        PARENT,
+        CONSTRUCTOR
     }
 }

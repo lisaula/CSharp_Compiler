@@ -39,6 +39,20 @@ namespace Compiler_CS_DotNetCore.Semantic
             return tdn;
         }
 
+        internal TypeDefinitionNode searchInTableType(string typeName)
+        {
+            if (working_type == null)
+                throw new SemanticException("Working directory has not been set.");
+            if (typeName == Utils.Null)
+                return new NullTypeNode();
+            string name = typeName;
+            string nms = getParentNamespace(working_type);
+            var usings = working_type.parent_namespace.usingList;
+            usings.Add(new UsingNode(nms));
+            TypeDefinitionNode tdn = findTypeInUsings(usings, name);
+            return tdn;
+        }
+
         internal bool compareIndexes(List<ArrayNode> indexes1, List<ArrayNode> indexes2)
         {
             if(indexes1.Count == indexes2.Count)
@@ -70,6 +84,26 @@ namespace Compiler_CS_DotNetCore.Semantic
             if (!TokenPass(cdn.constructors[key].encapsulation.token, TokenType.RW_PUBLIC))
                     throw new SemanticException("Constructor '" + key + "' can't be reached due to encapsulation level.");
             return true;
+        }
+
+        internal void addParametersToCurrentContext(List<Parameter> parameters)
+        {
+            if (parameters == null)
+                return;
+            foreach(var parameter in parameters)
+            {
+                FieldNode f = convertToField(parameter);
+                contextManager.addVariableToCurrentContext(f);
+            }
+        }
+
+        private FieldNode convertToField(Parameter parameter)
+        {
+            var token = new Token();
+            token.type = TokenType.RW_PUBLIC;
+            token.lexema = "public";
+            FieldNode f = new FieldNode(new EncapsulationNode(token), null, parameter.type, parameter.id, null);
+            return f;
         }
 
         internal bool TokenPass(Token @operator, params TokenType[] types)

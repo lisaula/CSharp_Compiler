@@ -41,7 +41,7 @@ namespace Compiler.Tree
             foreach (ExpressionNode exp in list)
             {
                 t = exp.evaluateType(api);
-                List<Context> contexts = api.contextManager.buildEnvironment(t, ContextType.CLASS, api);
+                List<Context> contexts = api.contextManager.buildEnvironment(t, ContextType.CLASS, api, t.onTableType);
                 api.contextManager.contexts.Clear();
                 api.pushContext(contexts.ToArray());
             }

@@ -13,13 +13,19 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         public Dictionary<string, ConstructorNode> constructors;
         public string name;
         private ContextType type;
-
+        public bool isStatic;
         public Context()
         {
             name = null;
             variables = new Dictionary<string, FieldNode>();
             methods = new Dictionary<string, MethodNode>();
             constructors = new Dictionary<string, ConstructorNode>();
+        }
+
+        public Context(String name, ContextType type, API api):this()
+        {
+            this.name = name;
+            this.type = type;
         }
 
         public Context(string name,Dictionary<string, MethodNode> methods)
@@ -43,7 +49,8 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         public Context(TypeDefinitionNode node, ContextType type, API api, bool isStatic = false) : this()
         {
             this.type= type;
-            if(node is ClassDefinitionNode)
+            this.isStatic = isStatic;
+            if (node is ClassDefinitionNode)
             {
                 buildEnvironment(((ClassDefinitionNode)node), api);
             }else if(node is InterfaceNode)
@@ -64,11 +71,60 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         private void buildEnvironment(ClassDefinitionNode node, API api)
         {
             name = node.ToString();
-            variables = node.fields;
-            methods = node.methods;
-            constructors = node.constructors;
+            copyFields(node.fields);
+            copyMethods(node.methods);
+            if(!isStatic)
+                constructors = node.constructors;
             checkType(type, api);
         }
+
+        private void copyMethods(Dictionary<string, MethodNode> methods)
+        {
+            List<MethodNode> ms = new List<MethodNode>();
+            foreach(var key in methods)
+            {
+                if (isStatic)
+                {
+                    if (key.Value.modifier != null)
+                        if (!pass(key.Value.modifier.token, TokenType.RW_STATIC))
+                            continue;
+                }
+                ms.Add(key.Value);
+            }
+            MethodNode[] mss = new MethodNode[ms.Count];
+            ms.CopyTo(mss);
+            addMethod(mss);
+        }
+
+        private void addMethod(params MethodNode[] mss)
+        {
+            foreach(MethodNode m in mss)
+            {
+                string key = Utils.getMethodName(m);
+                if (methods.ContainsKey(key))
+                    throw new SemanticException("Method '" + key + "' already exist in current context.", m.id.token);
+                methods[key] = m;
+            }
+        }
+
+        private void copyFields(Dictionary<string, FieldNode> fields)
+        {
+            List<FieldNode> fs = new List<FieldNode>();
+            foreach(var f in fields)
+            {
+                if (isStatic)
+                {
+                    if (f.Value.modifier != null)
+                        if (!pass(f.Value.modifier.token, TokenType.RW_STATIC))
+                            continue;
+                }
+                fs.Add(f.Value);
+            }
+            FieldNode[] fss = new FieldNode[fs.Count];
+            fs.CopyTo(fss);
+            addVariable(fss);
+        }
+
         private void setFields(Dictionary<string, FieldNode> fields, ContextType cLASS)
         {
             foreach (KeyValuePair<string, FieldNode> key in fields)
@@ -98,6 +154,16 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 }
                 else
                     constructors[key.Key] = key.Value;
+            }
+        }
+
+        internal void addVariable(params FieldNode[] fields)
+        {
+            foreach (var f in fields)
+            {
+                if (variables.ContainsKey(f.id.ToString()))
+                    throw new SemanticException("Variable '" + f.id.ToString() + "' already exist in the current context.", f.id.token);
+                variables[f.id.ToString()] = f;
             }
         }
 

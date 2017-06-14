@@ -55,31 +55,38 @@ namespace Compiler.Tree
         {
             foreach (var key in constructors)
             {
+                if (key.Value.id.ToString() == "myClase")
+                    Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());
+                var ctr_context = new Context(key.Value.id.ToString(),ContextType.CONSTRUCTOR,api);
+                api.contextManager.pushFront(ctr_context);
+                api.addParametersToCurrentContext(key.Value.parameters);
                 api.setWorkingType(this);
                 if (key.Value.bodyStatements == null)
                     throw new SemanticException("Constructor has no body. "+key.Value.id.token);
                 foreach (var s in key.Value.bodyStatements.statements)
                 {
-                    
+                    //s.evaluate(api);
                 }
                 api.setWorkingType(null);
-                api.popContext(contexts.ToArray());
+                api.contextManager.contexts.Clear();
             }
         }
 
         private void checkFieldsAssignment(API api)
         {
-            List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS,api);
-            api.pushContext(contexts.ToArray());
-            api.setWorkingType(this);
+            api.contextManager.contexts.Clear();
             foreach(KeyValuePair<string,FieldNode> key in fields)
             {
                 if(key.Value.assignment != null)
                 {
+                    List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
+                    api.pushContext(contexts.ToArray());
+                    api.setWorkingType(this);
+
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "r2")
+                    if (f.id.ToString() == "h")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
@@ -95,10 +102,10 @@ namespace Compiler.Tree
                         else
                             throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
                     }
+                    api.setWorkingType(null);
+                    api.popContext(contexts.ToArray());
                 }
             }
-            api.setWorkingType(null);
-            api.popContext(contexts.ToArray());
         }
 
         private void checkConstructors(API api)

@@ -25,6 +25,13 @@ namespace Compiler.Tree
         {
             TypeDefinitionNode t = null;
             t = api.contextManager.findVariable(false, token);
+            if(t == null)
+            {
+                t = api.searchInTableType(token.ToString());
+                t.onTableType = true;
+            }
+            if(t == null)
+                throw new SemanticException("Variable '" + token.ToString() + "' could not be found in the current context.", token);
             return t;
         }
 
