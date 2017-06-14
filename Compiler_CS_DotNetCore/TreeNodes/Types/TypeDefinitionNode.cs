@@ -13,7 +13,7 @@ namespace Compiler.Tree
         {
 
         }
-
+        public abstract string GetComparativeType();
         public abstract Token getPrimaryToken();
         public virtual void verifiCycle(TypeDefinitionNode classDefinitionNode,API api) { }
     }

@@ -61,7 +61,7 @@ namespace Compiler.Tree
                 if(key.Value.assignment != null)
                 {
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "n9")
+                    if (f.id.ToString() == "ci")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
@@ -266,6 +266,17 @@ namespace Compiler.Tree
         public override Token getPrimaryToken()
         {
             return identifier.token;
+        }
+
+        public override string GetComparativeType()
+        {
+            string[] primitives = { Utils.Bool, Utils.Char, Utils.Dict, Utils.Float, Utils.String, Utils.Int };
+            foreach(string s in primitives)
+            {
+                if (identifier.token.lexema == s)
+                    return s;
+            }
+            return Utils.Class;
         }
     }
 }

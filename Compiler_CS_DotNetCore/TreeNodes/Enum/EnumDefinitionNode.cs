@@ -119,5 +119,10 @@ namespace Compiler.Tree
         {
             return identifier.token;
         }
+
+        public override string GetComparativeType()
+        {
+            return Utils.Enum;
+        }
     }
 }

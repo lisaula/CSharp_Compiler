@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 
 namespace Compiler.Tree
 {
@@ -25,6 +26,11 @@ namespace Compiler.Tree
         public override Token getPrimaryToken()
         {
             return identifier.token;
+        }
+
+        public override string GetComparativeType()
+        {
+            return Utils.Void;
         }
     }
 }

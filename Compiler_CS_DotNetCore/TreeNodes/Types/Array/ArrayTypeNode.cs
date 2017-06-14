@@ -63,5 +63,10 @@ namespace Compiler.Tree
         {
             return this.type;
         }
+
+        public override string GetComparativeType()
+        {
+            return Utils.Array;
+        }
     }
 }
