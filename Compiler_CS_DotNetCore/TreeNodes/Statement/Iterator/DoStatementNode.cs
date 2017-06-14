@@ -21,7 +21,12 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode t = conditionExpression.evaluateType(api);
+            if (t.getComparativeType() != Utils.Bool)
+            {
+                throw new SemanticException("Condition expression in do while have to return a 'BoolType'");
+            }
+            body.evaluate(api);
         }
     }
 

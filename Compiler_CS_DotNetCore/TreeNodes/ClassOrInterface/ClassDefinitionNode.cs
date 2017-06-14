@@ -39,7 +39,7 @@ namespace Compiler.Tree
             if (evaluated)
                 return;
             Debug.printMessage("Evaluating class " + identifier.ToString());
-            if (identifier.ToString() == "myClase")
+            if (identifier.ToString() == "asbtracta")
                 Console.WriteLine();
             checkInheritanceExistance(api);
             checkParents(api);
@@ -55,7 +55,7 @@ namespace Compiler.Tree
         {
             foreach (var key in constructors)
             {
-                if (key.Value.id.ToString() == "Circulo")
+                if (key.Value.id.ToString() == "myClase")
                     Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());
@@ -316,7 +316,7 @@ namespace Compiler.Tree
 
         public override string getComparativeType()
         {
-            string[] primitives = { Utils.Bool, Utils.Char, Utils.Dict, Utils.Float, Utils.String, Utils.Int, Utils.Void };
+            string[] primitives = { Utils.Bool, Utils.Char, Utils.Dict, Utils.Float, Utils.String, Utils.Int, Utils.Void, Utils.Var };
             foreach (string s in primitives)
             {
                 if (identifier.token.lexema == s)

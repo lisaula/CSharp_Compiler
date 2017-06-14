@@ -5,8 +5,9 @@ namespace N1{
 	public class myClase: Circulo{
 		Circulo c = new Circulo();
 		myClase clase = c as Circulo;
-		char ca = 'a';
-		int cat = ((int)ca);
+		
+		static int ca = (int)'a';
+		int cat = ca;
 		bool b = true;
 		bool f = false;
 		bool r = b && f;
@@ -26,9 +27,13 @@ namespace N1{
 
 		}
 		public myClase(int nuevo){
+			var kaka = 5;
 			int n = nuevo;
 			float mama = 5000f;
 			metodo();
+			do{
+
+			}while();
 		}
 		public void getType(Circulo index, string t){
 

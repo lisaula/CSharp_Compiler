@@ -37,6 +37,9 @@ namespace Compiler.Tree
                         else if ((!(f.type.getComparativeType() == Utils.Class || f.type.getComparativeType() == Utils.String) && tdn is NullTypeNode))
                         {
                             throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
+                        }else if(f.type.getComparativeType() == Utils.Var)
+                        {
+                            f.type = tdn;
                         }
                         else
                             throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);

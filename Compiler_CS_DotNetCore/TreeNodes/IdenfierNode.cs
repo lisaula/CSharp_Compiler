@@ -25,7 +25,7 @@ namespace Compiler.Tree
         {
             TypeDefinitionNode t = null;
             t = api.contextManager.findVariable(token);
-            if(t == null)
+            if (t == null)
             {
                 t = api.searchInTableType(token.ToString());
                 t.onTableType = true;

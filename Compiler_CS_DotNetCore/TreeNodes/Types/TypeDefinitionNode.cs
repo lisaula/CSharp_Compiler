@@ -8,6 +8,7 @@ namespace Compiler.Tree
     {
         public bool evaluated = false;
         public bool onTableType= false;
+        public bool isStatic = false;
         public NamespaceNode parent_namespace;
         public IdentifierNode identifier;
         public TypeDefinitionNode typeNode;

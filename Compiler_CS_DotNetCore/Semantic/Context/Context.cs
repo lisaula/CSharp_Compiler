@@ -70,7 +70,8 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         {
             if (variables.ContainsKey(id.lexema))
             {
-                    return variables[id.lexema].type;
+                TypeDefinitionNode t = variables[id.lexema].type;
+                return t;
             }
             return null;
         }
