@@ -7,9 +7,9 @@ namespace Compiler.Tree
     public class CastingExpressionNode : UnaryExpressionNode
     {
         public TypeDefinitionNode targetType;
-        public List<ExpressionNode> primary;
+        public ExpressionNode primary;
         public List<string> rules;
-        public CastingExpressionNode(TypeDefinitionNode targetType, List<ExpressionNode> primary)
+        public CastingExpressionNode(TypeDefinitionNode targetType, ExpressionNode primary)
         {
             this.targetType = targetType;
             this.primary = primary;
@@ -27,6 +27,8 @@ namespace Compiler.Tree
             rules.Add(Utils.Float + "," + Utils.Char);
 
             rules.Add(Utils.String + "," + Utils.String);
+            rules.Add(Utils.Class + "," + Utils.Null);
+
         }
         public CastingExpressionNode()
         {
@@ -35,8 +37,20 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
+            TypeDefinitionNode tdn = primary.evaluateType(api);
+            TypeDefinitionNode t1 = api.searchType(targetType);
 
-            return targetType;
+            string key = tdn.ToString() + "," + t1.ToString();
+            if (rules.Contains(key))
+                return t1;
+            if(tdn is ClassDefinitionNode && t1 is ClassDefinitionNode)
+            {
+                if (api.checkRelationBetween(tdn, t1))
+                {
+                    return t1;
+                }
+            }
+            throw new SemanticException("There is no relation between '" + tdn.ToString() + "' and '" + t1.ToString() + "'.", targetType.getPrimaryToken());
         }
     }
 }

@@ -196,8 +196,8 @@ namespace A{
     }
     protected interface DIASDELASEMANA{
         void metodo(int argument, float argument);
-        int metodo(int argument, float argument);
-        float metodo(int argument, float argument);
+        int metodo2(int argument, float argument);
+        float metodo3(int argument, float argument);
         string metodo();
     }
 }");

@@ -21,6 +21,19 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
+            ArrayTypeNode atn = type as ArrayTypeNode;
+            TypeDefinitionNode arrayType = api.searchType(atn.getArrayType());
+            if (arrayType is VoidTypeNode || arrayType is InterfaceNode)
+            {
+                throw new SemanticException("Cant instantiate an array with type '" + arrayType.ToString() + "'", type.getPrimaryToken());
+            }
+            ((ArrayTypeNode)type).type = arrayType;
+            if(initialization != null)
+            {
+                ArrayTypeNode t = (ArrayTypeNode)initialization.evaluateType(api);
+                if (!t.type.Equals(arrayType) && !api.compareIndexes(atn.indexes, t.indexes))
+                    throw new SemanticException("Array initialization invalid. '" + initialization.ToString() + "' and '" + type.ToString() + "'", type.getPrimaryToken());
+            }
             return type;
         }
     }

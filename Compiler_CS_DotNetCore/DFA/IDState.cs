@@ -61,7 +61,8 @@ namespace Compiler
             reservedWordsDict["continue"] = TokenType.RW_CONTINUE;
             reservedWordsDict["return"] = TokenType.RW_RETURN;
             reservedWordsDict["default"] = TokenType.RW_DEFAULT;
-            reservedWordsDict["Dictionary"] = TokenType.RW_DICTIONARY;
+            reservedWordsDict["Dictionary"] = TokenType.RW_NULL;
+            reservedWordsDict["null"] = TokenType.RW_NULL;
         }
 
         public override Token makeToken(string lexema, int lexemaRow, int lexemaColumn)

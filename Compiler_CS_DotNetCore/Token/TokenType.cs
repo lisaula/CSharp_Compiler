@@ -102,6 +102,6 @@
         RW_CONTINUE,
         RW_BREAK,
         RW_DEFAULT,
-        RW_DICTIONARY
+        RW_NULL
     }
 }

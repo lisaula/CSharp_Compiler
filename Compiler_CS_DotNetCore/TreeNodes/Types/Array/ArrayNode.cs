@@ -7,9 +7,14 @@ namespace Compiler.Tree
         public int dimensions;
 
         public List<ExpressionNode> expression_list;
-
+        public ArrayNode(List<ExpressionNode> list)
+        {
+            expression_list = list;
+            dimensions = expression_list.Count;
+        }
         public ArrayNode()
         {
+            dimensions = 1;
         }
 
         public override string ToString()
@@ -21,6 +26,15 @@ namespace Compiler.Tree
             }
             name += "]";
             return name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is ArrayNode)
+            {
+                return ((ArrayNode)obj).dimensions == dimensions;
+            }
+            return false;
         }
     }
 }

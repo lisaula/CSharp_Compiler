@@ -16,7 +16,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return new FloatType(token);
+            return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
         }
     }
 }

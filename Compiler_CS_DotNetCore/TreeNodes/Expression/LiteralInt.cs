@@ -11,7 +11,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return new IntType(token);
+            return Singleton.tableTypes[Utils.GlobalNamespace+"."+Utils.Int];
         }
     }
 }

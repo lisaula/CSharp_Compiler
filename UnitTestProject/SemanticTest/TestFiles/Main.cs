@@ -17,7 +17,7 @@ namespace N1{
 		public myClase(int nuevo){
 			
 		}
-		public void getType(Circulo index, Types t){
+		public void getType(Circulo index, string t){
 
 		}
 	}

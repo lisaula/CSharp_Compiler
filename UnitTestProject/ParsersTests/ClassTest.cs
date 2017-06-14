@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Compiler;
+using Compiler.Tree;
 
 /*
      * que pueda heredar
@@ -25,11 +26,16 @@ namespace UnitTestProject.ParsersTests
 using Compiler.Parser.Nada;
 using jamones;
 public class kevin : Nexer{
+    int n = null;
+    public void methodo(){
+        base.methodo(null);
+        
+    }
 }
 ");
             var lexer = new LexicalAnalyzer(inputString);
             var parser = new Parser(lexer);
-            parser.parse();
+            NamespaceNode tree = parser.parse();
         }
 
         [TestMethod]

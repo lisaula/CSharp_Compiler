@@ -37,7 +37,14 @@ namespace Compiler.Tree
                     return type;
                 else
                 {
-                    TypeDefinitionNode targetType = api.searchType(type);
+                    TypeDefinitionNode targetType = null;
+                    if(targetType is ArrayTypeNode)
+                    {
+                        targetType = api.searchType(((ArrayTypeNode)type).type);
+                    }
+                    if (targetType is NullTypeNode)
+                        throw new SemanticException("Cannot implicitly convert null to '"+tdn.ToString()+"'.", type.getPrimaryToken());
+
                     if (targetType is PrimitiveType || tdn is PrimitiveType || type is PrimitiveType)
                         throw new SemanticException("Cannot use a primity type with this operation.", type.getPrimaryToken());
 
@@ -59,7 +66,14 @@ namespace Compiler.Tree
             {
                 if (tdn is VoidTypeNode)
                     throw new SemanticException("Invalid is Expression. Left expression shold not be 'void'.", @operator);
-                TypeDefinitionNode t = api.searchType(type);
+                TypeDefinitionNode t = null;
+                if (type is ArrayTypeNode)
+                {
+                    t = api.searchType(((ArrayTypeNode)type).type);
+                }
+                if(!(type is NullTypeNode))
+                    t = api.searchType(type);
+
                 if (t is InterfaceNode)
                     throw new SemanticException("Cannot compare an object with interface '" + t.ToString() + "'", type.getPrimaryToken());
                 return new BoolType();

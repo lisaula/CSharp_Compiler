@@ -130,7 +130,7 @@ namespace Compiler
                 TokenType.OP_LOG_AND, TokenType.OP_BIN_OR,
                 TokenType.OP_BIN_XOR, TokenType.OP_BIN_AND,
                 TokenType.OPEN_PARENTHESIS, TokenType.RW_NEW,
-                TokenType.ID, TokenType.RW_THIS
+                TokenType.ID, TokenType.RW_THIS, TokenType.RW_BASE, TokenType.RW_NULL
             };
             if (pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
                 Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).

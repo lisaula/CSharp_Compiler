@@ -5,8 +5,8 @@ namespace Figuras{
 		public abstract void methodo();
 		public abstract void methodo2();
 		public virtual string virtualmethodo();
-
-		public Figura(){
+		private bool field;
+		Figura(){
 
 		}
 	}

@@ -19,9 +19,23 @@ namespace Compiler.Tree
             list = new List<ExpressionNode>();
         }
 
+        public ExpressionNode getFirstExpressionType()
+        {
+            if(list != null)
+            {
+                return list[0];
+            }
+            return null;
+        }
+
         public override TypeDefinitionNode evaluateType(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode t = null;
+            foreach(ExpressionNode exp in list)
+            {
+                t = exp.evaluateType(api);
+            }
+            return t;
         }
     }
 }

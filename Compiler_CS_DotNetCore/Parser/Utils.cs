@@ -17,7 +17,7 @@ namespace Compiler
             TokenType.RW_BOOL,
             TokenType.RW_FLOAT,
             TokenType.ID,
-            TokenType.RW_DICTIONARY
+            TokenType.RW_NULL
         };
         TokenType[] typesOptionsWithNoID = {
             TokenType.RW_INT,
@@ -25,7 +25,7 @@ namespace Compiler
             TokenType.RW_STRING,
             TokenType.RW_BOOL,
             TokenType.RW_FLOAT,
-            TokenType.RW_DICTIONARY
+            TokenType.RW_NULL
         };
         TokenType[] primitiveTypes =
         {
@@ -106,7 +106,7 @@ namespace Compiler
 
         TokenType[] unaryExpressionOptions = {
             TokenType.OPEN_PARENTHESIS,TokenType.RW_NEW, TokenType.ID,
-            TokenType.RW_THIS, TokenType.RW_BASE
+            TokenType.RW_THIS, TokenType.RW_BASE, TokenType.RW_NULL
         };
 
         public Token getNextLookAhead(int count)

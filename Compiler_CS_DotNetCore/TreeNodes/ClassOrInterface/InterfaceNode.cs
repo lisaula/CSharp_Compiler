@@ -15,7 +15,7 @@ namespace Compiler.Tree
         {
             parent_namespace = null;
             methods = new Dictionary<string, MethodNode>();
-            parents = null;
+            parents = new Dictionary<string, TypeDefinitionNode>();
         }
 
         public InterfaceNode(Token token):this()
@@ -84,26 +84,7 @@ namespace Compiler.Tree
             verifiCycle(this, api);
         }
 
-        internal List<Context> buildEnvironment()
-        {
-            List<Context> contexts = new List<Context>();
-            if (parents != null)
-            {
-                foreach (KeyValuePair<string, TypeDefinitionNode> key in parents)
-                {
-                    contexts.AddRange(((InterfaceNode)key.Value).buildEnvironment());
-                }
-            }
-            contexts.Add(buildContext());
-            return contexts;
-        }
-
-        private Context buildContext()
-        {
-            return new Context(identifier.ToString(), methods);
-        }
-
-        private void checkInheritanceExistance(API api)
+        public void checkInheritanceExistance(API api)
         {
             if (inheritance == null || inheritance.identifierList == null)
                 return;

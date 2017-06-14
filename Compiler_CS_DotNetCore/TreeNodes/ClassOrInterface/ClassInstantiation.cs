@@ -21,7 +21,10 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode tdn = api.searchType(type);
+            if (api.findConstructor(tdn, Utils.getArgumentsNameType(arguments, api)))
+                return tdn;
+            throw new SemanticException("Error while evaluateType in ClassInstantiation.");
         }
     }
 }

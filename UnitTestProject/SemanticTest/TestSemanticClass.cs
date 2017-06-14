@@ -20,7 +20,9 @@ public interface Types{
 }
 namespace Figuras{
 	public class Circulo : Figura{
-
+        public void method(){
+            base.methodo();
+        }
 	}
 	namespace insideFiguras{
 		public interface Types{

@@ -1,4 +1,5 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 using System;
 using System.Collections.Generic;
 
@@ -13,7 +14,6 @@ namespace Compiler.Tree
         public bool isAbstract;
         public InheritanceNode inheritance;
         public Dictionary<string, TypeDefinitionNode> parents;
-
         public ClassDefinitionNode(EncapsulationNode encapsulation, bool isAbstract, IdentifierNode id, InheritanceNode inheritance):this()
         {
             this.encapsulation = encapsulation;
@@ -50,52 +50,26 @@ namespace Compiler.Tree
             evaluated = true;
         }
 
+
         private void checkFieldsAssignment(API api)
         {
-            List<Context> cm = buildEnvironment();
-            api.pushContext(cm.ToArray());
+            List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS,api);
+            api.pushContext(contexts.ToArray());
             api.setWorkingType(this);
             foreach(KeyValuePair<string,FieldNode> key in fields)
             {
                 if(key.Value.assignment != null)
                 {
                     FieldNode f = key.Value;
+                    if (f.id.ToString() == "n9")
+                        Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
                         throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
                 }
             }
             api.setWorkingType(null);
-            api.popContext(cm.ToArray());
-        }
-
-        private List<Context> buildEnvironment()
-        {
-            List<Context> contexts = new List<Context>();
-            contexts.Add(buildContext());
-            if (parents != null)
-            {
-                foreach (KeyValuePair<string, TypeDefinitionNode> key in parents)
-                {
-                    if (key.Key == "Object")
-                        continue;
-                    if (key.Value is ClassDefinitionNode)
-                    {
-                        contexts.AddRange(((ClassDefinitionNode)key.Value).buildEnvironment());
-                    }
-                    else if (key.Value is InterfaceNode)
-                    {
-                        contexts.AddRange(((InterfaceNode)key.Value).buildEnvironment());
-                    }
-                }
-                contexts.AddRange(((ClassDefinitionNode)parents["Object"]).buildEnvironment());
-            }
-            return contexts;
-        }
-
-        private Context buildContext()
-        {
-            return new Context(identifier.ToString(),fields, methods, constructors);
+            api.popContext(contexts.ToArray());
         }
 
         private void checkConstructors(API api)
@@ -108,6 +82,15 @@ namespace Compiler.Tree
                     throw new SemanticException("Not a valid constructor. "+c.id.ToString()+" does not match class "+identifier.ToString()+".", c.id.token);
                 api.checkParametersExistance(this,c.parameters);
                 c.headerEvaluation = true;
+            }
+            string key = identifier.ToString() + "()";
+            if (!constructors.ContainsKey(key))
+            {
+                var token = new Token();
+                token.type = TokenType.RW_PUBLIC;
+                token.lexema = "public";
+                var ctr = new ConstructorNode(new EncapsulationNode(token), identifier, null, null, null);
+                constructors[key] = ctr;
             }
         }
 
@@ -142,13 +125,13 @@ namespace Compiler.Tree
             }
         }
 
-        private void checkInheritanceExistance(API api)
+        public void checkInheritanceExistance(API api)
         {
             if(inheritance == null)
             {
                 inheritance = new InheritanceNode();
             }
-            inheritance.addObjectInheritance();
+            int class_count = 0;
             parents = new Dictionary<string, TypeDefinitionNode>();
             foreach (List<IdentifierNode> parent in inheritance.identifierList)
             {
@@ -159,7 +142,19 @@ namespace Compiler.Tree
                 TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
                 if (tdn == null)
                     throw new SemanticException("Could not find Type '" + name + "' in the current context. ", parent[0].token);
-
+                if (tdn is ClassDefinitionNode)
+                {
+                    class_count++;
+                    if (api.TokenPass(((ClassDefinitionNode)tdn).encapsulation.token, TokenType.RW_PRIVATE))
+                        throw new SemanticException("Parent '" + name + "' can't be reached due to its encapsulation level.", parent[0].token);
+                }
+                else
+                {
+                    if (api.TokenPass(((InterfaceNode)tdn).encapsulation.token, TokenType.RW_PRIVATE))
+                        throw new SemanticException("Parent '" + name + "' can't be reached due to its encapsulation level.", parent[0].token);
+                }
+                if (class_count > 1)
+                    throw new SemanticException("Object '" + identifier.ToString() + "' can't have multiple class inheritance.", identifier.token);
                 if (parents.ContainsKey(name))
                     throw new SemanticException("Redundant Inheritance. " + name + " was found twice as inheritance in " + identifier.token.lexema, parent[0].token);
                 parents[name] = tdn;
@@ -227,14 +222,12 @@ namespace Compiler.Tree
             foreach(KeyValuePair<string, FieldNode> field in fields)
             {
                 FieldNode f = field.Value;
-                if (f.id.ToString() == "field5")
-                    Console.WriteLine();
                 if (f.modifier != null)
                     if (!api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
                         throw new SemanticException("The modifier '" + field.Value.modifier.ToString() + "' is not valid for field " + field.Value.id.ToString() + " in class "+identifier.ToString()+".", field.Value.modifier.token);
 
                 if (f.type is VoidTypeNode)
-                    throw new SemanticException("The type '" + f.type.GetType().Name + "' is not valid for field " + field.Value.id.ToString() + " in class " + identifier.ToString() + ".", f.type.identifier.token);
+                    throw new SemanticException("The type '" + f.type.GetType().Name + "' is not valid for field " + field.Value.id.ToString() + " in class " + identifier.ToString() + ".", f.type.getPrimaryToken());
 
                 string name = f.type.ToString();
                 if (f.type is ArrayTypeNode)
@@ -247,6 +240,15 @@ namespace Compiler.Tree
                 TypeDefinitionNode tdn = api.findTypeInUsings(usings, name);
                 if (tdn == null)
                     throw new SemanticException("Could not find Type '" + name + "' in the current context. ", f.type.getPrimaryToken());
+                if(tdn is InterfaceNode || tdn is VoidTypeNode)
+                    throw new SemanticException("The type '" + tdn.ToString()+ "' is not valid for field " + field.Value.id.ToString() + " in class " + identifier.ToString() + ".", f.type.getPrimaryToken());
+                if (api.TokenPass(((ClassDefinitionNode)tdn).encapsulation.token, TokenType.RW_PRIVATE))
+                    throw new SemanticException("The type '" + f.type.ToString() + "' can't be reached due to encapsulation level.", f.type.getPrimaryToken());
+                if (f.type is ArrayTypeNode)
+                {
+                    ((ArrayTypeNode)f.type).type = tdn;
+                } else
+                    f.type = tdn;
                 //tdn.Evaluate(api);
             }
         }

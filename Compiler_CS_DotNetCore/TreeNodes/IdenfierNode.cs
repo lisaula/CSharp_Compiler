@@ -23,7 +23,8 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            throw new NotImplementedException();
+            var id = new IdentifierTypeNode(new IdentifierNode(token));
+            return api.searchType(id);
         }
 
         public override bool Equals(object obj)

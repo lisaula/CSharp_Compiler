@@ -118,7 +118,7 @@ namespace Compiler
                 var id = new IdentifierTypeNode();
                 id.Identifiers = qualified_identifier();
                 return optional_rank_specifier_list(id);
-            }else if (pass(TokenType.RW_DICTIONARY))
+            }else if (pass(TokenType.RW_NULL))
             {
                 var dict = dictionary();
                 return optional_rank_specifier_list(dict);
@@ -133,7 +133,7 @@ namespace Compiler
         private DictionaryTypeNode dictionary()
         {
             DebugInfoMethod("dictionary");
-            if (!pass(TokenType.RW_DICTIONARY))
+            if (!pass(TokenType.RW_NULL))
                 throwError("resered word \"dictionary\"");
             consumeToken();
 

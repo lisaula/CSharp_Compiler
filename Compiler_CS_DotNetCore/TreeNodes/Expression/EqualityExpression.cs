@@ -23,7 +23,8 @@ namespace Compiler.Tree
             rules[Utils.String + "," + Utils.String] = new BoolType();
             rules[Utils.Class + "," + Utils.Class] = new BoolType();
             rules[Utils.Enum + "," + Utils.Enum] = new BoolType();
-            rules[Utils.Interface + "," + Utils.Interface] = new BoolType();
+            rules[Utils.Class + "," + Utils.Null] = new BoolType();
+            rules[Utils.Null + "," + Utils.Class] = new BoolType();
         }
         public EqualityExpression()
         {

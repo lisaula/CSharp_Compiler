@@ -15,6 +15,13 @@ namespace Compiler_CS_DotNetCore.Semantic
         public const string Class = "ClassDefinitionNode";
         public const string Interface = "InterfaceNode";
         public const string Enum = "EnumDefinitionNode";
+        public const string Null = "NullTypeNode";
+
+        internal static string makeConstructorName(TypeDefinitionNode tdn, List<ExpressionNode> arguments, API api)
+        {
+            string name = tdn.ToString() + "(" + Utils.getArgumentsNameType(arguments, api) + ")";
+            return name;
+        }
 
         public static string getParametersName(List<Parameter> parameter)
         {
@@ -54,9 +61,17 @@ namespace Compiler_CS_DotNetCore.Semantic
             return name;
         }
 
-        private static string getArgumentsNameType(List<Parameter> parameters)
+        public static string getArgumentsNameType(List<ExpressionNode> arguments, API api)
         {
-            throw new NotImplementedException();
+            List<string> name = new List<string>();
+            if(arguments != null)
+            {
+                foreach(ExpressionNode en in arguments)
+                {
+                    name.Add(en.evaluateType(api).ToString());
+                }
+            }
+            return string.Join(",", name);
         }
 
         public static string txtIncludes = @"

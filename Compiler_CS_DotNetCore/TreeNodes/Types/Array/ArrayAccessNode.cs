@@ -7,27 +7,20 @@ namespace Compiler.Tree
     public class ArrayAccessNode : PrimaryExpressionNode
     {
         public PrimaryExpressionNode primary;
-        public List<List<ExpressionNode>> lista;
-
+        public List<ArrayNode> lista;
         public ArrayAccessNode()
         {
 
         }
 
-        public ArrayAccessNode(List<List<ExpressionNode>> lista)
+        public ArrayAccessNode(List<ArrayNode> lista)
         {
-            this.lista = lista;
-        }
-
-        public ArrayAccessNode(PrimaryExpressionNode primary, List<List<ExpressionNode>> lista)
-        {
-            this.primary = primary;
             this.lista = lista;
         }
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return primary.evaluateType(api);
+            return null;
         }
     }
 }

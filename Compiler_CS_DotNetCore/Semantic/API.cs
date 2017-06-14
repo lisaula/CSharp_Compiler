@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Compiler.Tree;
 using Compiler;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler_CS_DotNetCore.Semantic
 {
@@ -10,7 +11,7 @@ namespace Compiler_CS_DotNetCore.Semantic
     {
         private List<string> paths;
         public Dictionary<string, NamespaceNode> trees;
-        ContextManager contextManager;
+        public ContextManager contextManager;
         public TypeDefinitionNode working_type;
 
         public void setWorkingType(TypeDefinitionNode type)
@@ -22,6 +23,8 @@ namespace Compiler_CS_DotNetCore.Semantic
         {
             if (working_type == null)
                 throw new SemanticException("Working directory has not been set.", type.getPrimaryToken());
+            if (type is NullTypeNode)
+                return type;
             string name = type.ToString();
             if (type is ArrayTypeNode)
             {
@@ -34,6 +37,39 @@ namespace Compiler_CS_DotNetCore.Semantic
             if (tdn == null)
                 throw new SemanticException("Could not find Type '" + name + "' in the current context. ", type.getPrimaryToken());
             return tdn;
+        }
+
+        internal bool compareIndexes(List<ArrayNode> indexes1, List<ArrayNode> indexes2)
+        {
+            if(indexes1.Count == indexes2.Count)
+            {
+                for(int i =0; i< indexes2.Count; i++)
+                {
+                    if (!indexes1[i].Equals(indexes2[i]))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
+        internal bool findConstructor(TypeDefinitionNode type, string arguments)
+        {
+
+            if (!(type is ClassDefinitionNode))
+                throw new SemanticException("Cannot instanciate '" + type.ToString() + "' due to is not a Class.");
+            ClassDefinitionNode cdn = ((ClassDefinitionNode)type);
+            if (!TokenPass(cdn.encapsulation.token, TokenType.RW_PUBLIC))
+                throw new SemanticException("Type '" + type.ToString() + "' can't be reached due to encapsulation level.");
+            if (cdn.isAbstract)
+                throw new SemanticException("Abstract class '"+cdn.ToString()+"'can't be instantiated.");
+            string key = cdn.ToString() + "(" + arguments + ")";
+            if (!cdn.constructors.ContainsKey(key))
+                throw new SemanticException("Constructor '" + key + "' could not be found class '" + cdn+ "'");
+            if (!TokenPass(cdn.constructors[key].encapsulation.token, TokenType.RW_PUBLIC))
+                    throw new SemanticException("Constructor '" + key + "' can't be reached due to encapsulation level.");
+            return true;
         }
 
         internal bool TokenPass(Token @operator, params TokenType[] types)
@@ -75,6 +111,14 @@ namespace Compiler_CS_DotNetCore.Semantic
                 TypeDefinitionNode tdn = findTypeInUsings(usings, name);
                 if (tdn == null)
                     throw new SemanticException("Could not find Type '" + name + "' in the current context. ", p.id.token);
+                if(tdn is InterfaceNode || tdn is VoidTypeNode)
+                    throw new SemanticException("The type '" + tdn.ToString() + "' is not valid for parameter " + p.id.ToString(), p.type.getPrimaryToken());
+                if (p.type is ArrayTypeNode)
+                {
+                    ((ArrayTypeNode)p.type).type = tdn;
+                }
+                else
+                    p.type = tdn;
             }
         }
         private void setAllEvaluatesTrue(NamespaceNode tree)
@@ -123,15 +167,15 @@ namespace Compiler_CS_DotNetCore.Semantic
             return trees;
         }
 
-        internal void popContext(params Context[] context)
+        internal void popContext(params Context.Context[] context)
         {
-            foreach(Context c in context)
+            foreach(Context.Context c in context)
             {
                 contextManager.contexts.Remove(c);
             }
         }
 
-        internal void pushContext(params Context[] context)
+        internal void pushContext(params Context.Context[] context)
         {
             contextManager.contexts.AddRange(context);
         }

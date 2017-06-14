@@ -11,7 +11,7 @@ namespace Compiler
         private UnaryExpressionNode unary_expression()
         {
             TokenType[] nuevo = { TokenType.RW_NEW , TokenType.ID,
-                TokenType.OPEN_PARENTHESIS, TokenType.RW_THIS, TokenType.RW_BASE
+                TokenType.OPEN_PARENTHESIS, TokenType.RW_THIS, TokenType.RW_BASE, TokenType.RW_NULL
             };
             DebugInfoMethod("unary_expression");
             if (pass(unaryOperatorOptions))
@@ -56,7 +56,7 @@ namespace Compiler
                         throwError("close parenthesis ')'");
                     consumeToken();
                     var expression = primary_expression();
-                    return new CastingExpressionNode(targetType, expression);
+                    return new CastingExpressionNode(targetType,new InlineExpressionNode(expression));
                 }
                 else
                 {
@@ -133,6 +133,16 @@ namespace Compiler
             }else if (pass(TokenType.RW_BASE))
             {
                 PrimaryExpressionNode r_base = new ReferenceAccessNode(current_token);
+                consumeToken();
+                //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
+                //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
+                var list = primary_expression_p();
+                list.Insert(0, r_base);
+                return list;
+            }
+            else if (pass(TokenType.RW_NULL))
+            {
+                PrimaryExpressionNode r_base = new NullExpressionNode(new NullTypeNode(current_token));
                 consumeToken();
                 //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
                 //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
@@ -304,26 +314,26 @@ namespace Compiler
             }
         }
 
-        private List<List<ExpressionNode>> optional_array_access_list()
+        private List<ArrayNode> optional_array_access_list()
         {
             DebugInfoMethod("optional_array_access_list");
             if (pass(TokenType.OPEN_SQUARE_BRACKET))
             {
                 consumeToken();
                 var expressionList = expression_list();
-
+                var arrayNode = new ArrayNode(expressionList);
                 if (!pass(TokenType.CLOSE_SQUARE_BRACKET))
                     throwError("close square bracket ']'");
                 consumeToken();
 
                 var lista = optional_array_access_list();
-                lista.Insert(0, expressionList);
+                lista.Insert(0, arrayNode);
                 return lista;
             }
             else
             {
                 DebugInfoMethod("epsilon");
-                return new List<List<ExpressionNode>>();
+                return new List<ArrayNode>();
             }
         }
 
@@ -339,7 +349,7 @@ namespace Compiler
                 var list = qualified_identifier();
                 type = new IdentifierTypeNode(list);
             }
-            else if (pass(TokenType.RW_DICTIONARY))
+            else if (pass(TokenType.RW_NULL))
             {
                 type = dictionary();
             }
@@ -385,7 +395,7 @@ namespace Compiler
                 TokenType.OP_LOG_AND, TokenType.OP_BIN_OR,
                 TokenType.OP_BIN_XOR, TokenType.OP_BIN_AND,
                 TokenType.OPEN_PARENTHESIS, TokenType.RW_NEW,
-                TokenType.ID, TokenType.RW_THIS
+                TokenType.ID, TokenType.RW_THIS, TokenType.RW_BASE, TokenType.RW_NULL
             };
             if (pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
                 Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
@@ -402,6 +412,7 @@ namespace Compiler
                 type = optional_rank_specifier_list(type);
                 var initialization = optional_array_initializer();
                 return new ArrayInstantiation(type, initialization);
+
             }else if (pass(TokenType.OP_COMMA,TokenType.CLOSE_SQUARE_BRACKET))
             {
                 type = new ArrayTypeNode(type);
@@ -439,7 +450,7 @@ namespace Compiler
                 TokenType.OP_LOG_AND, TokenType.OP_BIN_OR,
                 TokenType.OP_BIN_XOR, TokenType.OP_BIN_AND,
                 TokenType.OPEN_PARENTHESIS, TokenType.RW_NEW,
-                TokenType.ID, TokenType.RW_THIS,TokenType.OPEN_CURLY_BRACKET
+                TokenType.ID, TokenType.RW_THIS,TokenType.OPEN_CURLY_BRACKET, TokenType.RW_BASE, TokenType.RW_NULL
             };
             if (pass(nuevo.Concat(equalityOperatorOptions).Concat(relationalOperatorOptions).
                 Concat(Is_AsOperatorOptions).Concat(shiftOperatorOptions).Concat(additiveOperatorOptions).
@@ -505,8 +516,6 @@ namespace Compiler
             DebugInfoMethod("optional_comma_list");
             if (pass(TokenType.OP_COMMA))
             {
-                if(arrayNode.dimensions == 0)
-                    arrayNode.dimensions = 1;
                 consumeToken();
                 arrayNode.dimensions++;
                 optional_comma_list(ref arrayNode);
