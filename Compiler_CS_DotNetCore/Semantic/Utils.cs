@@ -23,6 +23,16 @@ namespace Compiler_CS_DotNetCore.Semantic
             return name;
         }
 
+        internal static string getTypeName(List<TypeDefinitionNode> argumentsType)
+        {
+            List<string> name = new List<string>();
+            foreach (TypeDefinitionNode en in argumentsType)
+            {
+                name.Add(en.ToString());
+            }
+            return string.Join(",", name);
+        }
+
         public static string getParametersName(List<Parameter> parameter)
         {
             List<string> name = new List<string>();
@@ -124,7 +134,7 @@ public class VarType{
     public override string ToString(){}
 }
  
-public class VoidType{
+public class VoidTypeNode{
 }
 
 public class BoolType{

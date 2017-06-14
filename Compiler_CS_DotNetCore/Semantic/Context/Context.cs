@@ -46,6 +46,13 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             this.constructors = constructors;
         }
 
+        internal MethodNode findFunction(string name)
+        {
+            if (methods.ContainsKey(name))
+                return methods[name];
+            return null;
+        }
+
         public Context(TypeDefinitionNode node, ContextType type, API api, bool isStatic = false) : this()
         {
             this.type= type;
@@ -186,7 +193,10 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         {
             if (type == ContextType.CLASS)
                 return;
-            removePrivates(true);
+            if(type == ContextType.PARENT)
+                removePrivates(TokenType.RW_PRIVATE);
+            else if(type == ContextType.ATRIBUTE)
+                removePrivates(TokenType.RW_PRIVATE, TokenType.RW_PROTECTED);
         }
 
         private void buildEnvironment(InterfaceNode node, API api)
@@ -195,17 +205,15 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             methods = node.methods;
         }
 
-        internal void removePrivates(bool remove)
+        internal void removePrivates(params TokenType[] types)
         {
-            if (!remove)
-                return;
             Dictionary<string, FieldNode> fis = new Dictionary<string, FieldNode>();
             Dictionary<string, MethodNode> mts = new Dictionary<string, MethodNode>();
             Dictionary<string, ConstructorNode> ctrs = new Dictionary<string, ConstructorNode>();
             foreach(KeyValuePair<string, FieldNode> key in variables)
             {
                 FieldNode f = key.Value;
-                if(!pass(f.encapsulation.token, TokenType.RW_PRIVATE)){
+                if(!pass(f.encapsulation.token, types)){
                     fis[key.Key] = f;
                 }
             }
@@ -213,7 +221,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             foreach (KeyValuePair<string, MethodNode> key in methods)
             {
                 MethodNode f = key.Value;
-                if (!pass(f.encapsulation.token, TokenType.RW_PRIVATE)){
+                if (!pass(f.encapsulation.token, types)){
                     mts[key.Key] = f;
                 }
             }
@@ -221,7 +229,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             foreach (KeyValuePair<string, ConstructorNode> key in constructors)
             {
                 ConstructorNode f = key.Value;
-                if (!pass(f.encapsulation.token, TokenType.RW_PRIVATE)){
+                if (!pass(f.encapsulation.token, types)){
                     ctrs[key.Key] = f;
                 }
             }

@@ -39,15 +39,22 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             throw new SemanticException("Constructor '" + key + "' could not be found in current context '"+context.name+"'");
         }
 
-        internal TypeDefinitionNode findFunction(bool base_reference, Token id)
+        internal MethodNode findFunction(string name)
         {
-            throw new NotImplementedException();
+            MethodNode t = null;
+            for (int i = 0; i < contexts.Count; i++)
+            {
+                t = contexts[i].findFunction(name);
+                if (t != null)
+                    return t;
+            }
+            return null;
         }
 
-        internal TypeDefinitionNode findVariable(bool base_reference, Token id)
+        internal TypeDefinitionNode findVariable(Token id)
         {
             TypeDefinitionNode t = null;
-            for (int i = base_reference ? 1:0; i < contexts.Count;i++)
+            for (int i = 0; i < contexts.Count;i++)
             {
                 t = contexts[i].findVariable(id);
                 if (t != null)
@@ -90,10 +97,13 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             contexts.Insert(0, ctr_context);
         }
 
-        internal void addVariableToCurrentContext(FieldNode f)
+        internal void addVariableToCurrentContext(params FieldNode[] fields)
         {
-            var ctx = contexts[0];
-            ctx.addVariable(f);
+            foreach (var f in fields)
+            {
+                var ctx = contexts[0];
+                ctx.addVariable(f);
+            }
         }
     }
 }

@@ -26,7 +26,12 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            throw new NotImplementedException();
+            List<TypeDefinitionNode> argumentsType = api.getArgumentsType(arguments);
+            string functionName = ((IdentifierNode)primary).ToString() +"("+Utils.getTypeName(argumentsType)+")";
+            MethodNode m = api.contextManager.findFunction(functionName);
+            if (m == null)
+                throw new SemanticException("Function '" + functionName + "' could be found in the current context.");
+            return m.returnType;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Compiler.Tree
         public override TypeDefinitionNode evaluateType(API api)
         {
             TypeDefinitionNode t = null;
-            t = api.contextManager.findVariable(false, token);
+            t = api.contextManager.findVariable(token);
             if(t == null)
             {
                 t = api.searchInTableType(token.ToString());

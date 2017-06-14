@@ -45,8 +45,13 @@ namespace Compiler.Tree
 
         private void checkMethods(API api)
         {
+            if (identifier.ToString() == "myInterface")
+                Console.WriteLine();
             foreach (KeyValuePair<string, MethodNode> key in methods) {
                 api.checkParametersExistance(this, key.Value.parameters);
+                api.setWorkingType(this);
+                api.checkReturnTypeExistance(ref key.Value.returnType);
+                api.setWorkingType(null);
             }
         }
 

@@ -26,7 +26,9 @@ namespace N1{
 
 		}
 		public myClase(int nuevo){
-			
+			int n = nuevo;
+			float mama = 5000f;
+			metodo();
 		}
 		public void getType(Circulo index, string t){
 

@@ -17,7 +17,7 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            expression.evaluateType(api);
         }
     }
 }

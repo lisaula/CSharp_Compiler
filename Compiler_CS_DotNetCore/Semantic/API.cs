@@ -19,6 +19,29 @@ namespace Compiler_CS_DotNetCore.Semantic
             working_type = type;
         }
 
+        internal void addVariableToCurrentContext(Dictionary<string, FieldNode> variable)
+        {
+            List<FieldNode> fields = new List<FieldNode>();
+            foreach(var key in variable)
+            {
+                fields.Add(key.Value);
+            }
+            contextManager.addVariableToCurrentContext(fields.ToArray());
+        }
+
+        internal List<TypeDefinitionNode> getArgumentsType(List<ExpressionNode> arguments)
+        {
+            List<TypeDefinitionNode> type = new List<TypeDefinitionNode>();
+            if(arguments != null)
+            {
+                foreach(var a in arguments)
+                {
+                    type.Add(a.evaluateType(this));
+                }
+            }
+            return type;
+        }
+
         public TypeDefinitionNode searchType(TypeDefinitionNode type)
         {
             if (working_type == null)
@@ -148,9 +171,31 @@ namespace Compiler_CS_DotNetCore.Semantic
                     throw new SemanticException("Could not find Type '" + name + "' in the current context. ", p.id.token);
                 if(tdn is InterfaceNode || tdn is VoidTypeNode)
                     throw new SemanticException("The type '" + tdn.ToString() + "' is not valid for parameter " + p.id.ToString(), p.type.getPrimaryToken());
-                p.type.typeNode = tdn;
+                p.type.typeNode = p.type;
+                if (p.type is ArrayTypeNode)
+                {
+                    ((ArrayTypeNode)p.type).type = tdn;
+                }
+                else
+                    p.type = tdn;
             }
         }
+
+        internal void checkReturnTypeExistance(ref TypeDefinitionNode returnType)
+        {
+            TypeDefinitionNode t = null;
+            if (returnType is ArrayTypeNode)
+            {
+                t = searchType(((ArrayTypeNode)returnType).type);
+                ((ArrayTypeNode)returnType).type = returnType;
+            }
+            else
+            {
+                returnType = searchType(returnType);
+            }
+
+        }
+
         private void setAllEvaluatesTrue(NamespaceNode tree)
         {
             foreach(TypeDefinitionNode td in tree.typeList)

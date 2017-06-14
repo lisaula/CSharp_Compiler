@@ -67,7 +67,13 @@ namespace Compiler.Tree
                     throw new SemanticException("Constructor has no body. "+key.Value.id.token);
                 foreach (var s in key.Value.bodyStatements.statements)
                 {
-                    //s.evaluate(api);
+                    try
+                    {
+                        s.evaluate(api);
+                    }catch(NotImplementedException n)
+                    {
+                        Debug.printMessage(n.Message);
+                    }
                 }
                 api.setWorkingType(null);
                 api.contextManager.contexts.Clear();
@@ -86,7 +92,7 @@ namespace Compiler.Tree
                     api.setWorkingType(this);
 
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "h")
+                    if (f.id.ToString() == "val")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
@@ -94,13 +100,13 @@ namespace Compiler.Tree
                         if(f.type.getComparativeType() == Utils.Class && tdn.getComparativeType() == Utils.Class)
                         {
                             if(!api.checkRelationBetween(f.type, tdn))
-                                throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                                throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
                         }else if ((!(f.type.getComparativeType() == Utils.Class || f.type.getComparativeType() == Utils.String) && tdn is NullTypeNode))
                         {
-                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
                         }
                         else
-                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), tdn.getPrimaryToken());
+                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
                     }
                     api.setWorkingType(null);
                     api.popContext(contexts.ToArray());
@@ -135,6 +141,9 @@ namespace Compiler.Tree
             foreach(KeyValuePair<string, MethodNode> method in methods)
             {
                 api.checkParametersExistance(this,method.Value.parameters);
+                api.setWorkingType(this);
+                api.checkReturnTypeExistance(ref method.Value.returnType);
+                api.setWorkingType(null);
                 if (method.Value.modifier != null)
                 {
                     Debug.printMessage("Evaluando methodo " + Utils.getMethodWithParentName(method.Value, this));

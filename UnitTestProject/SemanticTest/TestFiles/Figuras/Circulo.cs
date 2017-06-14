@@ -37,7 +37,6 @@ namespace Figuras{
 		public virtual void MismoMethodo(){}
 		public void MismoMethodo2(){}
 		public Circulo(Figura f, int n, string name) : base(){
-			((int)x) = 5;
 		}
 
 		Circulo(myClase2 d){
