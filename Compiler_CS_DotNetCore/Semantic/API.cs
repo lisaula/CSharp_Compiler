@@ -113,12 +113,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                     throw new SemanticException("Could not find Type '" + name + "' in the current context. ", p.id.token);
                 if(tdn is InterfaceNode || tdn is VoidTypeNode)
                     throw new SemanticException("The type '" + tdn.ToString() + "' is not valid for parameter " + p.id.ToString(), p.type.getPrimaryToken());
-                if (p.type is ArrayTypeNode)
-                {
-                    ((ArrayTypeNode)p.type).type = tdn;
-                }
-                else
-                    p.type = tdn;
+                p.type.typeNode = tdn;
             }
         }
         private void setAllEvaluatesTrue(NamespaceNode tree)

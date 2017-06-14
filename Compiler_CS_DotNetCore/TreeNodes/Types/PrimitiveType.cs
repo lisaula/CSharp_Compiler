@@ -12,5 +12,9 @@ namespace Compiler.Tree
         {
 
         }
+        public PrimitiveType(TypeDefinitionNode t)
+        {
+            this.typeNode = t;
+        }
     }
 }

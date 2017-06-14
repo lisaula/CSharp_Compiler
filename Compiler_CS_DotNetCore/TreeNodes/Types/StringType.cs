@@ -8,9 +8,8 @@ namespace Compiler.Tree
         {
         }
 
-        public StringType()
+        public StringType(TypeDefinitionNode t):base(t)
         {
-
         }
         public override string ToString()
         {

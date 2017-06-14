@@ -9,6 +9,7 @@ namespace Compiler.Tree
         public bool evaluated = false;
         public NamespaceNode parent_namespace;
         public IdentifierNode identifier;
+        public TypeDefinitionNode typeNode;
         public virtual void Evaluate(API api)
         {
 

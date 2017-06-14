@@ -16,7 +16,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Char];
+            return new CharType(Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Char]);
         }
     }
 }

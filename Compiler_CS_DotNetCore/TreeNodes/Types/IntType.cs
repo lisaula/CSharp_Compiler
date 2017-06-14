@@ -7,6 +7,10 @@ namespace Compiler.Tree
         public IntType(Token token) : base(token)
         {
         }
+        public IntType(TypeDefinitionNode t ): base(t)
+        {
+
+        }
         public IntType()
         {
 

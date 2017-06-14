@@ -11,6 +11,11 @@ namespace Compiler.Tree
         {
 
         }
+
+        public FloatType(TypeDefinitionNode t) : base(t)
+        {
+        }
+
         public override string ToString()
         {
             return this.GetType().Name;

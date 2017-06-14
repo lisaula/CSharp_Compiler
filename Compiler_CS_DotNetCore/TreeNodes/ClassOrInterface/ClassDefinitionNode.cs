@@ -255,11 +255,7 @@ namespace Compiler.Tree
                     throw new SemanticException("The type '" + tdn.ToString()+ "' is not valid for field " + field.Value.id.ToString() + " in class " + identifier.ToString() + ".", f.type.getPrimaryToken());
                 if (api.TokenPass(((ClassDefinitionNode)tdn).encapsulation.token, TokenType.RW_PRIVATE))
                     throw new SemanticException("The type '" + f.type.ToString() + "' can't be reached due to encapsulation level.", f.type.getPrimaryToken());
-                if (f.type is ArrayTypeNode)
-                {
-                    ((ArrayTypeNode)f.type).type = tdn;
-                } else
-                    f.type = tdn;
+                f.type.typeNode = tdn;
                 //tdn.Evaluate(api);
             }
         }
