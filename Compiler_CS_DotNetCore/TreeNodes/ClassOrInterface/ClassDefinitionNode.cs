@@ -65,15 +65,12 @@ namespace Compiler.Tree
                 api.setWorkingType(this);
                 if (key.Value.bodyStatements == null)
                     throw new SemanticException("Constructor has no body. "+key.Value.id.token);
-                foreach (var s in key.Value.bodyStatements.statements)
+                try
                 {
-                    try
-                    {
-                        s.evaluate(api);
-                    }catch(NotImplementedException n)
-                    {
-                        Debug.printMessage(n.Message);
-                    }
+                    key.Value.bodyStatements.evaluate(api);
+                }catch(NotImplementedException n)
+                {
+                    Debug.printMessage(n.Message);
                 }
                 api.setWorkingType(null);
                 api.contextManager.contexts.Clear();

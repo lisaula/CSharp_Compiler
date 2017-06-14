@@ -20,7 +20,13 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            if(statements != null)
+            {
+                foreach(var s in statements)
+                {
+                    s.evaluate(api);
+                }
+            }
         }
     }
 }
