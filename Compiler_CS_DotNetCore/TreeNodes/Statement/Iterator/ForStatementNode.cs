@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler.Tree
 {
@@ -26,7 +27,21 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            api.contextManager.pushFront(new Context(ContextType.ITERATIVE, api));
+            foreach (var s in initializer)
+            {
+                s.evaluate(api);
+            }
+            TypeDefinitionNode t = expresion.evaluateType(api);
+            if (t.getComparativeType() != Utils.Bool)
+                throw new SemanticException("Bool expression expected in for but got '"+t.ToString()+"'.");
+
+            foreach (var s in iterative)
+            {
+                s.evaluate(api);
+            }
+            body.evaluate(api);
+            api.popFrontContext();
         }
     }
 }
