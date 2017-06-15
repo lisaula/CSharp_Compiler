@@ -37,6 +37,7 @@ namespace Compiler.Tree
                 {
                     if (!lista[i].Equals(origin.indexes[i]))
                         throw new SemanticException("Invalid operation in access to variable " + primary.ToString() + ". Index integrity.");
+                    lista[i].evaluate(api);
                     count++;
                 }
                 for (int i = count; i < origin.indexes.Count; i++)
