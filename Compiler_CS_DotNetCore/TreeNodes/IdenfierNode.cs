@@ -28,10 +28,11 @@ namespace Compiler.Tree
             if (t == null)
             {
                 t = api.searchInTableType(token.ToString());
-                t.onTableType = true;
+                if(t!=null)
+                    t.onTableType = true;
             }
             if(t == null)
-                throw new SemanticException("Variable '" + token.ToString() + "' could not be found in the current context.", token);
+                throw new SemanticException("Variable '" + token.lexema + "' could not be found in the current context.", token);
             return t;
         }
 

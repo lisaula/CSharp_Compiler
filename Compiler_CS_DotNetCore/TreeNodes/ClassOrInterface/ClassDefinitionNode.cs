@@ -87,7 +87,7 @@ namespace Compiler.Tree
                     api.setWorkingType(this);
                     api.contextManager.isStatic = true;
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "r")
+                    if (f.id.ToString() == "val2")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))

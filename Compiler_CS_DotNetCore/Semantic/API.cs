@@ -11,7 +11,7 @@ namespace Compiler_CS_DotNetCore.Semantic
     {
         private List<string> paths;
         public Dictionary<string, NamespaceNode> trees;
-        public ContextManager contextManager;
+        public ContextManager contextManager, class_contextManager;
         public TypeDefinitionNode working_type;
         public void setWorkingType(TypeDefinitionNode type)
         {
@@ -33,10 +33,17 @@ namespace Compiler_CS_DotNetCore.Semantic
             List<TypeDefinitionNode> type = new List<TypeDefinitionNode>();
             if(arguments != null)
             {
+                var context_placeholder = contextManager;
+                if(class_contextManager != null)
+                {
+
+                    contextManager = class_contextManager;
+                }
                 foreach(var a in arguments)
                 {
                     type.Add(a.evaluateType(this));
                 }
+                contextManager = context_placeholder;
             }
             return type;
         }
@@ -152,6 +159,7 @@ namespace Compiler_CS_DotNetCore.Semantic
             trees["IncludesDefault"] = tree;
             setClassesOnTableType(tree);
             contextManager = new ContextManager();
+            class_contextManager = null;
         }
         public void checkParametersExistance(TypeDefinitionNode obj,List<Parameter> parameters)
         {

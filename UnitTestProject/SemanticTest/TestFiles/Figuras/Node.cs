@@ -1,6 +1,6 @@
 
 public class Node{
-        int val;
+        public static int val;
         Node left;
         Node right;
         static int x = 6;
@@ -9,22 +9,23 @@ public class Node{
 
         }
 
-        public int SetVal(int x){
+        public static int SetVal(int x){
 
         }
 
     }
 public class Tree{
-        Node root = ((Node)null);
-        int x = 5 + 5;
+        static Node root = ((Node)null);
+        static int x = 5 + 5;
         Node temp = new Node(5);
         int val = 10;
         int y = 5;
         int z = (int)3.5f;
         string a = (string)null;
         int[] e = {1,2,3};
-
+        int val2 = new Node(x).SetVal(x + root.val);
         public void Tree() {
-        	int val = new Node(5).SetVal(5 + 5);
+        	int x = 5;
+        	
         }
 }

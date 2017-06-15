@@ -41,12 +41,14 @@ namespace Compiler.Tree
             api.contextManager = copy;
             foreach (ExpressionNode exp in list)
             {
+                api.class_contextManager = ctx_mng;
                 t = exp.evaluateType(api);
                 List<Context> contexts = api.contextManager.buildEnvironment(t, ContextType.ATRIBUTE, api, t.onTableType);
                 api.contextManager.contexts.Clear();
                 api.pushContext(contexts.ToArray());
             }
             api.contextManager = ctx_mng;
+            api.class_contextManager = null;
             return t;
         }
     }
