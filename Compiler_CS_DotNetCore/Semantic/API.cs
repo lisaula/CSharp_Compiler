@@ -13,7 +13,6 @@ namespace Compiler_CS_DotNetCore.Semantic
         public Dictionary<string, NamespaceNode> trees;
         public ContextManager contextManager;
         public TypeDefinitionNode working_type;
-
         public void setWorkingType(TypeDefinitionNode type)
         {
             working_type = type;

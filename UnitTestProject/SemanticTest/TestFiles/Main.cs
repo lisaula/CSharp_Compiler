@@ -3,13 +3,13 @@ using Figuras;
 namespace N1{
 
 	public class myClase: Circulo{
-		Circulo c = new Circulo();
-		myClase clase = c as Circulo;
+		static Circulo c = new Circulo();
+		static myClase clase = c as Circulo;
 		
 		static int ca = (int)'a';
 		int cat = ca;
-		bool b = true;
-		bool f = false;
+		private static bool b = true;
+		static bool f = false;
 		bool r = b && f;
 		float f1 = 1.2f;
 		int i1 = 50;
@@ -33,7 +33,7 @@ namespace N1{
 			metodo();
 			do{
 
-			}while();
+			}while(true);
 		}
 		public void getType(Circulo index, string t){
 

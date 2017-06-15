@@ -18,9 +18,13 @@ public class Tree{
         Node root = ((Node)null);
         int x = 5 + 5;
         Node temp = new Node(5);
-        int val = new Node(5).SetVal(5 + 5);
+        int val = 10;
         int y = 5;
         int z = (int)3.5f;
         string a = (string)null;
         int[] e = {1,2,3};
+
+        public void Tree() {
+        	int val = new Node(5).SetVal(5 + 5);
+        }
 }

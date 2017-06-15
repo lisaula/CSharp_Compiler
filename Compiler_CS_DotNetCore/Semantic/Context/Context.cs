@@ -13,7 +13,6 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         public Dictionary<string, ConstructorNode> constructors;
         public string name;
         private ContextType type;
-        public bool isStatic;
         public Context()
         {
             name = null;
@@ -53,10 +52,9 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             return null;
         }
 
-        public Context(TypeDefinitionNode node, ContextType type, API api, bool isStatic = false) : this()
+        public Context(TypeDefinitionNode node, ContextType type, API api) : this()
         {
             this.type= type;
-            this.isStatic = isStatic;
             if (node is ClassDefinitionNode)
             {
                 buildEnvironment(((ClassDefinitionNode)node), api);
@@ -66,12 +64,11 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             }
         }
 
-        internal TypeDefinitionNode findVariable(Token id)
+        internal FieldNode findVariable(Token id)
         {
             if (variables.ContainsKey(id.lexema))
             {
-                TypeDefinitionNode t = variables[id.lexema].type;
-                return t;
+                return variables[id.lexema];
             }
             return null;
         }
@@ -81,8 +78,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             name = node.ToString();
             copyFields(node.fields);
             copyMethods(node.methods);
-            if(!isStatic)
-                constructors = node.constructors;
+            constructors = node.constructors;
             checkType(type, api);
         }
 
@@ -91,12 +87,12 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             List<MethodNode> ms = new List<MethodNode>();
             foreach(var key in methods)
             {
-                if (isStatic)
+                /*if (isStatic)
                 {
                     if (key.Value.modifier != null)
                         if (!pass(key.Value.modifier.token, TokenType.RW_STATIC))
                             continue;
-                }
+                }*/
                 ms.Add(key.Value);
             }
             MethodNode[] mss = new MethodNode[ms.Count];
@@ -120,12 +116,12 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             List<FieldNode> fs = new List<FieldNode>();
             foreach(var f in fields)
             {
-                if (isStatic)
+                /*if (isStatic)
                 {
                     if (f.Value.modifier != null)
                         if (!pass(f.Value.modifier.token, TokenType.RW_STATIC))
                             continue;
-                }
+                }*/
                 fs.Add(f.Value);
             }
             FieldNode[] fss = new FieldNode[fs.Count];

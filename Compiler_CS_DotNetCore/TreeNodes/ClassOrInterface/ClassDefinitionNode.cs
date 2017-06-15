@@ -33,13 +33,12 @@ namespace Compiler.Tree
         {
             return identifier.token.lexema;
         }
-
         public override void Evaluate(API api)
         {
             if (evaluated)
                 return;
             Debug.printMessage("Evaluating class " + identifier.ToString());
-            if (identifier.ToString() == "asbtracta")
+            if (identifier.ToString() == "myClase")
                 Console.WriteLine();
             checkInheritanceExistance(api);
             checkParents(api);
@@ -50,7 +49,6 @@ namespace Compiler.Tree
             checkConstructorsBody(api);
             evaluated = true;
         }
-
         private void checkConstructorsBody(API api)
         {
             foreach (var key in constructors)
@@ -87,9 +85,9 @@ namespace Compiler.Tree
                     List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                     api.pushContext(contexts.ToArray());
                     api.setWorkingType(this);
-
+                    api.contextManager.isStatic = true;
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "Circulo")
+                    if (f.id.ToString() == "r")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     if (!f.type.Equals(tdn))
@@ -106,6 +104,7 @@ namespace Compiler.Tree
                             throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
                     }
                     api.setWorkingType(null);
+                    api.contextManager.isStatic = false;
                     api.popContext(contexts.ToArray());
                 }
             }

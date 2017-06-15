@@ -37,6 +37,7 @@ namespace Compiler.Tree
             ctx_mng.contexts.CopyTo(copy_context);
             var copy = new ContextManager();
             copy.contexts = new List<Context>(copy_context);
+            copy.isStatic = api.contextManager.isStatic;
             api.contextManager = copy;
             foreach (ExpressionNode exp in list)
             {

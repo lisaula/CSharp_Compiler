@@ -38,7 +38,6 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             }
             throw new SemanticException("Constructor '" + key + "' could not be found in current context '"+context.name+"'");
         }
-
         internal MethodNode findFunction(string name)
         {
             MethodNode t = null;
@@ -46,19 +45,36 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             {
                 t = contexts[i].findFunction(name);
                 if (t != null)
+                {
+                    if (isStatic) {
+                        if (t.modifier == null)
+                            throw new SemanticException("Cannot reference a non-static method '"+Utils.getMethodName(t)+"'");
+                        if(t.modifier.token.type != TokenType.RW_STATIC)
+                            throw new SemanticException("Cannot reference a non-static method '" + Utils.getMethodName(t) + "'");
+                    }
                     return t;
+                }
             }
             return null;
         }
 
         internal TypeDefinitionNode findVariable(Token id)
         {
-            TypeDefinitionNode t = null;
+            FieldNode t = null;
             for (int i = 0; i < contexts.Count;i++)
             {
                 t = contexts[i].findVariable(id);
                 if (t != null)
-                    return t;
+                {
+                    if (isStatic)
+                    {
+                        if (t.modifier == null)
+                            throw new SemanticException("Cannot reference a non-static field '" + t.id.ToString() + "'");
+                        if(t.modifier.token.type != TokenType.RW_STATIC)
+                            throw new SemanticException("Cannot reference a non-static field '" + t.id.ToString() + "'");
+                    }
+                    return t.type;
+                }
             }
             return null;
         }
@@ -66,7 +82,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         internal List<Context> buildEnvironment(TypeDefinitionNode node, ContextType type, API api, bool isStatic= false)
         {
             List<Context> contexts = new List<Context>();
-            contexts.Add(new Context(node, type, api, isStatic));
+            contexts.Add(new Context(node, type, api));
             Dictionary<string, TypeDefinitionNode> parents = null;
             if (node is ClassDefinitionNode) {
                 if(!(((ClassDefinitionNode)node).evaluated))
@@ -87,7 +103,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             }
             if(type == ContextType.CLASS)
             {
-                contexts.Add(new Context(Singleton.tableTypes[Utils.GlobalNamespace+".Object"], ContextType.PARENT, api, isStatic));
+                contexts.Add(new Context(Singleton.tableTypes[Utils.GlobalNamespace+".Object"], ContextType.PARENT, api));
             }
             return contexts;
         }
