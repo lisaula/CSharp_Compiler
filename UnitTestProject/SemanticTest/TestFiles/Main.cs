@@ -30,10 +30,12 @@ namespace N1{
 			var kaka = 5;
 			int n = nuevo;
 			float mama = 5000f;
+			Circulo circulo = c?? null;
 			metodo();
 			do{
-
-			}while(true);
+				kaka--;
+				int kakos = kaka;
+			}while(kaka >0);
 		}
 		public void getType(Circulo index, string t){
 

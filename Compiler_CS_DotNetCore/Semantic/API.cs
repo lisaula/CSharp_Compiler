@@ -30,6 +30,13 @@ namespace Compiler_CS_DotNetCore.Semantic
             assignmentRules.Add(Utils.Class + "," + Utils.Null);
             assignmentRules.Add(Utils.String + "," + Utils.Null);
         }
+
+        internal bool pass(string v, params string[] primitives)
+        {
+            List<string> l = new List<string>(primitives);
+            return l.Contains(v);
+        }
+
         public void setWorkingType(TypeDefinitionNode type)
         {
             working_type = type;
@@ -269,12 +276,17 @@ namespace Compiler_CS_DotNetCore.Semantic
 
         internal void popContext(params Context.Context[] context)
         {
-            foreach(Context.Context c in context)
+            foreach (Context.Context c in context)
             {
                 contextManager.contexts.Remove(c);
             }
-        }
 
+        }
+        public void popFrontContext()
+        {
+            if(contextManager.contexts.Count>0)
+                contextManager.contexts.RemoveAt(0);
+        }
         internal void pushContext(params Context.Context[] context)
         {
             contextManager.contexts.AddRange(context);

@@ -51,7 +51,10 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 return methods[name];
             return null;
         }
-
+        public Context(ContextType type, API api):this()
+        {
+            this.type = type;
+        }
         public Context(TypeDefinitionNode node, ContextType type, API api) : this()
         {
             this.type= type;

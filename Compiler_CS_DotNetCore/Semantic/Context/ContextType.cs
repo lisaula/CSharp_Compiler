@@ -11,6 +11,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         PARENT,
         CONSTRUCTOR,
         ATRIBUTE,
-        BASE
+        BASE,
+        ITERATIVE
     }
 }

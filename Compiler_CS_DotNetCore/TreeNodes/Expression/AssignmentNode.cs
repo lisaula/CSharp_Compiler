@@ -32,6 +32,8 @@ namespace Compiler.Tree
                     rules.Add(Utils.Char + "," + Utils.Char);
                     rules.Add(Utils.Int + "," + Utils.Char);
                     rules.Add(Utils.Int + "," + Utils.Int);
+                    rules.Add(Utils.String + "," + Utils.Null);
+                    rules.Add(Utils.Class + "," + Utils.Null);
                     break;
                 case TokenType.OP_SUM_ONE_OPERND:
                     rules.Add(Utils.String + "," + Utils.Int);

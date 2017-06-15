@@ -26,7 +26,7 @@ namespace Compiler.Tree
         public override TypeDefinitionNode evaluateType(API api)
         {
             TypeDefinitionNode tdn = primary.evaluateType(api);
-            if (!tdn.Equals(new IntType()) && !(tdn.Equals(new FloatType())) && !(tdn.Equals(new CharType())))
+            if (tdn.getComparativeType() != Utils.Int && tdn.getComparativeType() != Utils.Float && tdn.getComparativeType() != Utils.Char)
                 throw new SemanticException("Invalid operation. Cant make post unary expression of a type '" + tdn.ToString() + "'.", @operator);
             return tdn;
         }
