@@ -1,5 +1,6 @@
 ﻿using System;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler.Tree
 {
@@ -25,7 +26,35 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode t = collection.evaluateType(api);
+            if (t.getComparativeType() != Utils.Array)
+                throw new SemanticException("Invalid expression. '" + id.ToString() + "' is not iterable.",id.token);
+            ArrayTypeNode a = t as ArrayTypeNode;
+            TypeDefinitionNode it = api.searchType(type);
+            if(it.getComparativeType() == Utils.Array)
+            {
+                if (((ArrayTypeNode)it).type.getComparativeType() != a.type.getComparativeType())
+                    throw new SemanticException("Assignable variable in foreach is not compitible with Iterable. '"+ ((ArrayTypeNode)it).ToString() + "' and '"+a.ToString()+"'");
+            }
+            if(it.getComparativeType() == Utils.Var)
+            {
+                it = a.type;
+                if (a.indexes.Count > 1)
+                {
+
+                    it = a.getFistLevelIndex();
+                }
+            }
+            TypeDefinitionNode temp = it;
+            if (a.getFistLevelIndex().ToString() != temp.ToString())
+            {
+                throw new SemanticException("Assignable variable in foreach is not compitible with Iterable. '" + it.ToString() + "' and '" + a.type.ToString() + "'");
+            }
+
+            api.contextManager.pushFront(new Context(ContextType.ITERATIVE, api));
+            api.contextManager.pushFront(it, id);
+            body.evaluate(api);
+            api.popFrontContext();
         }
     }
 }

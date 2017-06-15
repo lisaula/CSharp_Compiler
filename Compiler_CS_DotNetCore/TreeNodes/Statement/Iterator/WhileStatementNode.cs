@@ -1,5 +1,6 @@
 ﻿using System;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler.Tree
 {
@@ -21,7 +22,14 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode t = conditionExpression.evaluateType(api);
+            if (t.getComparativeType() != Utils.Bool)
+            {
+                throw new SemanticException("Condition expression in while have to return a 'BoolType'");
+            }
+            api.contextManager.pushFront(new Context(ContextType.ITERATIVE, api));
+            body.evaluate(api);
+            api.popFrontContext();
         }
     }
 }

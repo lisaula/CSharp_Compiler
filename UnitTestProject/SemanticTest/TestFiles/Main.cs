@@ -35,6 +35,10 @@ namespace N1{
 			do{
 				kaka--;
 				int kakos = kaka;
+				int[] array = {1,2,3,4};
+				foreach(var nueva in array){
+					
+				}
 			}while(kaka >0);
 		}
 		public void getType(Circulo index, string t){

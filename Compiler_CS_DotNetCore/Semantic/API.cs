@@ -150,7 +150,7 @@ namespace Compiler_CS_DotNetCore.Semantic
             }
         }
 
-        private FieldNode convertToField(Parameter parameter)
+        public FieldNode convertToField(Parameter parameter)
         {
             var token = new Token();
             token.type = TokenType.RW_PUBLIC;

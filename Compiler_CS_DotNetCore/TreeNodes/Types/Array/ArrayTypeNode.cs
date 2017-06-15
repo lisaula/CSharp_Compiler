@@ -13,7 +13,21 @@ namespace Compiler.Tree
         {
             indexes = new List<ArrayNode>();
         }
-
+        public TypeDefinitionNode getFistLevelIndex()
+        {
+            TypeDefinitionNode t = type;
+            if (indexes.Count > 1)
+            {
+                var array = new ArrayTypeNode();
+                array.type = type;
+                for (int i = 1; i < indexes.Count; i++)
+                {
+                    array.indexes.Add(indexes[i]);
+                }
+                t = array;
+            }
+            return t;
+        }
         public ArrayTypeNode(TypeDefinitionNode type, List<ArrayNode> indexes)
         {
             this.type = type;

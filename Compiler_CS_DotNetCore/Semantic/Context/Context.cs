@@ -51,6 +51,11 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 return methods[name];
             return null;
         }
+
+        public bool variableExist(FieldNode f)
+        {
+            return variables.ContainsKey(f.id.ToString());
+        }
         public Context(ContextType type, API api):this()
         {
             this.type = type;

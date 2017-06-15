@@ -58,6 +58,22 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             return null;
         }
 
+        internal void pushFront(TypeDefinitionNode it, IdentifierNode id)
+        {
+
+            FieldNode f = convertToField(it, id);
+            addVariableToCurrentContext(f);
+        }
+
+        private FieldNode convertToField(TypeDefinitionNode it, IdentifierNode id)
+        {
+            var token = new Token();
+            token.type = TokenType.RW_PUBLIC;
+            token.lexema = "public";
+            FieldNode f = new FieldNode(new EncapsulationNode(token), null, it, id, null);
+            return f;
+        }
+
         internal TypeDefinitionNode findVariable(Token id)
         {
             FieldNode t = null;
@@ -115,10 +131,22 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
 
         internal void addVariableToCurrentContext(params FieldNode[] fields)
         {
+            //checkVariableExistance(fields);
             foreach (var f in fields)
             {
                 var ctx = contexts[0];
                 ctx.addVariable(f);
+            }
+        }
+
+        private void checkVariableExistance(params FieldNode[] fields)
+        {
+            foreach (FieldNode f in fields) {
+                foreach (Context c in contexts)
+                {
+                    if (c.variableExist(f))
+                        throw new SemanticException("Variable '" + f.id.ToString() + "' already exist in context.", f.id.token);
+                }
             }
         }
     }
