@@ -6,7 +6,7 @@ namespace N1{
 		static Circulo c = new Circulo();
 		static myClase clase = c as Circulo;
 		
-		static int ca = (int)'a';
+		public static int ca = (int)'a';
 		int cat = ca;
 		private static bool b = true;
 		static bool f = false;

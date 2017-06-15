@@ -44,6 +44,7 @@ namespace Compiler.Tree
                 api.class_contextManager = ctx_mng;
                 t = exp.evaluateType(api);
                 List<Context> contexts = api.contextManager.buildEnvironment(t, ContextType.ATRIBUTE, api, t.onTableType);
+                api.contextManager.isStatic = t.onTableType;
                 api.contextManager.contexts.Clear();
                 api.pushContext(contexts.ToArray());
             }

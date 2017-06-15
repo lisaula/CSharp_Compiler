@@ -87,21 +87,27 @@ namespace Compiler.Tree
                     api.setWorkingType(this);
                     api.contextManager.isStatic = true;
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "val2")
-                        Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
-                    if (!f.type.Equals(tdn))
+                    string rule = f.type.ToString() + "," + tdn.ToString();
+                    string rule2 = f.type.getComparativeType() + "," + tdn.ToString();
+                    string rule3 = f.type.getComparativeType() + "," + tdn.getComparativeType();
+                    if (f.id.ToString() == "root")
+                        Console.WriteLine(rule+" "+f.type.getComparativeType() + tdn.GetType().Name);
+                    if (!api.assignmentRules.Contains(rule)
+                        && !api.assignmentRules.Contains(rule2)
+                        && !api.assignmentRules.Contains(rule3)
+                        && !f.type.Equals(tdn))
                     {
                         if(f.type.getComparativeType() == Utils.Class && tdn.getComparativeType() == Utils.Class)
                         {
                             if(!api.checkRelationBetween(f.type, tdn))
-                                throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
+                                throw new SemanticException("1Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
                         }else if ((!(f.type.getComparativeType() == Utils.Class || f.type.getComparativeType() == Utils.String) && tdn is NullTypeNode))
                         {
-                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
+                            throw new SemanticException("2Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
                         }
                         else
-                            throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
+                            throw new SemanticException("4Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
                     }
                     api.setWorkingType(null);
                     api.contextManager.isStatic = false;
@@ -140,6 +146,11 @@ namespace Compiler.Tree
                 api.setWorkingType(this);
                 api.checkReturnTypeExistance(ref method.Value.returnType);
                 api.setWorkingType(null);
+
+                if (api.modifierPass(method.Value.modifier, TokenType.RW_OVERRIDE, TokenType.RW_ABSTRACT, TokenType.RW_VIRTUAL))
+                    if (api.TokenPass(method.Value.encapsulation.token, TokenType.RW_PRIVATE))
+                        throw new SemanticException("Override, Abstract or Virtual member '" + method.Key + "' can't have private encapsulation.", method.Value.id.token);
+
                 if (method.Value.modifier != null)
                 {
                     Debug.printMessage("Evaluando methodo " + Utils.getMethodWithParentName(method.Value, this));
@@ -158,9 +169,6 @@ namespace Compiler.Tree
                         else if (api.modifierPass(method.Value.modifier, TokenType.RW_OVERRIDE))
                             throw new SemanticException("Modifier 'override' can't be aplied to the method " + Utils.getMethodWithParentName(method.Value, this));
                         
-                    }else
-                    {
-                        Debug.printMessage("Evaluado " + method.Value.id.ToString());
                     }
                 }
             }
@@ -232,8 +240,7 @@ namespace Compiler.Tree
                 if (methods.ContainsKey(method.Key))
                 {
                     api.checkParentMethodOnMe(methods[method.Key], method.Value, parent);
-                }else if (!isAbstract) {
-                    if((parent is InterfaceNode) || api.modifierPass(method.Value.modifier, TokenType.RW_ABSTRACT))
+                }else if((parent is InterfaceNode) || ((ClassDefinitionNode)parent).isAbstract && !isAbstract) { 
                         throw new SemanticException(identifier.ToString() + " does not implement " + parent.ToString() + "." + method.Key, identifier.token);
                 }
             }

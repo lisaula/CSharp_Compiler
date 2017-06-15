@@ -27,7 +27,7 @@ namespace Compiler.Tree
             t = api.contextManager.findVariable(token);
             if (t == null)
             {
-                t = api.searchInTableType(token.ToString());
+                t = api.searchInTableType(token.lexema);
                 if(t!=null)
                     t.onTableType = true;
             }

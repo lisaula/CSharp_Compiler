@@ -1,5 +1,6 @@
 using N1;
 using N1.N2;
+using System;
 namespace Figuras{
 	public class Circulo : Figura, MismoTypes{
 		int[] n1 = new int[4] {2, 4, 6, 8};
@@ -23,7 +24,7 @@ namespace Figuras{
 		public int field1;
 		public string field2;
 		public static float field3;
-		public bool field4;
+		public int field4 = myClase.ca;
 		
 		myClase nueva = new myClase();
 		myClase[] field5 = new myClase[3];
@@ -42,6 +43,7 @@ namespace Figuras{
 		Circulo(myClase2 d){
 			int[] jaja = n7[x[0,0]];
 			int jaja1 = n6[0,n5[0,0]];
+			Console.WriteLine(""+5);
 		}
 
 		void meth(){}
@@ -61,16 +63,21 @@ public interface child{}
 
 public interface myInterface : Types{
 	void getNombre(int index);
-	void getNompre(string name);
+	/*void getNompre(string name);
 	void getNombre(int[] index);
 	void getNombre(int[,,][] index);
-	int setIndex(int index);
+	int setIndex(int index);*/
 }
 
 public interface Types: child{
-			
+
 }
+public abstract class nn{
+	protected abstract void methodo();
+}
+public abstract class asbtracta : nn,myInterface{
+	protected override void methodo(){
 
-public abstract class asbtracta{
-
+	}
+	void getNombre(int index);
 }

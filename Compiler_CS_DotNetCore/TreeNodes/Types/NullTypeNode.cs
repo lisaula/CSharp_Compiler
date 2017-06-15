@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 
 namespace Compiler.Tree
 {
@@ -27,7 +28,7 @@ namespace Compiler.Tree
 
         public override bool Equals(object obj)
         {
-            return (obj is NullTypeNode) ;
+            return obj is NullTypeNode || obj is ClassDefinitionNode && ((ClassDefinitionNode)obj).identifier.token.lexema == Utils.Null;
         }
 
         public override string getComparativeType()

@@ -13,6 +13,23 @@ namespace Compiler_CS_DotNetCore.Semantic
         public Dictionary<string, NamespaceNode> trees;
         public ContextManager contextManager, class_contextManager;
         public TypeDefinitionNode working_type;
+
+        public List<string> assignmentRules;
+
+        public void setAssigmentRules()
+        {
+            assignmentRules = new List<string>();
+            assignmentRules.Add(Utils.Bool + "," + Utils.Bool);
+            assignmentRules.Add(Utils.String + "," + Utils.String);
+            assignmentRules.Add(Utils.Float + "," + Utils.Int);
+            assignmentRules.Add(Utils.Float + "," + Utils.Float);
+            assignmentRules.Add(Utils.Float + "," + Utils.Char);
+            assignmentRules.Add(Utils.Char + "," + Utils.Char);
+            assignmentRules.Add(Utils.Int + "," + Utils.Char);
+            assignmentRules.Add(Utils.Int + "," + Utils.Int);
+            assignmentRules.Add(Utils.Class + "," + Utils.Null);
+            assignmentRules.Add(Utils.String + "," + Utils.Null);
+        }
         public void setWorkingType(TypeDefinitionNode type)
         {
             working_type = type;
@@ -160,6 +177,7 @@ namespace Compiler_CS_DotNetCore.Semantic
             setClassesOnTableType(tree);
             contextManager = new ContextManager();
             class_contextManager = null;
+            setAssigmentRules();
         }
         public void checkParametersExistance(TypeDefinitionNode obj,List<Parameter> parameters)
         {
@@ -327,6 +345,8 @@ namespace Compiler_CS_DotNetCore.Semantic
 
         internal void checkParentMethodOnMe(MethodNode mymethodNode, MethodNode parent_method, TypeDefinitionNode parent)
         {
+            if (mymethodNode.id.ToString() == "getNombre")
+                Console.WriteLine();
             if(parent is InterfaceNode)
             {
                 if (mymethodNode.modifier != null) {
@@ -341,8 +361,9 @@ namespace Compiler_CS_DotNetCore.Semantic
             {
                 if(modifierPass(parent_method.modifier, TokenType.RW_ABSTRACT, TokenType.RW_OVERRIDE, TokenType.RW_VIRTUAL)){
                     if (modifierPass(mymethodNode.modifier, TokenType.RW_OVERRIDE)){
-                        mymethodNode.modifier.evaluated = true;
-                    } else if(modifierPass(parent_method.modifier, TokenType.RW_OVERRIDE, TokenType.RW_VIRTUAL))
+                        if (mymethodNode.encapsulation.token.type == parent_method.encapsulation.token.type)
+                            mymethodNode.modifier.evaluated = true;
+                    } else
                         throw new SemanticException("Method " + Utils.getMethodName(mymethodNode) + " hide method " + parent.ToString() + "." + Utils.getMethodName(parent_method) + ".", mymethodNode.returnType.getPrimaryToken());
                 }
                 else

@@ -20,7 +20,7 @@ namespace Compiler.Tree
 
         public override bool Equals(object obj)
         {
-            return obj is VoidTypeNode;
+            return obj is VoidTypeNode || obj is ClassDefinitionNode && ((ClassDefinitionNode)obj).identifier.token.lexema == Utils.Void;
         }
 
         public override Token getPrimaryToken()
