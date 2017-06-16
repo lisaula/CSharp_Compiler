@@ -12,13 +12,15 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         public Dictionary<string, MethodNode> methods;
         public Dictionary<string, ConstructorNode> constructors;
         public string name;
-        private ContextType type;
+        public ContextType type;
+        public List<TypeDefinitionNode> returnsFound;
         public Context()
         {
             name = null;
             variables = new Dictionary<string, FieldNode>();
             methods = new Dictionary<string, MethodNode>();
             constructors = new Dictionary<string, ConstructorNode>();
+            returnsFound = new List<TypeDefinitionNode>();
         }
 
         public Context(String name, ContextType type, API api):this()
@@ -32,6 +34,12 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             this.name = name;
             this.methods = methods;
         }
+
+        internal void addReturnType(TypeDefinitionNode t)
+        {
+            returnsFound.Add(t);
+        }
+
         public override string ToString()
         {
             return name;

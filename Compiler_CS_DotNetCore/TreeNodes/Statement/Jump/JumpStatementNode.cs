@@ -23,7 +23,20 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            
+            if (expression != null)
+            {
+                TypeDefinitionNode t = expression.evaluateType(api);
+                if (api.TokenPass(token, TokenType.RW_RETURN) && t.getComparativeType() == Utils.Void)
+                    throw new SemanticException("Cannot return VoidType.", token);
+                api.contextManager.returnTypeFound(t);
+            }
+            else
+            {
+                if (api.TokenPass(token, TokenType.RW_RETURN))
+                    api.contextManager.returnTypeFound(Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Void]);
+            }
+
+            api.contextManager.jumpValidation(token);
         }
     }
 }

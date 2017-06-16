@@ -93,6 +93,15 @@ namespace Compiler_CS_DotNetCore.Semantic
             return tdn;
         }
 
+        internal List<TypeDefinitionNode> getCurrentReturnType()
+        {
+            if(contextManager.contexts.Count > 0)
+            {
+                return contextManager.contexts[0].returnsFound;
+            }
+            return null;
+        }
+
         internal TypeDefinitionNode searchInTableType(string typeName)
         {
             if (working_type == null)
@@ -285,8 +294,15 @@ namespace Compiler_CS_DotNetCore.Semantic
         }
         public void popFrontContext()
         {
-            if(contextManager.contexts.Count>0)
+            if (contextManager.contexts.Count > 0)
+            {
+                Context.Context c = contextManager.contexts[0];
+                if(contextManager.contexts.Count > 1)
+                {
+                    contextManager.contexts[1].returnsFound.AddRange(c.returnsFound);
+                }
                 contextManager.contexts.RemoveAt(0);
+            }
         }
         internal void pushContext(params Context.Context[] context)
         {

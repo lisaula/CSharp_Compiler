@@ -31,6 +31,39 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             return findCtrInContext(contexts[last], type,ctr);
         }
 
+        internal void returnTypeFound(TypeDefinitionNode t)
+        {
+            contexts[0].addReturnType(t);
+        }
+
+        internal void jumpValidation(Token token)
+        {
+            if(token.type == TokenType.RW_CONTINUE)
+            {
+                if (!IamInsideContext(ContextType.ITERATIVE))
+                    throw new SemanticException("Jump statement '"+token.lexema+"' not in an enclosing loop.", token);
+            }else if(token.type == TokenType.RW_BREAK)
+            {
+                if (!IamInsideContext(ContextType.SWITCH, ContextType.ITERATIVE))
+                    throw new SemanticException("Jump statement '" + token.lexema + "' not in an enclosing loop or switch.", token);
+            }else if(token.type == TokenType.RW_RETURN)
+            {
+                if (!IamInsideContext(ContextType.ITERATIVE, ContextType.METHOD, ContextType.CONSTRUCTOR))
+                    throw new SemanticException("Jump statement '" + token.lexema + "' not in an enclosing loop or switch.", token);
+            }
+        }
+
+        private bool IamInsideContext(params ContextType[] iTERATIVE)
+        {
+            List<ContextType> contextTypes = new List<ContextType>(iTERATIVE); 
+            foreach (Context c in contexts)
+            {
+                if (contextTypes.Contains(c.type))
+                    return true;
+            }
+            return false;
+        }
+
         private ConstructorNode findCtrInContext(Context context, TypeDefinitionNode type, string ctr)
         {
             string key = type.ToString() + "(" + ctr + ")";

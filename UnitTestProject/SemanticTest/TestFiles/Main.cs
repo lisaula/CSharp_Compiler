@@ -23,7 +23,7 @@ namespace N1{
 			((parent)child).print();
 		}
 
-		public void getType(int index, bool maybe){
+		public int getType(int index, bool maybe){
 
 		}
 		public myClase(int nuevo){
@@ -32,7 +32,6 @@ namespace N1{
 			t = DIASDELASEMANA.MARTES;
 			float mama = 5000f;
 			Circulo circulo = c?? null;
-			metodo();
 			do{
 				kaka--;
 				int kakos = kaka;
@@ -42,10 +41,10 @@ namespace N1{
 						if(n<10){
 
 						} else if(array[5]<0){
-							int n = 5;
+							int n3 = 5;
 							switch(t){
 								case DIASDELASEMANA.MARTES:
-								case 5:
+									continue;
 								default:
 									break;
 							}

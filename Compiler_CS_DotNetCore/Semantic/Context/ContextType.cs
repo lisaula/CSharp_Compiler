@@ -15,6 +15,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         ITERATIVE,
         IF,
         ELSE,
-        SWITCH
+        SWITCH,
+        METHOD
     }
 }

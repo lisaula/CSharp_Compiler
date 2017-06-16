@@ -70,7 +70,14 @@ namespace Compiler.Tree
                 {
                     Debug.printMessage(n.Message);
                 }
+
                 api.setWorkingType(null);
+                List<TypeDefinitionNode> returns =  api.getCurrentReturnType();
+                foreach(TypeDefinitionNode t in returns)
+                {
+                    if (t.getComparativeType() != Utils.Void)
+                        throw new SemanticException("Constructor '"+key.Key+"'does not return type '" + t.ToString() + "'");
+                }
                 api.contextManager.contexts.Clear();
             }
         }
@@ -143,6 +150,8 @@ namespace Compiler.Tree
         {
             foreach(KeyValuePair<string, MethodNode> method in methods)
             {
+                if (method.Key == "metodo()")
+                    Console.WriteLine();
                 api.checkParametersExistance(this,method.Value.parameters);
                 api.setWorkingType(this);
                 api.checkReturnTypeExistance(ref method.Value.returnType);
