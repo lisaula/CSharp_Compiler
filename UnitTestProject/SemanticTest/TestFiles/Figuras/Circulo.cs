@@ -13,7 +13,7 @@ namespace Figuras{
 
 		// Multidimensional array.
 		int[,] n4 = new int[3, 2] { {1, 2}, {3, 4}, {5, 6} };
-		int[,] n5 = new int[,] { {1, 2}, {3, 4}, {5, 6} };
+		public int[,] n5 = new int[,] { {1, 2}, {3, 4}, {5, 6} };
 		int[,] n6 = { {1, 2}, {3, 4}, {5, 6} };
 
 		// Jagged array.
@@ -75,7 +75,7 @@ public interface Types: child{
 public abstract class nn{
 	protected abstract void methodo();
 }
-public abstract class asbtracta : nn,myInterface{
+public abstract class asbtracta : nn, myInterface{
 	protected override void methodo(){
 
 	}

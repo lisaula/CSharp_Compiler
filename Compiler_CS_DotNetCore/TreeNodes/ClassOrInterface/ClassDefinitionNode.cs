@@ -63,13 +63,8 @@ namespace Compiler.Tree
                 api.setWorkingType(this);
                 if (key.Value.bodyStatements == null)
                     throw new SemanticException("Constructor has no body. "+key.Value.id.token);
-                try
-                {
-                    key.Value.bodyStatements.evaluate(api);
-                }catch(NotImplementedException n)
-                {
-                    Debug.printMessage(n.Message);
-                }
+                
+                key.Value.bodyStatements.evaluate(api);
 
                 api.setWorkingType(null);
                 List<TypeDefinitionNode> returns =  api.getCurrentReturnType();
@@ -183,7 +178,7 @@ namespace Compiler.Tree
                 }
             }
         }
-
+        
         public void checkInheritanceExistance(API api)
         {
             if(inheritance == null)
@@ -192,6 +187,7 @@ namespace Compiler.Tree
             }
             int class_count = 0;
             parents = new Dictionary<string, TypeDefinitionNode>();
+            int count = 0;
             foreach (List<IdentifierNode> parent in inheritance.identifierList)
             {
                 string name = api.getIdentifierListAsString(".", parent);
@@ -204,6 +200,10 @@ namespace Compiler.Tree
                 if (tdn is ClassDefinitionNode)
                 {
                     class_count++;
+                    if(count != 0)
+                    {
+                        throw new SemanticException("Class '" + api.getIdentifierListAsString(".",parent)+ "' must be in first position in inheritance list.", parent[0].token);
+                    }
                     if (api.TokenPass(((ClassDefinitionNode)tdn).encapsulation.token, TokenType.RW_PRIVATE))
                         throw new SemanticException("Parent '" + name + "' can't be reached due to its encapsulation level.", parent[0].token);
                 }
@@ -217,6 +217,7 @@ namespace Compiler.Tree
                 if (parents.ContainsKey(name))
                     throw new SemanticException("Redundant Inheritance. " + name + " was found twice as inheritance in " + identifier.token.lexema, parent[0].token);
                 parents[name] = tdn;
+                count++;
             }
         }
         public override void verifiCycle(TypeDefinitionNode type, API api)

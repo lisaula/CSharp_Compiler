@@ -10,6 +10,8 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
     {
         public string name;
         public List<Context> contexts;
+        public int initialSearch;
+
         public bool isStatic { get; set; }
         public bool Enums_or_Literal { get; internal set; }
 
@@ -18,17 +20,30 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             contexts = new List<Context>();
             isStatic = false;
             Enums_or_Literal = false;
+            initialSearch = 0;
+        }
+
+        internal TypeDefinitionNode getParent(TypeDefinitionNode owner)
+        {
+            int count = 0;
+            foreach(Context c in contexts)
+            {
+                if (c.owner != null)
+                    count++;
+                if (count == 2)
+                    return c.owner;
+            }
+            throw new SemanticException("Object '"+owner.ToString()+"'has no parent.");
+        }
+
+        internal TypeDefinitionNode getThis(TypeDefinitionNode owner)
+        {
+            return owner;
         }
 
         public ContextManager(string name):this()
         {
             this.name = name;
-        }
-
-        internal ConstructorNode findConstructor(TypeDefinitionNode type,string ctr)
-        {
-            int last = contexts.Count - 1;
-            return findCtrInContext(contexts[last], type,ctr);
         }
 
         internal void returnTypeFound(TypeDefinitionNode t)
@@ -63,21 +78,10 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             }
             return false;
         }
-
-        private ConstructorNode findCtrInContext(Context context, TypeDefinitionNode type, string ctr)
-        {
-            string key = type.ToString() + "(" + ctr + ")";
-            if (type.ToString() == context.name)
-            {
-                if (context.constructors.ContainsKey(key))
-                    return context.constructors[key];
-            }
-            throw new SemanticException("Constructor '" + key + "' could not be found in current context '"+context.name+"'");
-        }
         internal MethodNode findFunction(string name)
         {
             MethodNode t = null;
-            for (int i = 0; i < contexts.Count; i++)
+            for (int i = initialSearch; i < contexts.Count; i++)
             {
                 t = contexts[i].findFunction(name);
                 if (t != null)
@@ -113,7 +117,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         internal TypeDefinitionNode findVariable(Token id)
         {
             FieldNode t = null;
-            for (int i = 0; i < contexts.Count;i++)
+            for (int i = initialSearch; i < contexts.Count;i++)
             {
                 t = contexts[i].findVariable(id);
                 if (t != null)
@@ -158,7 +162,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                     contexts.AddRange(buildEnvironment(key.Value, ContextType.PARENT, api, isStatic));
                 }
             }
-            if(type == ContextType.CLASS)
+            if(type == ContextType.CLASS || type == ContextType.ATRIBUTE)
             {
                 contexts.Add(new Context(Singleton.tableTypes[Utils.GlobalNamespace+".Object"], ContextType.PARENT, api));
             }

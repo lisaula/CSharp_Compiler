@@ -14,6 +14,8 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         public string name;
         public ContextType type;
         public List<TypeDefinitionNode> returnsFound;
+        public TypeDefinitionNode owner;
+
         public Context()
         {
             name = null;
@@ -77,6 +79,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         }
         public Context(TypeDefinitionNode node, ContextType type, API api) : this()
         {
+            this.owner = node;
             this.type= type;
             if (node is ClassDefinitionNode)
             {

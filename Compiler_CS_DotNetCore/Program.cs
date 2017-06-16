@@ -95,7 +95,7 @@ private class ClasePrivada {
             return false;
         }
 
-        private static void SerializeTree(CompilationNode tree)
+        private static void SerializeTree(NamespaceNode tree)
         {
             System.Type[] types = { typeof(UsingNode), typeof(NamespaceNode), typeof(EnumDefinitionNode)
             , typeof(EnumNode), typeof(InterfaceNode), typeof(ClassDefinitionNode), typeof(FieldNode)
@@ -110,7 +110,7 @@ private class ClasePrivada {
             , typeof(BinaryExpression), typeof(TernaryExpressionNode), typeof(JumpStatementNode), typeof(CastingExpressionNode)
             , typeof(InlineExpressionNode),typeof(SubExpression), typeof(SumExpression), typeof(MultExpression), typeof(DivExpression), typeof(LogicalExpression),
             typeof(RelationalExpression), typeof(EqualityExpression), typeof(ModExpression), typeof(IsASExpression)};
-            var serializer = new XmlSerializer(typeof(CompilationNode),types);
+            var serializer = new XmlSerializer(typeof(NamespaceNode),types);
             var logPath = System.IO.Path.GetTempFileName();
             var logFile = System.IO.File.Create("arbol.xml");
             var writer = new System.IO.StreamWriter(logFile);

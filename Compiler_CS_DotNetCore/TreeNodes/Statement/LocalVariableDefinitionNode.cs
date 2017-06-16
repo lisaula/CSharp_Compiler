@@ -27,7 +27,13 @@ namespace Compiler.Tree
                 {
                     FieldNode f = key.Value;
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
-                    if (!f.type.Equals(tdn))
+                    string rule = f.type.ToString() + "," + tdn.ToString();
+                    string rule2 = f.type.getComparativeType() + "," + tdn.ToString();
+                    string rule3 = f.type.getComparativeType() + "," + tdn.getComparativeType();
+                    if (!api.assignmentRules.Contains(rule)
+                        && !api.assignmentRules.Contains(rule2)
+                        && !api.assignmentRules.Contains(rule3)
+                        && !f.type.Equals(tdn))
                     {
                         if (f.type.getComparativeType() == Utils.Class && tdn.getComparativeType() == Utils.Class)
                         {

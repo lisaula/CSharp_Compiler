@@ -27,6 +27,7 @@ namespace N1{
 
 		}
 		public myClase(int nuevo){
+			int romano = int.Parse("a");
 			var kaka = 5;
 			int n = nuevo;
 			t = DIASDELASEMANA.MARTES;
