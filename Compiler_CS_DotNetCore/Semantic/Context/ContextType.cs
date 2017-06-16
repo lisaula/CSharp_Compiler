@@ -12,6 +12,8 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         CONSTRUCTOR,
         ATRIBUTE,
         BASE,
-        ITERATIVE
+        ITERATIVE,
+        IF,
+        ELSE
     }
 }

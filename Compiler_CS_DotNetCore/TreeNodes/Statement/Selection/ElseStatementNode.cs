@@ -1,5 +1,6 @@
 ﻿using System;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler.Tree
 {
@@ -19,7 +20,9 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            api.contextManager.pushFront(new Context(ContextType.ELSE, api));
+            body.evaluate(api);
+            api.popFrontContext();
         }
     }
 }

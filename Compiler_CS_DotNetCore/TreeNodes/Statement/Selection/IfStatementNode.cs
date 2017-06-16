@@ -1,5 +1,6 @@
 ﻿using System;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler.Tree
 {
@@ -23,7 +24,14 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode t = expr.evaluateType(api);
+            if (t.getComparativeType() != Utils.Bool)
+                throw new SemanticException("If expression must return a bool type, but it actually return '" + t.ToString() + "'");
+            api.contextManager.pushFront(new Context(ContextType.IF, api));
+            body.evaluate(api);
+            api.popFrontContext();
+            if(elseStatement != null)
+                elseStatement.evaluate(api);
         }
     }
 }
