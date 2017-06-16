@@ -85,6 +85,11 @@ namespace Compiler_CS_DotNetCore.Semantic
             return string.Join(",", name);
         }
 
+        internal static string getMethodWithParentName(string key, TypeDefinitionNode classDefinitionNode)
+        {
+            return classDefinitionNode.identifier.ToString() + "." + key;
+        }
+
         public static string txtIncludes = @"
 namespace System {
     namespace IO{

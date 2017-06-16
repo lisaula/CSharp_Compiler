@@ -49,6 +49,7 @@ namespace Compiler.Tree
                 {
                     if (api.checkRelationBetween(tdn, t1))
                     {
+                        t1.onTableType = false;
                         return t1;
                     }
                 }else if((tdn is NullTypeNode))

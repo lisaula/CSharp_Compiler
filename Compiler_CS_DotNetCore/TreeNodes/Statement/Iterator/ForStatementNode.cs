@@ -28,27 +28,35 @@ namespace Compiler.Tree
         public override void evaluate(API api)
         {
             api.contextManager.pushFront(new Context(ContextType.ITERATIVE, api));
-            foreach (var s in initializer)
+            if (initializer != null)
             {
-                if (s is StatementExpressionNode)
+                foreach (var s in initializer)
                 {
-                    StatementExpressionNode temp = s as StatementExpressionNode;
-                    if (!(temp.expression is AssignmentNode))
+                    if (s is StatementExpressionNode)
                     {
-                        throw new SemanticException("Not an assignable expression for initializer.");
+                        StatementExpressionNode temp = s as StatementExpressionNode;
+                        if (!(temp.expression is AssignmentNode))
+                        {
+                            throw new SemanticException("Not an assignable expression for initializer.");
+                        }
                     }
+                    else if (!(s is LocalVariableDefinitionNode))
+                        throw new SemanticException("Not a valid for initializer expression.");
+                    s.evaluate(api);
                 }
-                else if (!(s is LocalVariableDefinitionNode))
-                    throw new SemanticException("Not a valid for initializer expression.");
-                s.evaluate(api);
             }
-            TypeDefinitionNode t = expresion.evaluateType(api);
-            if (t.getComparativeType() != Utils.Bool)
-                throw new SemanticException("Bool expression expected in for but got '"+t.ToString()+"'.");
-
-            foreach (var s in iterative)
+            if (expresion != null)
             {
-                s.evaluate(api);
+                TypeDefinitionNode t = expresion.evaluateType(api);
+                if (t.getComparativeType() != Utils.Bool)
+                    throw new SemanticException("Bool expression expected in for but got '" + t.ToString() + "'.");
+            }
+            if (iterative != null)
+            {
+                foreach (var s in iterative)
+                {
+                    s.evaluate(api);
+                }
             }
             body.evaluate(api);
             api.popFrontContext();

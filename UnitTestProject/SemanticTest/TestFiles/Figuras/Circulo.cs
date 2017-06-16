@@ -33,7 +33,7 @@ namespace Figuras{
 		
 		public override void methodo(){}
 		public override void methodo2(){}
-		public override string virtualmethodo();
+		public override string virtualmethodo(){}
 
 		public virtual void MismoMethodo(){}
 		public void MismoMethodo2(){}
@@ -79,5 +79,7 @@ public abstract class asbtracta : nn, myInterface{
 	protected override void methodo(){
 
 	}
-	void getNombre(int index);
+	void getNombre(int index){
+
+	}
 }

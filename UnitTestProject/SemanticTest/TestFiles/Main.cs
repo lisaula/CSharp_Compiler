@@ -16,11 +16,12 @@ namespace N1{
 		float f2 = ((float)1.5);
 		bool r2 = c == null;
 		bool h = clase is Circulo;
+		int count = 0;
 		public myClase(){
 		}
 		public void metodo(){
 			(count)++;
-			((parent)child).print();
+			((myClase)c).metodo();
 		}
 
 		public int getType(int index, bool maybe){

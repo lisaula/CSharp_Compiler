@@ -47,10 +47,48 @@ namespace Compiler.Tree
             evaluateFields(api);
             checkFieldsAssignment(api);
             checkConstructorsBody(api);
+            checkMethodsBody(api);
             evaluated = true;
         }
+
+        private void checkMethodsBody(API api)
+        {
+            if (methods == null || methods.Count == 0)
+                return;
+            api.contextManager.contexts.Clear();
+            foreach (var key in methods)
+            {
+                if (api.modifierPass(key.Value.modifier, TokenType.RW_ABSTRACT))
+                    continue;
+               Debug.printMessage("Evaluando " + key.Key);
+               if (key.Key == "metodo()")
+                   Console.WriteLine();
+                List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
+                api.pushContext(contexts.ToArray());
+                var ctr_context = new Context(key.Value.id.ToString(), ContextType.METHOD, api);
+                api.contextManager.pushFront(ctr_context);
+                api.addParametersToCurrentContext(key.Value.parameters);
+                api.setWorkingType(this);
+                if (key.Value.bodyStatements == null
+                    && !api.modifierPass(key.Value.modifier, TokenType.RW_ABSTRACT))
+                    throw new SemanticException("Method '"+Utils.getMethodWithParentName(key.Key, this)+"'has no body. " + key.Value.id.token);
+
+                key.Value.bodyStatements.evaluate(api);
+
+                api.setWorkingType(null);
+                List<TypeDefinitionNode> returns = api.getCurrentReturnType();
+                foreach (TypeDefinitionNode t in returns)
+                {
+                    if (t.getComparativeType() != key.Value.returnType.getComparativeType())
+                        throw new SemanticException("Method '"+key.Key+"' does not return type '" + t.ToString() + "'");
+                }
+                api.contextManager.contexts.Clear();
+            }
+        }
+
         private void checkConstructorsBody(API api)
         {
+            api.contextManager.contexts.Clear();
             foreach (var key in constructors)
             {
                 if (key.Value.id.ToString() == "myClase")
@@ -114,7 +152,7 @@ namespace Compiler.Tree
                     api.setWorkingType(null);
                     api.contextManager.isStatic = false;
                     api.contextManager.Enums_or_Literal = false;
-                    api.popContext(contexts.ToArray());
+                    api.contextManager.contexts.Clear();
                 }
             }
         }
@@ -166,7 +204,7 @@ namespace Compiler.Tree
                             if (isAbstract)
                             {
                                 if (method.Value.bodyStatements != null)
-                                    throw new SemanticException(Utils.getMethodName(method.Value) + " cannot declare a body because is marked as abstract.", method.Value.modifier.token);
+                                    throw new SemanticException(Utils.getMethodWithParentName(method.Key, this) + " cannot declare a body because is marked as abstract.", method.Value.modifier.token);
                             }
                             else
                                 throw new SemanticException("Abtract method " + Utils.getMethodName(method.Value) + " is contained in " + this.ToString() + " which is a non-abstract class.", method.Value.modifier.token);
