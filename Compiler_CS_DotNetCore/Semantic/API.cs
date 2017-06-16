@@ -29,6 +29,7 @@ namespace Compiler_CS_DotNetCore.Semantic
             assignmentRules.Add(Utils.Int + "," + Utils.Int);
             assignmentRules.Add(Utils.Class + "," + Utils.Null);
             assignmentRules.Add(Utils.String + "," + Utils.Null);
+            assignmentRules.Add(Utils.Enum + "," + Utils.Enum);
         }
 
         internal bool pass(string v, params string[] primitives)

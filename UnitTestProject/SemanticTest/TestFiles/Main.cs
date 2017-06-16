@@ -5,7 +5,7 @@ namespace N1{
 	public class myClase: Circulo{
 		static Circulo c = new Circulo();
 		static myClase clase = c as Circulo;
-		
+		DIASDELASEMANA t = DIASDELASEMANA.LUNES;
 		public static int ca = (int)'a';
 		int cat = ca;
 		private static bool b = true;
@@ -29,6 +29,7 @@ namespace N1{
 		public myClase(int nuevo){
 			var kaka = 5;
 			int n = nuevo;
+			t = DIASDELASEMANA.MARTES;
 			float mama = 5000f;
 			Circulo circulo = c?? null;
 			metodo();
@@ -38,10 +39,16 @@ namespace N1{
 				int[] array = {1,2,3,4};
 				foreach(var nueva in array){
 					for(int i = 0; i < 4;i++){
-						if(n < 10){
+						if(n<10){
 
 						} else if(array[5]<0){
-
+							int n = 5;
+							switch(t){
+								case DIASDELASEMANA.MARTES:
+								case 5:
+								default:
+									break;
+							}
 						}
 					}
 				}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler.Tree     
 {
@@ -8,6 +9,7 @@ namespace Compiler.Tree
     {
         public  List<CaseLabel> caseLabel;
         public List<Statement> body;
+        internal TypeDefinitionNode primaryType;
 
         public CaseStatementNode()
         {
@@ -19,10 +21,43 @@ namespace Compiler.Tree
             this.caseLabel = caseLabel;
             this.body = body;
         }
-
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            if (caseLabel == null || caseLabel.Count == 0)
+                return;
+            foreach (CaseLabel c in caseLabel)
+            {
+                api.contextManager.Enums_or_Literal = true;
+                if (c.expr == null)
+                    continue;
+                if(checkExpression(c.expr))
+                {
+                    api.contextManager.Enums_or_Literal = false;
+                }
+                TypeDefinitionNode t = c.expr.evaluateType(api);
+                if (t.getComparativeType() != primaryType.getComparativeType())
+                    throw new SemanticException("Expression in case should retorn same type as in switch expression. Switch type '" + primaryType.ToString() + "' and case type '" + t.ToString() + "'", c.token);
+            }
+            api.contextManager.Enums_or_Literal = false;
+            if (body == null || body.Count == 0)
+                throw new SemanticException("Cases in switch should have body.", caseLabel[caseLabel.Count-1].token);
+            api.pushContext(new Context(ContextType.SWITCH, api));
+            foreach (Statement s in body)
+            {
+                s.evaluate(api);
+            }
+            api.popFrontContext();
+        }
+
+        private bool checkExpression(ExpressionNode expr)
+        {
+            if (expr is InlineExpressionNode)
+            {
+                InlineExpressionNode i = (InlineExpressionNode)expr;
+                ExpressionNode e = i.list[0];
+                return e is LiteralNode;
+            }
+            return false;
         }
     }
 }

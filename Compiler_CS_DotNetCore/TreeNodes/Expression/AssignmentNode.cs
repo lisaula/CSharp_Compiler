@@ -34,6 +34,7 @@ namespace Compiler.Tree
                     rules.Add(Utils.Int + "," + Utils.Int);
                     rules.Add(Utils.String + "," + Utils.Null);
                     rules.Add(Utils.Class + "," + Utils.Null);
+                    rules.Add(Utils.Enum + "," + Utils.Enum);
                     break;
                 case TokenType.OP_SUM_ONE_OPERND:
                     rules.Add(Utils.String + "," + Utils.Int);
@@ -118,8 +119,13 @@ namespace Compiler.Tree
         {
             TypeDefinitionNode t1 = leftExpression.evaluateType(api);
             TypeDefinitionNode t2 = rightExpression.evaluateType(api);
-
-            if (rules.Contains(t1.ToString() + "," + t2.ToString()) || t1.Equals(t2))
+            string rule = t1.ToString() + "," + t2.ToString();
+            string rule2 = t1.getComparativeType() + "," + t2.ToString();
+            string rule3 = t1.getComparativeType() + "," + t2.getComparativeType();
+            if (rules.Contains(rule)
+                || rules.Contains(rule2)
+                || rules.Contains(rule3)
+                || t1.Equals(t2))
             {
                 return t1;
             }

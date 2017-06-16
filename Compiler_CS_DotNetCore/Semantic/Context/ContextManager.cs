@@ -11,10 +11,13 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         public string name;
         public List<Context> contexts;
         public bool isStatic { get; set; }
+        public bool Enums_or_Literal { get; internal set; }
+
         public ContextManager()
         {
             contexts = new List<Context>();
             isStatic = false;
+            Enums_or_Literal = false;
         }
 
         public ContextManager(string name):this()
@@ -73,7 +76,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             FieldNode f = new FieldNode(new EncapsulationNode(token), null, it, id, null);
             return f;
         }
-
+        
         internal TypeDefinitionNode findVariable(Token id)
         {
             FieldNode t = null;
@@ -86,8 +89,13 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                     {
                         if (t.modifier == null)
                             throw new SemanticException("Cannot reference a non-static field '" + t.id.ToString() + "'");
-                        if(t.modifier.token.type != TokenType.RW_STATIC)
+                        if (t.modifier.token.type != TokenType.RW_STATIC)
                             throw new SemanticException("Cannot reference a non-static field '" + t.id.ToString() + "'");
+                    }
+                    if (Enums_or_Literal)
+                    {
+                        if (!(t.type is EnumDefinitionNode))
+                            throw new SemanticException("Field '"+t.id.ToString()+"' of type '"+t.type.getComparativeType()+"'is not a enum or literal. ");
                     }
                     return t.type;
                 }

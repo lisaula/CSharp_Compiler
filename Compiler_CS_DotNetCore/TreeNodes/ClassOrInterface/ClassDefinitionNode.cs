@@ -87,12 +87,12 @@ namespace Compiler.Tree
                     api.setWorkingType(this);
                     api.contextManager.isStatic = true;
                     FieldNode f = key.Value;
+                    if (f.id.ToString() == "t")
+                        Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     string rule = f.type.ToString() + "," + tdn.ToString();
                     string rule2 = f.type.getComparativeType() + "," + tdn.ToString();
                     string rule3 = f.type.getComparativeType() + "," + tdn.getComparativeType();
-                    if (f.id.ToString() == "root")
-                        Console.WriteLine(rule+" "+f.type.getComparativeType() + tdn.GetType().Name);
                     if (!api.assignmentRules.Contains(rule)
                         && !api.assignmentRules.Contains(rule2)
                         && !api.assignmentRules.Contains(rule3)
@@ -111,6 +111,7 @@ namespace Compiler.Tree
                     }
                     api.setWorkingType(null);
                     api.contextManager.isStatic = false;
+                    api.contextManager.Enums_or_Literal = false;
                     api.popContext(contexts.ToArray());
                 }
             }
@@ -272,6 +273,8 @@ namespace Compiler.Tree
             foreach(KeyValuePair<string, FieldNode> field in fields)
             {
                 FieldNode f = field.Value;
+                if (f.id.ToString() == "t")
+                    Console.WriteLine();
                 if (f.modifier != null)
                     if (!api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
                         throw new SemanticException("The modifier '" + field.Value.modifier.ToString() + "' is not valid for field " + field.Value.id.ToString() + " in class "+identifier.ToString()+".", field.Value.modifier.token);
@@ -292,6 +295,7 @@ namespace Compiler.Tree
                     throw new SemanticException("Could not find Type '" + name + "' in the current context. ", f.type.getPrimaryToken());
                 if(tdn is InterfaceNode || tdn is VoidTypeNode)
                     throw new SemanticException("The type '" + tdn.ToString()+ "' is not valid for field " + field.Value.id.ToString() + " in class " + identifier.ToString() + ".", f.type.getPrimaryToken());
+                if(tdn is ClassDefinitionNode)
                 if (api.TokenPass(((ClassDefinitionNode)tdn).encapsulation.token, TokenType.RW_PRIVATE))
                     throw new SemanticException("The type '" + f.type.ToString() + "' can't be reached due to encapsulation level.", f.type.getPrimaryToken());
                 f.type.typeNode = f.type;

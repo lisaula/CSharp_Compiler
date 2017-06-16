@@ -36,7 +36,14 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         {
             return name;
         }
-
+        private FieldNode convertToField(TypeDefinitionNode it, IdentifierNode id)
+        {
+            var token = new Token();
+            token.type = TokenType.RW_PUBLIC;
+            token.lexema = "public";
+            FieldNode f = new FieldNode(new EncapsulationNode(token), null, it, id, null);
+            return f;
+        }
         public Context(string name,Dictionary<string, FieldNode> fields, Dictionary<string, MethodNode> methods, Dictionary<string, ConstructorNode> constructors)
         {
             this.name = name;
@@ -69,6 +76,24 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             }else if(node is InterfaceNode)
             {
                 buildEnvironment(((InterfaceNode)node), api);
+            }else if (node is EnumDefinitionNode)
+            {
+                buildEnvironment((EnumDefinitionNode)node, api);
+            }
+        }
+
+        private void buildEnvironment(EnumDefinitionNode node, API api)
+        {
+            var token = new Token();
+            token.type = TokenType.RW_STATIC;
+            ModifierNode m = new ModifierNode(token);
+            if (node.enumNodeList == null)
+                return;
+            foreach (EnumNode en in node.enumNodeList)
+            {
+                FieldNode f = convertToField(en, en.identifier);
+                addVariable(f);
+                f.modifier = m;
             }
         }
 

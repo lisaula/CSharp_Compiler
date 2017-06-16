@@ -48,7 +48,10 @@ namespace Compiler.Tree
                 checkExpression(ref n);
             }
         }
-
+        public override string getComparativeType()
+        {
+            return Utils.Enum;
+        }
         private void checkExpression(ref EnumNode enum_)
         {
             if (enum_.expressionNode == null)
@@ -80,7 +83,7 @@ namespace Compiler.Tree
                 }
                 return;
             }
-                
+
             if (enum_.expressionNode is InlineExpressionNode)
             {
                 InlineExpressionNode ex = enum_.expressionNode as InlineExpressionNode;
@@ -120,9 +123,5 @@ namespace Compiler.Tree
             return identifier.token;
         }
 
-        public override string getComparativeType()
-        {
-            return Utils.Enum;
-        }
     }
 }

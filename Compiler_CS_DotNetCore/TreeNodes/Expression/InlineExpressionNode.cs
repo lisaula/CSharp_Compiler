@@ -38,6 +38,7 @@ namespace Compiler.Tree
             var copy = new ContextManager();
             copy.contexts = new List<Context>(copy_context);
             copy.isStatic = api.contextManager.isStatic;
+            copy.Enums_or_Literal = api.contextManager.Enums_or_Literal;
             api.contextManager = copy;
             foreach (ExpressionNode exp in list)
             {

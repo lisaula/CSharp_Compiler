@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.Semantic.Context;
 
 namespace Compiler.Tree
 {
@@ -21,7 +22,15 @@ namespace Compiler.Tree
 
         public override void evaluate(API api)
         {
-            throw new NotImplementedException();
+            TypeDefinitionNode t = constantExpression.evaluateType(api);
+            foreach(CaseStatementNode c in cases)
+            {
+                api.pushContext(new Context(ContextType.SWITCH, api));
+                c.primaryType = t;
+                c.evaluate(api);
+                api.popFrontContext();
+            }
+
         }
     }
 }

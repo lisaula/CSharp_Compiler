@@ -2,9 +2,9 @@
 
 namespace Compiler.Tree
 {
-    public class EnumNode
+    public class EnumNode : EnumDefinitionNode
     {
-        public IdentifierNode identifier;
+        public new IdentifierNode identifier;
         public ExpressionNode expressionNode;
 
         public EnumNode(IdentifierNode identifier, ExpressionNode expressionNode)
@@ -15,6 +15,10 @@ namespace Compiler.Tree
         public EnumNode()
         {
 
+        }
+        public override string ToString()
+        {
+            return identifier.ToString();
         }
     }
 }
