@@ -38,7 +38,8 @@ namespace N1{
 				int kakos = kaka;
 				int[] array = {1,2,3,4};
 				foreach(var nueva in array){
-					for(int i = 0; i < 4;i++){
+					for(int i = 0; i < 4;i++ , i-- ){
+						for(;;){}
 						if(n<10){
 
 						} else if(array[5]<0){

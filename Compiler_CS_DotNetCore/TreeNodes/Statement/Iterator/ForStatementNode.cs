@@ -30,6 +30,16 @@ namespace Compiler.Tree
             api.contextManager.pushFront(new Context(ContextType.ITERATIVE, api));
             foreach (var s in initializer)
             {
+                if (s is StatementExpressionNode)
+                {
+                    StatementExpressionNode temp = s as StatementExpressionNode;
+                    if (!(temp.expression is AssignmentNode))
+                    {
+                        throw new SemanticException("Not an assignable expression for initializer.");
+                    }
+                }
+                else if (!(s is LocalVariableDefinitionNode))
+                    throw new SemanticException("Not a valid for initializer expression.");
                 s.evaluate(api);
             }
             TypeDefinitionNode t = expresion.evaluateType(api);
