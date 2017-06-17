@@ -19,7 +19,7 @@ namespace Compiler.Tree
             return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

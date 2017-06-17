@@ -25,7 +25,7 @@ namespace Compiler.Tree
             rules[Utils.Char + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

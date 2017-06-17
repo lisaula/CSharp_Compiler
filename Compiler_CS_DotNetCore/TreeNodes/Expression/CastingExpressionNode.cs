@@ -61,7 +61,7 @@ namespace Compiler.Tree
             throw new SemanticException("There is no relation between '" + tdn.ToString() + "' and '" + t1.ToString() + "'.", targetType.getPrimaryToken());
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

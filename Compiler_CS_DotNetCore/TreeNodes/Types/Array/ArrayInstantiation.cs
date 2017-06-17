@@ -38,7 +38,7 @@ namespace Compiler.Tree
             return type;
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

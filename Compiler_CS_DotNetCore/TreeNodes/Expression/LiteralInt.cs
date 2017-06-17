@@ -15,9 +15,9 @@ namespace Compiler.Tree
             return Singleton.tableTypes[Utils.GlobalNamespace+"."+Utils.Int];
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
-            throw new NotImplementedException();
+            builder.Append(token.lexema);
         }
     }
 }

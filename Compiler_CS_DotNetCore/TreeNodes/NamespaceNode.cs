@@ -27,7 +27,8 @@ namespace Compiler.Tree
         {
             foreach(TypeDefinitionNode t in typeList)
             {
-                t.generateCode(builder);
+                if(t is EnumDefinitionNode)
+                    t.generateCode(builder);
             }
         }
 

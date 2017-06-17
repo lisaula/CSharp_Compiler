@@ -29,7 +29,7 @@ namespace Compiler.Tree
             throw new SemanticException("Error while evaluateType in ClassInstantiation.");
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

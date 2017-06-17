@@ -51,9 +51,10 @@ namespace Compiler.Tree
             return t1;
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
-            throw new NotImplementedException();
+            builder.Append(Operator.lexema);
+            expression.generateCode(builder);
         }
     }
 }

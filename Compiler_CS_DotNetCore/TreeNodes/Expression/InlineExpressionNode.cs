@@ -55,9 +55,12 @@ namespace Compiler.Tree
             return t;
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
-            throw new NotImplementedException();
+            foreach(var element in list)
+            {
+                element.generateCode(builder);
+            }
         }
     }
 }

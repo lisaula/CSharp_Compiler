@@ -40,7 +40,7 @@ namespace Compiler.Tree
             throw new SemanticException("Not a condition expression in ternary expression.",t.getPrimaryToken());
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

@@ -23,7 +23,7 @@ namespace Compiler.Tree
             return expression.evaluateType(api);
         }
 
-        public override string generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

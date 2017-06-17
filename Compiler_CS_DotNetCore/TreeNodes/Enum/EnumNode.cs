@@ -24,7 +24,9 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder)
         {
-            builder.Append(@"\n "+identifier.ToString()+" : "+expressionNode.generateCode(builder));
+            builder.Append("\n " + identifier.ToString() + " : ");
+            expressionNode.generateCode(builder);
+            builder.Append(",");
         }
     }
 }
