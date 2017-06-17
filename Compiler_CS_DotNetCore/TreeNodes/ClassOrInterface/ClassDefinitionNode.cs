@@ -97,9 +97,14 @@ namespace Compiler.Tree
         private void checkConstructorsBody(API api)
         {
             api.contextManager.contexts.Clear();
+
+            var token = new Token();
+            token.type = TokenType.RW_BASE;
+            ConstructorInitializerNode init = new ConstructorInitializerNode(token, new List<ExpressionNode>());
+
             foreach (var key in constructors)
             {
-                if (key.Value.id.ToString() == "myClase")
+                if (key.Value.id.ToString() == "Circulo")
                     Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());
@@ -109,7 +114,19 @@ namespace Compiler.Tree
                 api.setWorkingType(this);
                 if (key.Value.bodyStatements == null)
                     throw new SemanticException("Constructor has no body. "+key.Value.id.token);
+
                 
+                if (key.Value.base_init == null && parents.Count > 0)
+                {
+                    TypeDefinitionNode t = api.contextManager.getParent(api.working_type);
+                    if (t is ClassDefinitionNode)
+                    {
+                        key.Value.base_init = init;
+                    }
+                    key.Value.base_init.evaluate(api);
+                }else if(key.Value.base_init != null)
+                    key.Value.base_init.evaluate(api);
+
                 key.Value.bodyStatements.evaluate(api);
 
                 api.setWorkingType(null);
@@ -167,7 +184,17 @@ namespace Compiler.Tree
 
         private void checkConstructors(API api)
         {
-            foreach(KeyValuePair<string,ConstructorNode> ctr in constructors)
+            string key = identifier.ToString() + "()";
+            if (constructors.Count == 0 && !constructors.ContainsKey(key))
+            {
+                var token = new Token();
+                token.type = TokenType.RW_PUBLIC;
+                token.lexema = "public";
+                var ctr = new ConstructorNode(new EncapsulationNode(token), identifier, null, null, new BodyStatement());
+                constructors[key] = ctr;
+            }
+
+            foreach (KeyValuePair<string,ConstructorNode> ctr in constructors)
             {
                 Debug.printMessage("Evaluando ctr " + ctr.Key);
                 ConstructorNode c = ctr.Value;
@@ -175,15 +202,6 @@ namespace Compiler.Tree
                     throw new SemanticException("Not a valid constructor. "+c.id.ToString()+" does not match class "+identifier.ToString()+".", c.id.token);
                 api.checkParametersExistance(this,c.parameters);
                 c.headerEvaluation = true;
-            }
-            string key = identifier.ToString() + "()";
-            if (!constructors.ContainsKey(key))
-            {
-                var token = new Token();
-                token.type = TokenType.RW_PUBLIC;
-                token.lexema = "public";
-                var ctr = new ConstructorNode(new EncapsulationNode(token), identifier,null, null, new BodyStatement());
-                constructors[key] = ctr;
             }
         }
 

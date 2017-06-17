@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System.Collections.Generic;
 
 namespace Compiler.Tree
 {

@@ -33,7 +33,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 if (count == 2)
                     return c.owner;
             }
-            throw new SemanticException("Object '"+owner.ToString()+"'has no parent.");
+            throw new SemanticException("Object '" + owner.ToString() + "' has no parent.", owner.identifier.token);
         }
 
         internal TypeDefinitionNode getThis(TypeDefinitionNode owner)

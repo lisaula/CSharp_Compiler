@@ -110,6 +110,7 @@ namespace System {
 }
 public class Object{
     public virtual string ToString(){}
+    public Object(){}
 }
  
 public class IntType{

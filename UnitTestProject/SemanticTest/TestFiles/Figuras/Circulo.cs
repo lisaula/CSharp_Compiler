@@ -47,7 +47,12 @@ namespace Figuras{
 			int jaja1 = n6[0,n5[0,0]];
 			Console.WriteLine(""+5);
 		}
+		public Circulo(myClase2 d, int a): this(d) {
 
+		}
+		public Circulo(){
+			
+		}
 		void meth(){}
 
 	}

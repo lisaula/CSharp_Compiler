@@ -24,7 +24,12 @@ public class Tree{
         string a = null;
         int[] e = {1,2,3};
         int val2 = new Node(x).SetVal(x + root.val);
-        public void Tree() {
+        
+        public Tree() : base(){
+            
+        }
+
+        public void Tree(){
         	int x = 5;
         	
         }

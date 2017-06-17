@@ -8,7 +8,7 @@ namespace Figuras{
 			return "a";
 		}
 		private bool field;
-		Figura(){
+		public Figura(){
 
 		}
 	}
