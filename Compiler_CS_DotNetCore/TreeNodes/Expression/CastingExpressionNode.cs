@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -58,6 +59,11 @@ namespace Compiler.Tree
                 }
             }
             throw new SemanticException("There is no relation between '" + tdn.ToString() + "' and '" + t1.ToString() + "'.", targetType.getPrimaryToken());
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

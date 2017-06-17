@@ -3,7 +3,7 @@ using System;
 
 namespace Compiler.Tree
 {
-    public class ArithmeticExpression : ExpressionNode
+    public abstract class ArithmeticExpression : ExpressionNode
     {
         public ExpressionNode leftExpression;
         public Token @operator;
@@ -18,11 +18,6 @@ namespace Compiler.Tree
         public ArithmeticExpression()
         {
 
-        }
-
-        public override TypeDefinitionNode evaluateType(API api)
-        {
-            throw new NotImplementedException();
         }
     }
 }

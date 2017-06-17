@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -48,6 +49,11 @@ namespace Compiler.Tree
                     throw new SemanticException("Invalid pre unary expression. Cant apply " + Operator.ToString() + " to " + t1.ToString(), Operator);
             }
             return t1;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

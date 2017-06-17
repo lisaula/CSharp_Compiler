@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -123,5 +124,14 @@ namespace Compiler.Tree
             return identifier.token;
         }
 
+        public override void generateCode(StringBuilder builder)
+        {
+            builder.Append("\nconst " + identifier.ToString() + " =  {");
+            foreach(var enums in enumNodeList)
+            {
+                enums.generateCode(builder);
+            }
+            builder.Append("\n}");
+        }
     }
 }

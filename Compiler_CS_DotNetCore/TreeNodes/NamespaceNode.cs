@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Compiler_CS_DotNetCore.Semantic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -20,6 +21,14 @@ namespace Compiler.Tree
         {
             usingList = new List<UsingNode>();
             identifierList = new List<IdentifierNode>();
+        }
+
+        internal void generateCode(StringBuilder builder)
+        {
+            foreach(TypeDefinitionNode t in typeList)
+            {
+                t.generateCode(builder);
+            }
         }
 
         public override string ToString()

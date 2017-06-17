@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Compiler.Tree;
 using Compiler_CS_DotNetCore.Semantic;
 namespace Compiler
@@ -30,6 +31,11 @@ namespace Compiler
         }
 
         public override string getComparativeType()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void generateCode(StringBuilder builder)
         {
             throw new NotImplementedException();
         }

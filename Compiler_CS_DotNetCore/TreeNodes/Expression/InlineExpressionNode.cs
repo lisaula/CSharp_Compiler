@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Compiler.Tree;
 using Compiler_CS_DotNetCore.Semantic;
 using Compiler_CS_DotNetCore.Semantic.Context;
@@ -52,6 +53,11 @@ namespace Compiler.Tree
             api.contextManager = ctx_mng;
             api.class_contextManager = null;
             return t;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

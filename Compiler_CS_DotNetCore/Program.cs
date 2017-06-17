@@ -6,6 +6,8 @@ using System;
 using System.Xml.Serialization;
 using System.IO;
 using Compiler_CS_DotNetCore.Semantic;
+using Compiler_CS_DotNetCore.CodeGeneration;
+
 namespace Compiler
 {
     class Program
@@ -66,6 +68,7 @@ private class ClasePrivada {
                 var parser = new Parser(lexer,"prueba");
                 tree = parser.parse();*/
                 var semanticEvaluator = new Evaluator(paths);
+                var codeGenerator = new CodeGenerator(semanticEvaluator.trees);
             }
             catch(System.Exception e)
             {

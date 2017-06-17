@@ -1,4 +1,6 @@
-﻿using Compiler_CS_DotNetCore.Semantic;
+﻿using System;
+using System.Text;
+using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
 {
@@ -21,6 +23,11 @@ namespace Compiler.Tree
             rules[Utils.Char + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
 
             rules[Utils.Char + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

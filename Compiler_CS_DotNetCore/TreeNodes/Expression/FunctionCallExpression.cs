@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -32,6 +33,11 @@ namespace Compiler.Tree
             if (m == null)
                 throw new SemanticException("Function '" + functionName + "' could not be found in the current context.");
             return m.returnType;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

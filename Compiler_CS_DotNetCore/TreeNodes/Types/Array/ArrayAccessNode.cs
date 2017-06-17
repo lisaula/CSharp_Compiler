@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -46,6 +47,11 @@ namespace Compiler.Tree
             if (array.indexes.Count == 0)
                 return array.type;
             return array;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

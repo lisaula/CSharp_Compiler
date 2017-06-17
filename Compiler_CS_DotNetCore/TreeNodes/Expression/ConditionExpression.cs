@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -18,6 +19,11 @@ namespace Compiler.Tree
         public ConditionExpression()
         {
 
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

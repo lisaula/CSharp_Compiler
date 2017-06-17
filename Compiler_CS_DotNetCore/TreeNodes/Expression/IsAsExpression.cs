@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -80,6 +81,11 @@ namespace Compiler.Tree
                     throw new SemanticException("Cannot compare an object with interface '" + t.ToString() + "'", type.getPrimaryToken());
                 return Singleton.tableTypes[Utils.GlobalNamespace+"."+Utils.Bool];
             }
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -31,6 +32,11 @@ namespace Compiler.Tree
         public override string getComparativeType()
         {
             return Utils.Void;
+        }
+
+        public override void generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

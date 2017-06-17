@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Compiler.Tree;
 using Compiler_CS_DotNetCore.Semantic;
 
@@ -16,6 +17,11 @@ namespace Compiler
         public override TypeDefinitionNode evaluateType(API api)
         {
             return type;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -44,6 +45,11 @@ namespace Compiler.Tree
                 return t.token.Equals(token);
             }
             return false;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

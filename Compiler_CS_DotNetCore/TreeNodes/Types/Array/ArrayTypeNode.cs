@@ -82,5 +82,10 @@ namespace Compiler.Tree
         {
             return Utils.Array;
         }
+
+        public override void generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -37,6 +38,11 @@ namespace Compiler.Tree
             }
             TypeDefinitionNode t = conditional_expression.evaluateType(api);
             throw new SemanticException("Not a condition expression in ternary expression.",t.getPrimaryToken());
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

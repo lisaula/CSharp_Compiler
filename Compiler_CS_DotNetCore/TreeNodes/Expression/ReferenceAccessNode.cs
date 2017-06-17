@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -59,6 +60,11 @@ namespace Compiler.Tree
                 return Utils.Float;
             }
             throw new SemanticException("Could not found type '" + toke.lexema + "' in table types.", toke);
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

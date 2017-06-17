@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -30,6 +31,11 @@ namespace Compiler.Tree
             if (!tcondition.Equals(tnullCoalescing) && !api.assignmentRules.Contains(rule))
                 throw new SemanticException("Cannot make null coalescing of type '" + tcondition.ToString() + "' and '" + tnullCoalescing.ToString() + "'.", tcondition.getPrimaryToken());
             return tcondition;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

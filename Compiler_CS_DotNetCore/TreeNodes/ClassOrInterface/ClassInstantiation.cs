@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -26,6 +27,11 @@ namespace Compiler.Tree
             if (api.findConstructor(tdn, Utils.getTypeName(argumentsType)))
                 return tdn;
             throw new SemanticException("Error while evaluateType in ClassInstantiation.");
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

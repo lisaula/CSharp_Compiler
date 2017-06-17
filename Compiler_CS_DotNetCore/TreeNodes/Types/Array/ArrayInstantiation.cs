@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -35,6 +36,11 @@ namespace Compiler.Tree
                     throw new SemanticException("Array initialization invalid. '" + initialization.ToString() + "' and '" + type.ToString() + "'", type.getPrimaryToken());
             }
             return type;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

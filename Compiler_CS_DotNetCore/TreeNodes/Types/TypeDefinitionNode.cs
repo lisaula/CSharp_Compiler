@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -19,5 +20,7 @@ namespace Compiler.Tree
         public abstract string getComparativeType();
         public abstract Token getPrimaryToken();
         public virtual void verifiCycle(TypeDefinitionNode classDefinitionNode,API api) { }
+
+        public abstract void generateCode(StringBuilder builder);
     }
 }

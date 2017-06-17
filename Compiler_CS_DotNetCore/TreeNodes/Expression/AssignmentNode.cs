@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -130,6 +131,11 @@ namespace Compiler.Tree
                 return t1;
             }
             throw new SemanticException("Rule not supported. '"+t1.ToString()+"' "+assigmentOperator.ToString()+" '"+t2.ToString()+"'.", assigmentOperator);
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }

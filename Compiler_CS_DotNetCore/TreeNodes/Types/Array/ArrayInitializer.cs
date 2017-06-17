@@ -1,6 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -59,6 +60,11 @@ namespace Compiler.Tree
                 return a;
             }
             return tdn;
+        }
+
+        public override string generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
 
         private void validateExpressions(VariableInitializer previous_expr, VariableInitializer vi)

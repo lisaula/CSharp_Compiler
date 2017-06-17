@@ -2,6 +2,7 @@
 using Compiler_CS_DotNetCore.Semantic.Context;
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -61,8 +62,6 @@ namespace Compiler.Tree
                 if (api.modifierPass(key.Value.modifier, TokenType.RW_ABSTRACT))
                     continue;
                Debug.printMessage("Evaluando " + key.Key);
-               if (key.Key == "getType()")
-                   Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());
                 var ctr_context = new Context(key.Value.id.ToString(), ContextType.METHOD, api);
@@ -88,7 +87,6 @@ namespace Compiler.Tree
                     {
                        throw new SemanticException("Method '" + Utils.getMethodWithParentName(key.Key, this) + "' does not return type '" + t.ToString() + "'", key.Value.id.token);
                     }
-                    Console.WriteLine(api.pass(key.Value.returnType.getComparativeType(), Utils.primitives));
                 }
                 api.contextManager.contexts.Clear();
             }
@@ -407,6 +405,11 @@ namespace Compiler.Tree
                     return s;
             }
             return Utils.Class;
+        }
+
+        public override void generateCode(StringBuilder builder)
+        {
+            throw new NotImplementedException();
         }
     }
 }
