@@ -33,7 +33,9 @@ namespace Figuras{
 		
 		public override void methodo(){}
 		public override void methodo2(){}
-		public override string virtualmethodo(){}
+		public override string virtualmethodo(){
+			return null;
+		}
 
 		public virtual void MismoMethodo(){}
 		public void MismoMethodo2(){}

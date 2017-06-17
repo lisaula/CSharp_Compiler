@@ -24,8 +24,8 @@ namespace N1{
 			((myClase)c).metodo();
 		}
 
-		public int getType(int index, bool maybe){
-
+		public int getType(){
+			return 5;
 		}
 		public myClase(int nuevo){
 			int romano = int.Parse("a");

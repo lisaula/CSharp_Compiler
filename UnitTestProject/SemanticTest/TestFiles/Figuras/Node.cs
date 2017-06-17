@@ -10,7 +10,7 @@ public class Node{
         }
 
         public static int SetVal(int x){
-
+            return 0;
         }
 
     }

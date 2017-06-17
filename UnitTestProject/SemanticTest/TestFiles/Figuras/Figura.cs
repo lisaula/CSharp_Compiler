@@ -4,7 +4,9 @@ namespace Figuras{
 	public abstract class Figura{
 		public abstract void methodo();
 		public abstract void methodo2();
-		public virtual string virtualmethodo(){}
+		public virtual string virtualmethodo(){
+			return "a";
+		}
 		private bool field;
 		Figura(){
 

@@ -61,7 +61,7 @@ namespace Compiler.Tree
                 if (api.modifierPass(key.Value.modifier, TokenType.RW_ABSTRACT))
                     continue;
                Debug.printMessage("Evaluando " + key.Key);
-               if (key.Key == "metodo()")
+               if (key.Key == "getType()")
                    Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());
@@ -77,10 +77,18 @@ namespace Compiler.Tree
 
                 api.setWorkingType(null);
                 List<TypeDefinitionNode> returns = api.getCurrentReturnType();
+                if (returns.Count == 0 && key.Value.returnType.getComparativeType() != Utils.Void)
+                    throw new SemanticException("Not all code in method '" + Utils.getMethodWithParentName(key.Key, this) + "' returns a value.", key.Value.id.token);
                 foreach (TypeDefinitionNode t in returns)
                 {
-                    if (t.getComparativeType() != key.Value.returnType.getComparativeType())
-                        throw new SemanticException("Method '"+key.Key+"' does not return type '" + t.ToString() + "'");
+                    if(t.getComparativeType() == Utils.Null){
+                        if (api.pass(key.Value.returnType.getComparativeType(), Utils.primitives))
+                            throw new SemanticException("Method '" + Utils.getMethodWithParentName(key.Key, this) + "' can'r return null.", key.Value.id.token);
+                    }else if (t.getComparativeType() != key.Value.returnType.getComparativeType())
+                    {
+                       throw new SemanticException("Method '" + Utils.getMethodWithParentName(key.Key, this) + "' does not return type '" + t.ToString() + "'", key.Value.id.token);
+                    }
+                    Console.WriteLine(api.pass(key.Value.returnType.getComparativeType(), Utils.primitives));
                 }
                 api.contextManager.contexts.Clear();
             }
