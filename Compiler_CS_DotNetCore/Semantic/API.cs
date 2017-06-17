@@ -166,6 +166,7 @@ namespace Compiler_CS_DotNetCore.Semantic
             token.type = TokenType.RW_PUBLIC;
             token.lexema = "public";
             FieldNode f = new FieldNode(new EncapsulationNode(token), null, parameter.type, parameter.id, null);
+            f.primaryType = parameter.primaryType;
             return f;
         }
 
@@ -213,10 +214,13 @@ namespace Compiler_CS_DotNetCore.Semantic
                     throw new SemanticException("Could not find Type '" + name + "' in the current context. ", p.id.token);
                 if(tdn is InterfaceNode || tdn is VoidTypeNode)
                     throw new SemanticException("The type '" + tdn.ToString() + "' is not valid for parameter " + p.id.ToString(), p.type.getPrimaryToken());
-                p.type.typeNode = p.type;
+
+                p.primaryType = tdn;
                 if (p.type is ArrayTypeNode)
                 {
-                    ((ArrayTypeNode)p.type).type = tdn;
+                    p.primaryType = new ArrayTypeNode();
+                    copyIndexes(p.primaryType, p.type);
+                    ((ArrayTypeNode)p.primaryType).type = tdn;
                 }
                 else
                     p.type = tdn;
@@ -495,6 +499,18 @@ namespace Compiler_CS_DotNetCore.Semantic
             name.Add(Utils.GlobalNamespace);
             setTypeListOnTableType(name, tree.typeList);
             setNamespacesOnTableType(name, tree.namespaceList);
+        }
+
+        internal void copyIndexes(TypeDefinitionNode primaryType, TypeDefinitionNode type)
+        {
+            List<ArrayNode> indexs = ((ArrayTypeNode)type).indexes;
+
+            foreach(var index in indexs)
+            {
+                var array = new ArrayNode(index.expression_list);
+                array.dimensions = index.dimensions;
+                ((ArrayTypeNode)primaryType).indexes.Add(array);
+            }
         }
 
         private void setNamespacesOnTableType(List<string> namespace_,List<NamespaceNode> namespaceList)

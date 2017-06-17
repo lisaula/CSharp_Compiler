@@ -4,15 +4,15 @@
     {
         public TypeDefinitionNode type;
         public IdentifierNode id;
-
-        public Parameter(TypeDefinitionNode t, IdentifierNode id)
+        public TypeDefinitionNode primaryType;
+        public Parameter(TypeDefinitionNode t, IdentifierNode id):this()
         {
             this.type = t;
             this.id = id;
         }
         public Parameter()
         {
-
+            primaryType = null;
         }
 
         public override string ToString()

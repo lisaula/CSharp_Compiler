@@ -10,8 +10,8 @@ namespace Compiler.Tree
         public TypeDefinitionNode type;
         public IdentifierNode id;
         public VariableInitializer assignment;
-
-        public FieldNode(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, VariableInitializer assignment)
+        public TypeDefinitionNode primaryType;
+        public FieldNode(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, VariableInitializer assignment):this()
         {
             this.encapsulation = encapsulation;
             this.modifier = modifier;
@@ -21,7 +21,7 @@ namespace Compiler.Tree
         }
         public FieldNode()
         {
-
+            primaryType = null;
         }
 
     }

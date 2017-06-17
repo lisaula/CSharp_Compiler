@@ -55,20 +55,20 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
         {
             if(token.type == TokenType.RW_CONTINUE)
             {
-                if (!IamInsideContext(ContextType.ITERATIVE))
+                if (!Am_I_InsideContext(ContextType.ITERATIVE))
                     throw new SemanticException("Jump statement '"+token.lexema+"' not in an enclosing loop.", token);
             }else if(token.type == TokenType.RW_BREAK)
             {
-                if (!IamInsideContext(ContextType.SWITCH, ContextType.ITERATIVE))
+                if (!Am_I_InsideContext(ContextType.SWITCH, ContextType.ITERATIVE))
                     throw new SemanticException("Jump statement '" + token.lexema + "' not in an enclosing loop or switch.", token);
             }else if(token.type == TokenType.RW_RETURN)
             {
-                if (!IamInsideContext(ContextType.ITERATIVE, ContextType.METHOD, ContextType.CONSTRUCTOR))
+                if (!Am_I_InsideContext(ContextType.ITERATIVE, ContextType.METHOD, ContextType.CONSTRUCTOR))
                     throw new SemanticException("Jump statement '" + token.lexema + "' not in an enclosing loop or switch.", token);
             }
         }
 
-        private bool IamInsideContext(params ContextType[] iTERATIVE)
+        private bool Am_I_InsideContext(params ContextType[] iTERATIVE)
         {
             List<ContextType> contextTypes = new List<ContextType>(iTERATIVE); 
             foreach (Context c in contexts)
@@ -111,6 +111,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             token.type = TokenType.RW_PUBLIC;
             token.lexema = "public";
             FieldNode f = new FieldNode(new EncapsulationNode(token), null, it, id, null);
+            f.primaryType = it;
             return f;
         }
         
@@ -134,7 +135,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                         if (!(t.type is EnumDefinitionNode))
                             throw new SemanticException("Field '"+t.id.ToString()+"' of type '"+t.type.getComparativeType()+"'is not a enum or literal. ");
                     }
-                    return t.type;
+                    return t.primaryType;
                 }
             }
             return null;
