@@ -38,8 +38,6 @@ namespace Compiler.Tree
                 if (t != null)
                     t.onTableType = true;
             }
-            else
-                t.localy = true;
             if (t == null)
                 throw new SemanticException("Variable '" + token.lexema + "' could not be found in the current context.", token);
             this.returnType = t;

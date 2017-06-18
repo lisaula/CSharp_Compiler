@@ -57,6 +57,8 @@ namespace Compiler.Tree
                 builder.Append("this.");
             }
             string ctr = I.ToString() + Utils.getTypeNameConcated(argumentsType);
+            if (ctr == "CirculomyClase2")
+                Console.WriteLine();
             builder.Append(ctr+"(");
             if(argumentList != null)
             {
@@ -64,7 +66,7 @@ namespace Compiler.Tree
                 int len = argumentList.Count - 1;
                 foreach(var argu in argumentList)
                 {
-                    argu.SetNotThis();
+                    //api.setNotThisOn(argu);
                     argu.generateCode(builder, api);
                     if (count < len)
                         builder.Append(",");

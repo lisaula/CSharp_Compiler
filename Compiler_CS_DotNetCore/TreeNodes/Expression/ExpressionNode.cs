@@ -5,7 +5,7 @@ namespace Compiler.Tree
 {
     public abstract class ExpressionNode : VariableInitializer
     {
-        public bool notThis = false;
+        public bool notThis = true;
         public ExpressionNode()
         {
 
@@ -13,7 +13,7 @@ namespace Compiler.Tree
 
         internal void SetNotThis()
         {
-            notThis = true;
+            notThis = false ;
         }
     }
 }

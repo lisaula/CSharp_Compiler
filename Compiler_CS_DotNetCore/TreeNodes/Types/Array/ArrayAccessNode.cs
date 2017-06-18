@@ -27,6 +27,12 @@ namespace Compiler.Tree
             var origin = t as ArrayTypeNode;
             var array = new ArrayTypeNode();
             array.type = origin.type;
+            array.type.localy = origin.localy;
+            array.type.globally = origin.globally;
+            array.type.onTableType = origin.onTableType;
+            array.localy = origin.localy;
+            array.globally = origin.globally;
+            array.onTableType= origin.onTableType;
             if(lista != null)
             {
                 if(lista.Count > origin.indexes.Count)

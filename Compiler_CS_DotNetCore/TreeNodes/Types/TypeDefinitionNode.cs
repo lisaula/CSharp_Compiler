@@ -14,6 +14,7 @@ namespace Compiler.Tree
         public IdentifierNode identifier;
         public TypeDefinitionNode typeNode;
         internal bool localy = false;
+        internal bool globally;
 
         public virtual void Evaluate(API api)
         {

@@ -72,6 +72,20 @@ namespace Compiler_CS_DotNetCore.Semantic
             contextManager.addVariableToCurrentContext(fields.ToArray());
         }
 
+        internal void setNotThisOn(ExpressionNode argu)
+        {
+            argu.SetNotThis();
+            if(argu is InlineExpressionNode)
+            {
+                var temp = argu as InlineExpressionNode;
+                temp.SetNotThis();
+                foreach (var e in temp.list)
+                {
+                    e.SetNotThis();
+                }
+            }
+        }
+
         internal List<TypeDefinitionNode> getArgumentsType(List<ExpressionNode> arguments)
         {
             List<TypeDefinitionNode> type = new List<TypeDefinitionNode>();

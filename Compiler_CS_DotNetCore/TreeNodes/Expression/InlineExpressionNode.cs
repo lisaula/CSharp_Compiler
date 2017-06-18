@@ -10,7 +10,7 @@ namespace Compiler.Tree
     public class InlineExpressionNode : UnaryExpressionNode
     {
         public List<ExpressionNode> list;
-        public bool isStatic = false, foundLocally = false;
+        public bool isStatic = false, foundLocally = false, foundGlobally = false;
         public TypeDefinitionNode firstFound = null;
         public InlineExpressionNode(List<ExpressionNode> list)
         {
@@ -52,6 +52,7 @@ namespace Compiler.Tree
                 if (count == 0)
                 {
                     foundLocally = t.localy;
+                    foundGlobally = t.globally;
                 }
                 count++;
                 List<Context> contexts = api.contextManager.buildEnvironment(t, ContextType.ATRIBUTE, api, t.onTableType);
@@ -69,24 +70,68 @@ namespace Compiler.Tree
             int count = 0;
             foreach (var element in list)
             {
-                if (count == 0 && element is IdentifierNode)
+                if (count == 0)
                 {
-                    if (!element.returnType.onTableType && !isStatic && !(returnType is EnumDefinitionNode))
-                        ((IdentifierNode)element).setFirst();
-                    else
+                    if (element is IdentifierNode)
                     {
-                        if (isStatic && foundLocally)
+                        if (foundGlobally)
                         {
                             ((IdentifierNode)element).setFirst();
                         }
                         else
                         {
-                        
-                            string name = api.getFullNamespaceName(returnType);
-                            builder.Append(name + ".");
+                            if (isStatic)
+                            {
+                                string name = api.getFullNamespaceName(returnType);
+                                builder.Append(name + ".");
+                            }
                         }
+                        /*if (foundLocally && !(returnType is EnumDefinitionNode))
+                            ((IdentifierNode)element).setFirst();
+                        else
+                        {
+                            if (isStatic && foundLocally)
+                            {
+                                ((IdentifierNode)element).setFirst();
+                            }
+                            else if(isStatic)
+                            {
+
+                                string name = api.getFullNamespaceName(returnType);
+                                builder.Append(name + ".");
+                            }
+                        }*/
+                    }else if(element is ArrayAccessNode)
+                    {
+                        if (foundGlobally)
+                        {
+                            ((IdentifierNode)((ArrayAccessNode)element).primary).setFirst();
+                        }
+                        else
+                        {
+                            if (isStatic)
+                            {
+                                string name = api.getFullNamespaceName(returnType);
+                                builder.Append(name + ".");
+                            }
+                        }
+
+
+                        /*if (foundLocally && !(returnType is EnumDefinitionNode))
+                            ((IdentifierNode)((ArrayAccessNode)element).primary).setFirst();
+                        else
+                        {
+                            if (isStatic && foundLocally)
+                            {
+                                ((IdentifierNode)((ArrayAccessNode)element).primary).setFirst();
+                            }
+                            else if(isStatic)
+                            {
+                                string name = api.getFullNamespaceName(returnType);
+                                builder.Append(name + ".");
+                            }
+                        }*/
                     }
-                    
                 }
                 count++;
                 element.generateCode(builder,api);

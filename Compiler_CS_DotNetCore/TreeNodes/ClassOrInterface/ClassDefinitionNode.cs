@@ -423,7 +423,6 @@ namespace Compiler.Tree
                 
             }
             builder.Append(nms + " = class ");
-            TypeDefinitionNode parent = null;
             if (parents != null)
             {
                 foreach (var pKey in parents)
@@ -434,7 +433,6 @@ namespace Compiler.Tree
                         string name = api.getFullNamespaceName(pKey.Value);
                         name += "." + pKey.Value.ToString();
                         builder.Append(name);
-                        parent = pKey.Value;
                     }
                 }
             }
@@ -448,7 +446,7 @@ namespace Compiler.Tree
                 {
                     field.Value.setIsThis();
                     field.Value.generateCode(fieldsBuilder, api);
-                    builder.Append(";");
+                    fieldsBuilder.Append(";");
                 }
             }
 

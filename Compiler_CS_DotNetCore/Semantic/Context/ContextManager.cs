@@ -134,6 +134,10 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                         if (!(t.type is EnumDefinitionNode))
                             throw new SemanticException("Field '"+t.id.ToString()+"' of type '"+t.type.getComparativeType()+"'is not a enum or literal. ");
                     }
+                    if (contexts[i].type == ContextType.CLASS || contexts[i].type == ContextType.PARENT)
+                        t.type.globally = true;
+                    else
+                        t.type.localy = true;
                     return t.type;
                 }
             }

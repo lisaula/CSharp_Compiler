@@ -93,15 +93,15 @@ this[arguments[0]](...argus);
 }
 }
 GlobalNamespace.Figuras.Circulo.field3 = null;
-GlobalNamespace.Figuras.Circulo = class extends GlobalNamespace.Figuras.Figura {;;;;;;;;;;;;;;;;;;;;
+GlobalNamespace.Figuras.Circulo = class extends GlobalNamespace.Figuras.Figura {
 CirculoFiguraIntTypeStringType(f,n,name) {
 super.FiguraIntTypeStringType(n,name);
 }
 CirculomyClase2(d) {
 super.Figura();
-let jaja = n7[x[0][0]];
-let jaja1 = n6[0][n5[0][0]];
-GlobalNamespace.Console.WriteLineStringType(("") + itoa(5));
+let jaja = this.n7[this.x[0][0]];
+let jaja1 = this.n6[0][this.n5[0][0]];
+Console.WriteLineStringType(("") + itoa(5));
 }
 CirculomyClase2IntType(d,a) {
 this.CirculomyClase2(d);
@@ -110,26 +110,26 @@ Circulo() {
 super.Figura();
 }
 constructor(){
-this.field1 = null
-this.n1 = [2,4,6,8]
-this.n2 = [2,4,6,8]
-this.n3 = [2,4,6,8]
-this.s1 = ["John","Paul","Mary"]
-this.s2 = ["John","Paul","Mary"]
-this.s3 = ["John","Paul","Mary"]
-this.n4 = [[1,2],[3,4],[5,6]]
-this.n5 = [[1,2],[3,4],[5,6]]
-this.n6 = [[1,2],[3,4],[5,6]]
-this.n7 = [[2,4,6],[1,3,5,7,9]]
-this.n8 = [[2,4,6],[1,3,5,7,9]]
-this.n9 = [[2,4,6],[1,3,5,7,9]]
-this.field2 = null
-this.field45 = GlobalNamespace.myClase.ca
-this.field4 = ("hola") == ("jaime")?(field3):(10)
-this.nueva = new GlobalNamespace.N1.myClase("myClase")
-this.field5 = []
-this.x = [[1,2,3],[4,5,6]]
-this.x2 = [[],[]]
+this.field1 = null;
+this.n1 = [2,4,6,8];
+this.n2 = [2,4,6,8];
+this.n3 = [2,4,6,8];
+this.s1 = ["John","Paul","Mary"];
+this.s2 = ["John","Paul","Mary"];
+this.s3 = ["John","Paul","Mary"];
+this.n4 = [[1,2],[3,4],[5,6]];
+this.n5 = [[1,2],[3,4],[5,6]];
+this.n6 = [[1,2],[3,4],[5,6]];
+this.n7 = [[2,4,6],[1,3,5,7,9]];
+this.n8 = [[2,4,6],[1,3,5,7,9]];
+this.n9 = [[2,4,6],[1,3,5,7,9]];
+this.field2 = null;
+this.field45 = GlobalNamespace.myClase.ca;
+this.field4 = ("hola") == ("jaime")?(this.field3):(10);
+this.nueva = new GlobalNamespace.N1.myClase("myClase");
+this.field5 = [];
+this.x = [[1,2,3],[4,5,6]];
+this.x2 = [[],[]];
 let argus = arguments.slice(1);
 this[arguments[0]](...argus);
 }
@@ -151,13 +151,13 @@ let argus = arguments.slice(1);
 this[arguments[0]](...argus);
 }
 }
-GlobalNamespace.Figuras.Figura = class  {;
+GlobalNamespace.Figuras.Figura = class  {
 Figura() {
 }
 FiguraIntTypeStringType(n,s) {
 }
 constructor(){
-this.field = null
+this.field = null;
 let argus = arguments.slice(1);
 this[arguments[0]](...argus);
 }
@@ -173,31 +173,31 @@ GlobalNamespace.Figuras.DIASDELASEMANA =  const {
 }
 GlobalNamespace.Node.val = null;
 GlobalNamespace.Node.x = 6;
-GlobalNamespace.Node = class  {;;;
+GlobalNamespace.Node = class  {
 NodeIntType(val) {
 }
 constructor(){
-this.left = null
-this.right = null
-this.c = itoa(10)
+this.left = null;
+this.right = null;
+this.c = itoa(10);
 let argus = arguments.slice(1);
 this[arguments[0]](...argus);
 }
 }
 GlobalNamespace.Tree.root = null;
 GlobalNamespace.Tree.x = (5) + (5);
-GlobalNamespace.Tree = class  {;;;;;;;
+GlobalNamespace.Tree = class  {
 Tree() {
 super.Object();
 }
 constructor(){
-this.temp = new GlobalNamespace.Node("NodeIntType",5)
-this.val = 10
-this.y = 'a'
-this.z = +(3.5)
-this.a = null
-this.e = [1,2,3]
-this.val2 = new GlobalNamespace.Node("NodeIntType",x).SetValIntType((x) + (root.val))
+this.temp = new GlobalNamespace.Node("NodeIntType",5);
+this.val = 10;
+this.y = 'a';
+this.z = +(3.5);
+this.a = null;
+this.e = [1,2,3];
+this.val2 = new GlobalNamespace.Node("NodeIntType",this.x).SetValIntType((this.x) + (this.root.val));
 let argus = arguments.slice(1);
 this[arguments[0]](...argus);
 }
@@ -211,11 +211,11 @@ this[arguments[0]](...argus);
 }
 }
 GlobalNamespace.N1.myClase.c = new GlobalNamespace.Figuras.Circulo("Circulo");
-GlobalNamespace.N1.myClase.clase = c;
+GlobalNamespace.N1.myClase.clase = this.c;
 GlobalNamespace.N1.myClase.ca = charCodeAt('a');
 GlobalNamespace.N1.myClase.b = true;
 GlobalNamespace.N1.myClase.f = false;
-GlobalNamespace.N1.myClase = class extends GlobalNamespace.Figuras.Circulo {;;;;;;;;;
+GlobalNamespace.N1.myClase = class extends GlobalNamespace.Figuras.Circulo {
 myClase() {
 super.Circulo();
 }
@@ -224,9 +224,9 @@ super.Circulo();
 let romano = IntType.ParseStringType("a");
 let kaka = 5;
 let n = nuevo;
-GlobalNamespace.Figuras.t = GlobalNamespace.DIASDELASEMANA.MARTES;
+this.t = this.DIASDELASEMANA.MARTES;
 let mama = 5000;
-let circulo = (c)||(null);
+let circulo = (this.c)||(null);
 do {
 kaka--;
 let kakos = kaka;
@@ -242,8 +242,8 @@ if( (n) < (10) ){
 else {
 if( (array[5]) < (0) ){
 let n3 = 5;
-switch ( GlobalNamespace.Figuras.t){
-case (GlobalNamespace.DIASDELASEMANA.MARTES): 
+switch ( this.t){
+case (this.DIASDELASEMANA.MARTES): 
 continue;
 default :
 break;
@@ -256,15 +256,15 @@ break;
 );;
 }
 constructor(){
-this.t = GlobalNamespace.DIASDELASEMANA.LUNES
-this.cat = ca
-this.r = (b) && (f)
-this.f1 = 1.2
-this.i1 = 50
-this.f2 = (+(1.5))
-this.r2 = (c) == (null)
-this.h = clase instanceof GlobalNamespace.Figuras.Circulo
-this.count = 0
+this.t = GlobalNamespace.DIASDELASEMANA.LUNES;
+this.cat = this.ca;
+this.r = (this.b) && (this.f);
+this.f1 = 1.2;
+this.i1 = 50;
+this.f2 = (+(1.5));
+this.r2 = (this.c) == (null);
+this.h = this.clase instanceof GlobalNamespace.Figuras.Circulo;
+this.count = 0;
 let argus = arguments.slice(1);
 this[arguments[0]](...argus);
 }

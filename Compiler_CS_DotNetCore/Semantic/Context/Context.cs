@@ -213,6 +213,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                     throw new SemanticException("Variable '" + f.id.ToString() + "' already exist in the current context.", f.id.token);
                 f.type.localy = false;
                 f.type.onTableType = false;
+                f.type.globally = false;
                 variables[f.id.ToString()] = f;
             }
         }
