@@ -150,7 +150,7 @@ namespace Compiler.Tree
                     api.setWorkingType(this);
                     api.contextManager.isStatic = true;
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "field45")
+                    if (f.id.ToString() == "t")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     string rule = f.type.ToString() + "," + tdn.ToString();

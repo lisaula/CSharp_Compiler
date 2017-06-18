@@ -83,9 +83,9 @@ namespace Compiler.Tree
                         }
                         else
                         {
-                            if (isStatic || (returnType is EnumDefinitionNode))
+                            if (isStatic || (element.returnType is EnumDefinitionNode))
                             {
-                                string name = api.getFullNamespaceName(returnType);
+                                string name = api.getFullNamespaceName(element.returnType);
                                 builder.Append(name + ".");
                             }
                         }

@@ -124,7 +124,7 @@ this.n7 = [[2,4,6],[1,3,5,7,9]];
 this.n8 = [[2,4,6],[1,3,5,7,9]];
 this.n9 = [[2,4,6],[1,3,5,7,9]];
 this.field2 = null;
-this.field45 = GlobalNamespace.myClase.ca;
+this.field45 = GlobalNamespace.N1.myClase.ca;
 this.field4 = ("hola") == ("jaime")?(this.field3):(10);
 this.nueva = new GlobalNamespace.N1.myClase("myClase");
 this.field5 = [];
@@ -224,7 +224,7 @@ super.Circulo();
 let romano = IntType.ParseStringType("a");
 let kaka = 5;
 let n = nuevo;
-this.t = GlobalNamespace.DIASDELASEMANA.MARTES;
+this.t = GlobalNamespace.Figuras.DIASDELASEMANA.MARTES;
 let mama = 5000;
 let circulo = (this.c)||(null);
 do {
@@ -243,7 +243,7 @@ else {
 if( (array[5]) < (0) ){
 let n3 = 5;
 switch ( this.t){
-case (GlobalNamespace.DIASDELASEMANA.MARTES): 
+case (GlobalNamespace.Figuras.DIASDELASEMANA.MARTES): 
 continue;
 default :
 break;
@@ -256,7 +256,7 @@ break;
 );;
 }
 constructor(){
-this.t = GlobalNamespace.DIASDELASEMANA.LUNES;
+this.t = GlobalNamespace.Figuras.DIASDELASEMANA.LUNES;
 this.cat = this.ca;
 this.r = (this.b) && (this.f);
 this.f1 = 1.2;
