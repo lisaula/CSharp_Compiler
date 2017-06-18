@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 using System.Text;
 
 namespace Compiler.Tree
@@ -22,10 +23,10 @@ namespace Compiler.Tree
             return identifier.ToString();
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
             builder.Append("\n " + identifier.ToString() + " : ");
-            expressionNode.generateCode(builder);
+            expressionNode.generateCode(builder, api);
             builder.Append(",");
         }
     }

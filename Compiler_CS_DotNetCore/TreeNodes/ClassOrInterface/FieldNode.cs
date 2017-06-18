@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using Compiler.Tree;
+using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
 {
@@ -24,5 +26,9 @@ namespace Compiler.Tree
 
         }
 
+        internal void generateCode(StringBuilder fieldsBuilder, API api)
+        {
+            fieldsBuilder.Append(Utils.This + id.ToString() + " = " + api.ValidateExpressionCode(assignment)+";");
+        }
     }
 }

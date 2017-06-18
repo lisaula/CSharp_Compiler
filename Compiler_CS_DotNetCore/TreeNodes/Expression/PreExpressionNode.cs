@@ -48,13 +48,14 @@ namespace Compiler.Tree
                 if(t1.ToString() != Utils.Bool)
                     throw new SemanticException("Invalid pre unary expression. Cant apply " + Operator.ToString() + " to " + t1.ToString(), Operator);
             }
+            this.returnType = t1;
             return t1;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
             builder.Append(Operator.lexema);
-            expression.generateCode(builder);
+            expression.generateCode(builder, api);
         }
     }
 }

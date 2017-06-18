@@ -1,29 +1,19 @@
-﻿using System;
+﻿using Compiler_CS_DotNetCore.Semantic;
+using System;
 using System.Text;
 
 namespace Compiler.Tree
 {
-    public class ConditionExpression : BinaryExpression
+    public abstract class ConditionExpression : BinaryExpression
     {
-        public TypeDefinitionNode type;
 
         public ConditionExpression(ExpressionNode leftExpression, ExpressionNode rightExpression, Token op) : base (leftExpression, rightExpression, op)
         {
         }
 
-        public ConditionExpression(ExpressionNode leftExpression, TypeDefinitionNode rightExpression)
-        {
-            this.leftExpression = leftExpression;
-            this.type = rightExpression;
-        }
         public ConditionExpression()
         {
 
-        }
-
-        public override void generateCode(StringBuilder builder)
-        {
-            throw new NotImplementedException();
         }
     }
 }

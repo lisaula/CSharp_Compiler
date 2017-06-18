@@ -133,9 +133,13 @@ namespace Compiler.Tree
             throw new SemanticException("Rule not supported. '"+t1.ToString()+"' "+assigmentOperator.ToString()+" '"+t2.ToString()+"'.", assigmentOperator);
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            leftExpression.generateCode(builder, api);
+
+            builder.Append(" " + assigmentOperator.lexema + " ");
+
+            rightExpression.generateCode(builder, api);
         }
     }
 }

@@ -21,6 +21,6 @@ namespace Compiler.Tree
         public abstract Token getPrimaryToken();
         public virtual void verifiCycle(TypeDefinitionNode classDefinitionNode,API api) { }
 
-        public abstract void generateCode(StringBuilder builder);
+        public abstract void generateCode(StringBuilder builder, API api);
     }
 }

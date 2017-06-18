@@ -115,6 +115,7 @@ namespace Compiler
                 else
                 {
                     literal = new LiteralString(token);
+                    ((LiteralString)literal).setVerbatin();
                 }
                 //if (pass(TokenType.OP_INCREMENT, TokenType.OP_DECREMENT, TokenType.OP_DOT,
                 //    TokenType.OPEN_SQUARE_BRACKET, TokenType.OPEN_PARENTHESIS))
@@ -461,7 +462,7 @@ namespace Compiler
             else
             {
                 DebugInfoMethod("epsilon");
-                return null;
+                return new List<VariableInitializer>();
             }
         }
 

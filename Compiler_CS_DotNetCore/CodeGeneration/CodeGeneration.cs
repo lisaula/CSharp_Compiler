@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using Compiler.Tree;
 using System.IO;
+using Compiler_CS_DotNetCore.Semantic;
+
 namespace Compiler_CS_DotNetCore.CodeGeneration
 {
     public class CodeGenerator
@@ -10,14 +12,16 @@ namespace Compiler_CS_DotNetCore.CodeGeneration
         private Dictionary<string, NamespaceNode> trees;
         public StringBuilder builder;
         const string directoryPath = @"./Javascript";
+        public API api;
         public CodeGenerator()
         {
             builder = new StringBuilder();
             Directory.CreateDirectory(directoryPath);
         }
 
-        public CodeGenerator(Dictionary<string, NamespaceNode> trees):this()
+        public CodeGenerator(Dictionary<string, NamespaceNode> trees, API api):this()
         {
+            this.api = api;
             this.trees = trees;
             generateCode();
             writeFile();
@@ -36,7 +40,7 @@ namespace Compiler_CS_DotNetCore.CodeGeneration
             {
                 try
                 {
-                    tree.Value.generateCode(builder);
+                    tree.Value.generateCode(builder, api);
                 }catch(NotImplementedException nie)
                 {
                     Console.WriteLine("Not implemented.");

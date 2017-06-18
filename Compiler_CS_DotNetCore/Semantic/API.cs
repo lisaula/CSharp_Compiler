@@ -32,6 +32,17 @@ namespace Compiler_CS_DotNetCore.Semantic
             assignmentRules.Add(Utils.Enum + "," + Utils.Enum);
         }
 
+        internal string ValidateExpressionCode(VariableInitializer assignment)
+        {
+            if(assignment == null)
+            {
+                return "null";
+            }
+            StringBuilder builder = new StringBuilder();
+            assignment.generateCode(builder, this);
+            return builder.ToString();
+        }
+
         internal bool pass(string v, params string[] primitives)
         {
             List<string> l = new List<string>(primitives);
@@ -114,6 +125,45 @@ namespace Compiler_CS_DotNetCore.Semantic
             usings.Add(new UsingNode(nms));
             TypeDefinitionNode tdn = findTypeInUsings(usings, name);
             return tdn;
+        }
+
+        internal void checkExpression(string returnType, string expression, StringBuilder builder)
+        {
+
+            if (returnType == Utils.Int)
+            {
+                if (expression != Utils.Int)
+                {
+                    if (expression == Utils.Char)
+                        builder.Append("charCodeAt");
+                    else
+                        builder.Append("+");
+                }
+            }
+            else if (returnType == Utils.Float)
+            {
+                if (expression != Utils.Float)
+                {
+                    if (expression == Utils.Char)
+                        builder.Append("charCodeAt");
+                    else
+                        builder.Append("+");
+                }
+            }
+            else if (returnType == Utils.String)
+            {
+                if (expression != Utils.String)
+                {
+                    builder.Append("itoa");
+                }
+            }else if(returnType == Utils.Char)
+            {
+                if(expression != Utils.Char)
+                {
+                    if (expression == Utils.Int || expression == Utils.Float)
+                        builder.Append("itoa");
+                }
+            }
         }
 
         internal bool compareIndexes(List<ArrayNode> indexes1, List<ArrayNode> indexes2)

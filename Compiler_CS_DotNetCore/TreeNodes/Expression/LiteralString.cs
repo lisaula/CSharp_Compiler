@@ -6,6 +6,7 @@ namespace Compiler.Tree
 {
     public class LiteralString : LiteralNode
     {
+        public bool verbatin = false;
         public LiteralString(Token token) : base(token)
         {
         }
@@ -19,9 +20,17 @@ namespace Compiler.Tree
             return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            if (verbatin)
+            {
+                builder.Append("`" + token.lexema + "`");
+            }else
+                builder.Append("\"" + token.lexema + "\"");
+        }
+        internal void setVerbatin()
+        {
+            verbatin = true;
         }
     }
 }

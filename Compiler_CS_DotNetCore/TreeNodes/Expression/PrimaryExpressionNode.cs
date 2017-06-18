@@ -1,4 +1,6 @@
-﻿namespace Compiler.Tree
+﻿using System;
+
+namespace Compiler.Tree
 {
     public abstract class PrimaryExpressionNode : UnaryExpressionNode
     {

@@ -56,7 +56,7 @@ namespace Compiler.Tree
             throw new NotImplementedException();
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
             throw new NotImplementedException();
         }

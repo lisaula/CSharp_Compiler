@@ -407,9 +407,14 @@ namespace Compiler.Tree
             return Utils.Class;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            StringBuilder fieldsBuilder = new StringBuilder();
+            foreach (var field in fields)
+            {
+                if(api.modifierPass(field.Value.modifier,TokenType.RW_STATIC))
+                    field.Value.generateCode(fieldsBuilder, api);
+            }
         }
     }
 }

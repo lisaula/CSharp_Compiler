@@ -24,10 +24,5 @@ namespace Compiler.Tree
             rules[Utils.Float + "," + Utils.Char] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
             rules[Utils.Char + "," + Utils.Float] = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
         }
-
-        public override void generateCode(StringBuilder builder)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

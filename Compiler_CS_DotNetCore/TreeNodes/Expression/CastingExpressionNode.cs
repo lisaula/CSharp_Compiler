@@ -39,11 +39,20 @@ namespace Compiler.Tree
         public override TypeDefinitionNode evaluateType(API api)
         {
             TypeDefinitionNode tdn = primary.evaluateType(api);
+            primary.returnType = tdn;
             TypeDefinitionNode t1 = api.searchType(targetType);
 
-            string key = tdn.ToString() + "," + t1.ToString();
-            if (rules.Contains(key))
+            string rule = t1.ToString() + "," + tdn.ToString();
+            string rule2 = t1.getComparativeType() + "," + tdn.ToString();
+            string rule3 = t1.getComparativeType() + "," + tdn.getComparativeType();
+            if (rules.Contains(rule)
+                || rules.Contains(rule2)
+                || rules.Contains(rule3)
+                || t1.Equals(tdn))
+            {
+                this.returnType = t1;
                 return t1;
+            }
             if(t1 is ClassDefinitionNode)
             {
                 if (tdn is ClassDefinitionNode)
@@ -51,19 +60,46 @@ namespace Compiler.Tree
                     if (api.checkRelationBetween(tdn, t1))
                     {
                         t1.onTableType = false;
+                        this.returnType = t1;
                         return t1;
                     }
                 }else if((tdn is NullTypeNode))
                 {
+                    this.returnType = t1;
                     return t1;
                 }
             }
             throw new SemanticException("There is no relation between '" + tdn.ToString() + "' and '" + t1.ToString() + "'.", targetType.getPrimaryToken());
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            List<string> primitive = new List<string>(Utils.primitives);
+            primitive.Add(Utils.String);
+            if(api.pass(this.returnType.getComparativeType(), primitive.ToArray()))
+            {
+                api.checkExpression(this.returnType.getComparativeType(), primary.returnType.getComparativeType(), builder);
+                builder.Append("(");
+                primary.generateCode(builder, api);
+                builder.Append(")");
+            }
+            else
+            {
+                if(returnType is NullTypeNode)
+                {
+                    primary.generateCode(builder, api);
+                }
+                else
+                {
+                    string name = Utils.GlobalNamespace + "." + api.getParentNamespace(returnType);
+                    name += "." + returnType.identifier.ToString();
+                    builder.Append("Object.create( ");
+                    builder.Append(name);
+                    builder.Append(" , ");
+                    primary.generateCode(builder, api);
+                    builder.Append(")");
+                }
+            }
         }
     }
 }

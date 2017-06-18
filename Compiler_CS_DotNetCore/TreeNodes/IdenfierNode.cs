@@ -7,14 +7,18 @@ namespace Compiler.Tree
     public class IdentifierNode : PrimaryExpressionNode
     {
         public Token token;
-        public bool FunctionID;
+        public bool first = false;
         public IdentifierNode(Token token) : this()
         {
             this.token = token;
         }
+
+        public void setFirst()
+        {
+            first = true;
+        }
         public IdentifierNode()
         {
-            FunctionID = false;
         }
 
         public override string ToString()
@@ -47,9 +51,11 @@ namespace Compiler.Tree
             return false;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            if (first)
+                builder.Append("this.");
+            builder.Append(token.lexema);
         }
     }
 }

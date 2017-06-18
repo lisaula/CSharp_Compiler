@@ -30,22 +30,26 @@ namespace Compiler.Tree
         public override TypeDefinitionNode evaluateType(API api)
         {
             TypeDefinitionNode tdn = leftExpression.evaluateType(api);
+            leftExpression.returnType = tdn;
             if (@operator.type == TokenType.RW_AS)
             {
                 if (tdn.getComparativeType() == Utils.Dict || type is DictionaryTypeNode)
                     throw new SemanticException("Cannot implicitly conver Dictionary.", type.getPrimaryToken());
 
                 if (rules.Contains(tdn.getComparativeType() + "," + type.ToString()))
+                {
+                    this.returnType = type;
                     return type;
+                }
                 else
                 {
                     TypeDefinitionNode targetType = null;
-                    if(type is ArrayTypeNode)
+                    if (type is ArrayTypeNode)
                     {
                         targetType = api.searchType(((ArrayTypeNode)type).type);
                     }
                     if (type is NullTypeNode)
-                        throw new SemanticException("Cannot implicitly convert null to '"+tdn.ToString()+"'.", type.getPrimaryToken());
+                        throw new SemanticException("Cannot implicitly convert null to '" + tdn.ToString() + "'.", type.getPrimaryToken());
 
                     if (targetType is PrimitiveType || tdn is PrimitiveType || type is PrimitiveType)
                         throw new SemanticException("Cannot use a primity type with this operation.", type.getPrimaryToken());
@@ -53,13 +57,15 @@ namespace Compiler.Tree
                     if (type is InterfaceNode)
                     {
                         throw new SemanticException("Cannot implicitly convert type '" + tdn.ToString() + "' to interface '" + targetType.ToString() + "'.", type.getPrimaryToken());
-                    }else if(tdn.getComparativeType() == Utils.Interface)
+                    }
+                    else if (tdn.getComparativeType() == Utils.Interface)
                     {
                         throw new SemanticException("Cannot implicitly convert interface '" + tdn.ToString() + "' to object '" + targetType.ToString() + "'.", type.getPrimaryToken());
                     }
                     targetType = api.searchType(type);
-                    if(api.checkRelationBetween(tdn, targetType))
+                    if (api.checkRelationBetween(tdn, targetType))
                     {
+                        this.returnType = targetType;
                         return targetType;
                     }
                 }
@@ -79,13 +85,34 @@ namespace Compiler.Tree
 
                 if (t.getComparativeType() == Utils.Interface)
                     throw new SemanticException("Cannot compare an object with interface '" + t.ToString() + "'", type.getPrimaryToken());
-                return Singleton.tableTypes[Utils.GlobalNamespace+"."+Utils.Bool];
+                this.returnType = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool];
+                return returnType;
             }
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+
+            if (api.TokenPass(@operator, TokenType.RW_IS))
+            {
+                leftExpression.generateCode(builder, api);
+                builder.Append(" instanceof ");
+
+                string name = Utils.GlobalNamespace + "." + api.getParentNamespace(returnType);
+                name += "." + returnType.identifier.ToString();
+                builder.Append(name);
+            }
+            else
+            {
+                //Object.create(Person, person1);
+                string name = Utils.GlobalNamespace + "." + api.getParentNamespace(returnType);
+                name += "." + returnType.identifier.ToString();
+                builder.Append("Object.create( ");
+                builder.Append(name);
+                builder.Append(" , ");
+                leftExpression.generateCode(builder, api);
+                builder.Append(")");
+            }
         }
     }
 }

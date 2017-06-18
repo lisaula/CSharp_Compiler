@@ -125,7 +125,7 @@ namespace Compiler.Tree
             return Utils.Interface;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
             throw new NotImplementedException();
         }

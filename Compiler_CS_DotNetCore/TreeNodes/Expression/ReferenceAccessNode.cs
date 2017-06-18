@@ -21,11 +21,13 @@ namespace Compiler.Tree
         {
             if (api.TokenPass(token, TokenType.RW_BASE))
             {
-                return api.contextManager.getParent(api.working_type);
+                returnType = api.contextManager.getParent(api.working_type);
+                return returnType;
             }
             else if (api.TokenPass(token, TokenType.RW_THIS))
             {
-                return api.contextManager.getThis(api.working_type);
+                returnType = api.contextManager.getThis(api.working_type);
+                return returnType;
             }
             TypeDefinitionNode t = null;
             string type = GetType(token);
@@ -34,6 +36,7 @@ namespace Compiler.Tree
                 t.onTableType = true;
             if (t == null)
                 throw new SemanticException("Variable '" + token.lexema + "' could not be found in the current context.", token);
+            this.returnType = t;
             return t;
         }
 
@@ -62,9 +65,20 @@ namespace Compiler.Tree
             throw new SemanticException("Could not found type '" + toke.lexema + "' in table types.", toke);
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            if(api.TokenPass(token, TokenType.RW_BASE))
+            {
+                builder.Append("super");
+            }
+            else if (api.TokenPass(token, TokenType.RW_THIS))
+            {
+                builder.Append("this");
+            }
+            else
+            {
+                builder.Append(GetType(token));
+            }
         }
     }
 }

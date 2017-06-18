@@ -34,7 +34,7 @@ namespace Compiler.Tree
             return Utils.Void;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
             throw new NotImplementedException();
         }

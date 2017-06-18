@@ -17,6 +17,8 @@ namespace Compiler_CS_DotNetCore.Semantic
         public const string Enum = "EnumDefinitionNode";
         public const string Null = "NullTypeNode";
         public static string Void = "VoidTypeNode";
+        public static string This = "\nthis.";
+        public static string EndLine = "\n";
         public static string[] primitives = {Bool, Char, Float,Int};
         internal static string makeConstructorName(TypeDefinitionNode tdn, List<ExpressionNode> arguments, API api)
         {
@@ -32,6 +34,16 @@ namespace Compiler_CS_DotNetCore.Semantic
                 name.Add(en.ToString());
             }
             return string.Join(",", name);
+        }
+
+        internal static string getTypeNameConcated(List<TypeDefinitionNode> argumentsType)
+        {
+            StringBuilder builder = new StringBuilder();
+            foreach(TypeDefinitionNode t in argumentsType)
+            {
+                builder.Append(t.ToString());
+            }
+            return builder.ToString();
         }
 
         public static string getParametersName(List<Parameter> parameter)

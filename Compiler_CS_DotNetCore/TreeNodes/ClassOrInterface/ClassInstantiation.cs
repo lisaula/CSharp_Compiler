@@ -25,13 +25,26 @@ namespace Compiler.Tree
             TypeDefinitionNode tdn = api.searchType(type);
             List<TypeDefinitionNode> argumentsType = api.getArgumentsType(arguments);
             if (api.findConstructor(tdn, Utils.getTypeName(argumentsType)))
+            {
+                this.returnType = tdn;
                 return tdn;
+            }
             throw new SemanticException("Error while evaluateType in ClassInstantiation.");
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            List<TypeDefinitionNode> argumentsType = api.getArgumentsType(arguments);
+            string name = returnType.ToString() + Utils.getTypeNameConcated(argumentsType);
+            string fullname = Utils.GlobalNamespace+"."+api.getParentNamespace(returnType);
+            fullname += "." + returnType.ToString();
+            builder.Append("new " + fullname+"(\""+name+"\",");
+            foreach(var expr in arguments)
+            {
+                expr.generateCode(builder, api);
+                builder.Append(",");
+            }
+            builder.Append(")");
         }
     }
 }

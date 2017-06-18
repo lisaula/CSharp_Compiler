@@ -25,10 +25,5 @@ namespace Compiler.Tree
         {
 
         }
-
-        public override void generateCode(StringBuilder builder)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -52,14 +52,20 @@ namespace Compiler.Tree
             }
             api.contextManager = ctx_mng;
             api.class_contextManager = null;
+            this.returnType = t;
             return t;
         }
 
-        public override void generateCode(StringBuilder builder)
-        {
-            foreach(var element in list)
+        public override void generateCode(StringBuilder builder, API api) {
+            int count = 0;
+            foreach (var element in list)
             {
-                element.generateCode(builder);
+                if(count == 0 && element is IdentifierNode)
+                {
+                    ((IdentifierNode)element).setFirst();
+                }
+                count++;
+                element.generateCode(builder,api);
             }
         }
     }

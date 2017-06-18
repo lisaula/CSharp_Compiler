@@ -19,12 +19,15 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return expr.evaluateType(api);
+            this.returnType = expr.evaluateType(api);
+            return returnType;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append("(");
+            expr.generateCode(builder, api);
+            builder.Append(")");
         }
     }
 }

@@ -20,9 +20,9 @@ namespace Compiler.Tree
             return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Float];
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append(token.lexema);
         }
     }
 }

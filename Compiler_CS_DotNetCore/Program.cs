@@ -68,7 +68,7 @@ private class ClasePrivada {
                 var parser = new Parser(lexer,"prueba");
                 tree = parser.parse();*/
                 var semanticEvaluator = new Evaluator(paths);
-                var codeGenerator = new CodeGenerator(semanticEvaluator.trees);
+                var codeGenerator = new CodeGenerator(semanticEvaluator.trees, semanticEvaluator.api);
             }
             catch(System.Exception e)
             {

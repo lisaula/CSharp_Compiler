@@ -59,12 +59,20 @@ namespace Compiler.Tree
                 a.indexes.Add(i);
                 return a;
             }
+            this.returnType = tdn;
             return tdn;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append("[");
+            if (variables_list != null) { 
+                foreach (var a in variables_list)
+                {
+                    a.generateCode(builder, api);
+                }
+            }
+            builder.Append("]");
         }
 
         private void validateExpressions(VariableInitializer previous_expr, VariableInitializer vi)

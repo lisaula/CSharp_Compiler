@@ -23,12 +23,12 @@ namespace Compiler.Tree
             identifierList = new List<IdentifierNode>();
         }
 
-        internal void generateCode(StringBuilder builder)
+        internal void generateCode(StringBuilder builder, API api)
         {
             foreach(TypeDefinitionNode t in typeList)
             {
                 if(t is EnumDefinitionNode)
-                    t.generateCode(builder);
+                    t.generateCode(builder, api);
             }
         }
 

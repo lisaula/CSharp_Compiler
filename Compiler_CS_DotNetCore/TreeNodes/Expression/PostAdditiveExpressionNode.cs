@@ -29,12 +29,14 @@ namespace Compiler.Tree
             TypeDefinitionNode tdn = primary.evaluateType(api);
             if (tdn.getComparativeType() != Utils.Int && tdn.getComparativeType() != Utils.Float && tdn.getComparativeType() != Utils.Char)
                 throw new SemanticException("Invalid operation. Cant make post unary expression of a type '" + tdn.ToString() + "'.", @operator);
+            this.returnType = tdn;
             return tdn;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            primary.generateCode(builder, api);
+            builder.Append(@operator.lexema);
         }
     }
 }

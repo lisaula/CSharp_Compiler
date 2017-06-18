@@ -35,12 +35,20 @@ namespace Compiler.Tree
                 if (!t.type.Equals(arrayType) && !api.compareIndexes(atn.indexes, t.indexes))
                     throw new SemanticException("Array initialization invalid. '" + initialization.ToString() + "' and '" + type.ToString() + "'", type.getPrimaryToken());
             }
+            this.returnType = type;
             return type;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            if(initialization == null)
+            {
+                builder.Append("[]");
+            }
+            else
+            {
+                initialization.generateCode(builder, api);
+            }
         }
     }
 }

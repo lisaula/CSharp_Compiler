@@ -124,12 +124,12 @@ namespace Compiler.Tree
             return identifier.token;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
             builder.Append("\nconst " + identifier.ToString() + " =  {");
             foreach(var enums in enumNodeList)
             {
-                enums.generateCode(builder);
+                enums.generateCode(builder,api);
             }
             builder.Append("\n}");
         }

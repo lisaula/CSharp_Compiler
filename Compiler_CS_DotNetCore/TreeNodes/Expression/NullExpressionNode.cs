@@ -19,9 +19,9 @@ namespace Compiler
             return type;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append("null");
         }
     }
 }

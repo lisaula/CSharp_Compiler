@@ -49,7 +49,7 @@ namespace Compiler.Tree
             return array;
         }
 
-        public override void generateCode(StringBuilder builder)
+        public override void generateCode(StringBuilder builder, API api)
         {
             throw new NotImplementedException();
         }

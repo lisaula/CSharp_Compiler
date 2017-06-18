@@ -9,7 +9,7 @@ namespace Compiler_CS_DotNetCore.Semantic
     public class Evaluator
     {
         public Dictionary<string, NamespaceNode> trees;
-        private API api;
+        public API api;
 
         public Evaluator()
         {
