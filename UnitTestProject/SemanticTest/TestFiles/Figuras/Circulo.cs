@@ -23,8 +23,9 @@ namespace Figuras{
 		int[][] n9 = { new int[] {2,4,6}, new int[] {1,3,5,7,9} };
 
 		public string field2;
-		public static float field3;
+		public static int field3;
 		public int field45 = myClase.ca;
+		public int field4 = "hola"=="jaime"? field3: 10; 
 		
 		myClase nueva = new myClase();
 		myClase[] field5 = new myClase[3];
@@ -39,7 +40,7 @@ namespace Figuras{
 
 		public virtual void MismoMethodo(){}
 		public void MismoMethodo2(){}
-		public Circulo(Figura f, int n, string name) : base(){
+		public Circulo(Figura f, int n, string name) : base(n, name){
 		}
 
 		Circulo(myClase2 d){

@@ -1,52 +1,55 @@
 
-GlobalNamespace.Object = class {
+GlobalNamespace.Object = class  {
+Object() {
 }
-GlobalNamespace.IntType = class {
 }
-GlobalNamespace.CharType = class {
+GlobalNamespace.IntType = class  {
 }
-GlobalNamespace.DictionaryTypeNode = class {
+GlobalNamespace.CharType = class  {
 }
-GlobalNamespace.FloatType = class {
+GlobalNamespace.DictionaryTypeNode = class  {
 }
-GlobalNamespace.StringType = class {
+GlobalNamespace.FloatType = class  {
 }
-GlobalNamespace.VarType = class {
+GlobalNamespace.StringType = class  {
 }
-GlobalNamespace.VoidTypeNode = class {
+GlobalNamespace.VarType = class  {
 }
-GlobalNamespace.BoolType = class {
+GlobalNamespace.VoidTypeNode = class  {
 }
-GlobalNamespace.System.Console = class {
+GlobalNamespace.BoolType = class  {
 }
-GlobalNamespace.System.IO.TextWriter = class {
+GlobalNamespace.System.Console.Out = null;
+GlobalNamespace.System.Console.In = null;
+GlobalNamespace.System.Console = class  {
 }
-GlobalNamespace.System.IO.TextReader = class {
+GlobalNamespace.System.IO.TextWriter = class  {
 }
-GlobalNamespace.nn = class {
+GlobalNamespace.System.IO.TextReader = class  {
 }
-GlobalNamespace.asbtracta = class {
+GlobalNamespace.nn = class  {
+nn() {
 }
-GlobalNamespace.Figuras.Circulo = class {
-this.field1 = null;
-this.n1 = [2,4,6,8];
-this.n2 = [2,4,6,8];
-this.n3 = [2,4,6,8];
-this.s1 = ["John","Paul","Mary"];
-this.s2 = ["John","Paul","Mary"];
-this.s3 = ["John","Paul","Mary"];
-this.n4 = [[1,2],[3,4],[5,6]];
-this.n5 = [[1,2],[3,4],[5,6]];
-this.n6 = [[1,2],[3,4],[5,6]];
-this.n7 = [[2,4,6],[1,3,5,7,9]];
-this.n8 = [[2,4,6],[1,3,5,7,9]];
-this.n9 = [[2,4,6],[1,3,5,7,9]];
-this.field2 = null;
-this.field45 = GlobalNamespace.myClase.ca;
-this.nueva = new GlobalNamespace.N1.myClase("myClase()");
-this.field5 = [];
-this.x = [[1,2,3],[4,5,6]];
-this.x2 = [[],[]];
+}
+GlobalNamespace.asbtracta = class extends GlobalNamespace.nn {
+asbtracta() {
+super.nn();
+}
+}
+GlobalNamespace.Figuras.Circulo.field3 = null;
+GlobalNamespace.Figuras.Circulo = class extends GlobalNamespace.Figuras.Figura {
+CirculoFiguraIntTypeStringType(f,n,name) {
+super.FiguraIntTypeStringType(n,name);
+}
+CirculomyClase2(d) {
+super.Figura();
+}
+CirculomyClase2IntType(d,a) {
+this.CirculomyClase2(d);
+}
+Circulo() {
+super.Figura();
+}
 }
 GlobalNamespace.DIASDELASEMANA2 =  {
  LUNES : 5,
@@ -57,10 +60,15 @@ GlobalNamespace.DIASDELASEMANA2 =  {
  SABADO : 10,
  DOMINGO : 11,
 }
-GlobalNamespace.myClaseAloneFiguras = class {
+GlobalNamespace.myClaseAloneFiguras = class  {
+myClaseAloneFiguras() {
 }
-GlobalNamespace.Figuras.Figura = class {
-this.field = null;
+}
+GlobalNamespace.Figuras.Figura = class  {
+Figura() {
+}
+FiguraIntTypeStringType(n,s) {
+}
 }
 GlobalNamespace.Figuras.DIASDELASEMANA =  {
  LUNES : 5,
@@ -71,33 +79,38 @@ GlobalNamespace.Figuras.DIASDELASEMANA =  {
  SABADO : -1,
  DOMINGO : 0,
 }
-GlobalNamespace.Node = class {
-this.left = null;
-this.right = null;
-this.c = itoa(10);
+GlobalNamespace.Node.val = null;
+GlobalNamespace.Node.x = 6;
+GlobalNamespace.Node = class  {
+NodeIntType(val) {
 }
-GlobalNamespace.Tree = class {
-this.temp = new GlobalNamespace.Node("Node(IntType)",5);
-this.val = 10;
-this.y = 'a';
-this.z = +(3.5);
-this.a = null;
-this.e = [1,2,3];
-this.val2 = new GlobalNamespace.Node("Node(IntType)",this.x).SetValIntType((this.x) + (this.root.val));
 }
-GlobalNamespace.myClaseAlone = class {
+GlobalNamespace.Tree.root = null;
+GlobalNamespace.Tree.x = (5) + (5);
+GlobalNamespace.Tree = class  {
+Tree() {
+super.Object();
 }
-GlobalNamespace.N1.myClase = class {
-this.t = GlobalNamespace.DIASDELASEMANA.LUNES;
-this.cat = this.ca;
-this.r = (this.b) && (this.f);
-this.f1 = 1.2;
-this.i1 = 50;
-this.f2 = (+(1.5));
-this.r2 = (this.c) == (null);
-this.h = this.clase instanceof GlobalNamespace.Figuras.Circulo;
-this.count = 0;
 }
-GlobalNamespace.N1.N2.myClase2 = class {
+GlobalNamespace.myClaseAlone = class  {
+myClaseAlone() {
+}
+}
+GlobalNamespace.N1.myClase.c = new GlobalNamespace.Figuras.Circulo("Circulo");
+GlobalNamespace.N1.myClase.clase = c;
+GlobalNamespace.N1.myClase.ca = charCodeAt('a');
+GlobalNamespace.N1.myClase.b = true;
+GlobalNamespace.N1.myClase.f = false;
+GlobalNamespace.N1.myClase = class extends GlobalNamespace.Figuras.Circulo {
+myClase() {
+super.Circulo();
+}
+myClaseIntType(nuevo) {
+super.Circulo();
+}
+}
+GlobalNamespace.N1.N2.myClase2 = class  {
+myClase2() {
+}
 }
 module.exports = GlobalNamespace;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
@@ -19,6 +20,12 @@ namespace Compiler.Tree
             checkFieldsAssignment(api);
             api.addVariableToCurrentContext(variable);
         }
+
+        public override void generateCode(StringBuilder builder, API api)
+        {
+            throw new NotImplementedException();
+        }
+
         private void checkFieldsAssignment(API api)
         {
             foreach (KeyValuePair<string, FieldNode> key in variable)

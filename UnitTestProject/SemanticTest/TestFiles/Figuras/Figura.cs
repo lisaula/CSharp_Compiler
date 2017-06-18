@@ -11,6 +11,9 @@ namespace Figuras{
 		public Figura(){
 
 		}
+		public Figura(int n, string s){
+
+		}
 	}
 
 	enum DIASDELASEMANA{

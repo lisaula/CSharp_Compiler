@@ -412,17 +412,48 @@ namespace Compiler.Tree
 
             string nms = Utils.EndLine+api.getFullNamespaceName(this);
             nms += "." + identifier.ToString();
-            builder.Append(nms + " = class {");
+            foreach (var field in fields)
+            {
+                if (api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
+                {
+                    builder.Append(nms + ".");
+                    field.Value.generateCode(builder, api);
+                }
+                
+            }
+            builder.Append(nms + " = class ");
+            TypeDefinitionNode parent = null;
+            if (parents != null)
+            {
+                foreach (var pKey in parents)
+                {
+                    if (pKey.Value is ClassDefinitionNode)
+                    {
+                        builder.Append("extends ");
+                        string name = api.getFullNamespaceName(pKey.Value);
+                        name += "." + pKey.Value.ToString();
+                        builder.Append(name);
+                        parent = pKey.Value;
+                    }
+                }
+            }
+            builder.Append(" {");
             StringBuilder fieldsBuilder = new StringBuilder();
             foreach (var field in fields)
             {
-
                 if (field.Value.id.ToString() == "field45")
                     Console.WriteLine();
-                if(!api.modifierPass(field.Value.modifier,TokenType.RW_STATIC))
-                    field.Value.generateCode(builder, api);
+                if (!api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
+                {
+                    field.Value.setIsThis();
+                    field.Value.generateCode(fieldsBuilder, api);
+                }
             }
 
+            foreach(var ctr in constructors)
+            {
+                ctr.Value.generateCode(builder, api);
+            }
             builder.Append(Utils.EndLine+"}");
         }
     }

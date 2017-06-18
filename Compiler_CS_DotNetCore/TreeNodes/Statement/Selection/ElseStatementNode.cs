@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Compiler_CS_DotNetCore.Semantic;
 using Compiler_CS_DotNetCore.Semantic.Context;
 
@@ -23,6 +24,11 @@ namespace Compiler.Tree
             api.contextManager.pushFront(new Context(ContextType.ELSE, api));
             body.evaluate(api);
             api.popFrontContext();
+        }
+
+        public override void generateCode(StringBuilder builder, API api)
+        {
+            throw new NotImplementedException();
         }
     }
 }

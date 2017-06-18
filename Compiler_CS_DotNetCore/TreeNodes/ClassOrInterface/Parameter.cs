@@ -1,4 +1,8 @@
-﻿namespace Compiler.Tree
+﻿using System;
+using System.Text;
+using Compiler_CS_DotNetCore.Semantic;
+
+namespace Compiler.Tree
 {
     public class Parameter
     {
@@ -18,6 +22,11 @@
         public override string ToString()
         {
             return id.ToString();
+        }
+
+        internal void generateCode(StringBuilder builder, API api)
+        {
+            builder.Append(id.ToString());
         }
     }
 }

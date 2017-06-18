@@ -35,7 +35,7 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            string name = returnType.ToString() +"(" +Utils.getTypeNameConcated(argumentsType)+")";
+            string name = returnType.ToString() +Utils.getTypeNameConcated(argumentsType);
             string fullname = api.getFullNamespaceName(returnType);
             fullname += "." + returnType.ToString();
             builder.Append("new " + fullname+"(\""+name+"\"");

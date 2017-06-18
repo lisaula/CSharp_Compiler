@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
@@ -37,6 +38,11 @@ namespace Compiler.Tree
             }
 
             api.contextManager.jumpValidation(token);
+        }
+
+        public override void generateCode(StringBuilder builder, API api)
+        {
+            throw new NotImplementedException();
         }
     }
 }

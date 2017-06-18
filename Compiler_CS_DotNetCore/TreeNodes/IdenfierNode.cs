@@ -58,7 +58,7 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            if (first)
+            if (first && notThis)
                 builder.Append("this.");
             builder.Append(token.lexema);
         }

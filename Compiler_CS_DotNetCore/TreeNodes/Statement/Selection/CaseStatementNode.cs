@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Compiler_CS_DotNetCore.Semantic;
 using Compiler_CS_DotNetCore.Semantic.Context;
 
@@ -47,6 +48,11 @@ namespace Compiler.Tree
                 s.evaluate(api);
             }
             api.popFrontContext();
+        }
+
+        public override void generateCode(StringBuilder builder, API api)
+        {
+            throw new NotImplementedException();
         }
 
         private bool checkExpression(ExpressionNode expr)

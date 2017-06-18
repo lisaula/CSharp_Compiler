@@ -1,5 +1,7 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System.Collections.Generic;
+using System;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -7,6 +9,8 @@ namespace Compiler.Tree
     {
         public List<ExpressionNode> argumentList;
         public Token reference;
+        public TypeDefinitionNode I = null;
+        public List<TypeDefinitionNode> argumentsType;
         public ConstructorInitializerNode()
         {
 
@@ -25,7 +29,9 @@ namespace Compiler.Tree
             {
                 t = api.contextManager.getParent(api.working_type);
             }
-            string ctr = t.identifier.ToString() + "(" +Utils.getArgumentsNameType(argumentList, api) + ")";
+            I = t;
+            argumentsType = api.getArgumentsType(argumentList);
+            string ctr = t.identifier.ToString() + "(" +Utils.getTypeName(argumentsType) + ")";
             ClassDefinitionNode c = t as ClassDefinitionNode;
             if (!c.constructors.ContainsKey(ctr))
             {
@@ -39,6 +45,33 @@ namespace Compiler.Tree
                         throw new SemanticException("Reference constructor '"+ctr+"' cannot be reach due to its encapsulation level.", reference);
                 }
             }
+        }
+
+        internal void generateCode(StringBuilder builder, API api)
+        {
+            builder.Append(Utils.EndLine);
+            if (api.TokenPass(reference, TokenType.RW_BASE)) {
+                builder.Append("super.");
+            }else
+            {
+                builder.Append("this.");
+            }
+            string ctr = I.ToString() + Utils.getTypeNameConcated(argumentsType);
+            builder.Append(ctr+"(");
+            if(argumentList != null)
+            {
+                int count = 0;
+                int len = argumentList.Count - 1;
+                foreach(var argu in argumentList)
+                {
+                    argu.SetNotThis();
+                    argu.generateCode(builder, api);
+                    if (count < len)
+                        builder.Append(",");
+                    count++;
+                }
+            }
+            builder.Append(");");
         }
     }
 }

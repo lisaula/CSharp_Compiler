@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
@@ -18,6 +19,11 @@ namespace Compiler.Tree
         public override void evaluate(API api)
         {
             expression.evaluateType(api);
+        }
+
+        public override void generateCode(StringBuilder builder, API api)
+        {
+            throw new NotImplementedException();
         }
     }
 }

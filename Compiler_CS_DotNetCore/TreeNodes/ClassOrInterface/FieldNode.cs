@@ -12,6 +12,7 @@ namespace Compiler.Tree
         public TypeDefinitionNode type;
         public IdentifierNode id;
         public VariableInitializer assignment;
+        private bool isThis = false;
 
         public FieldNode(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, VariableInitializer assignment)
         {
@@ -28,7 +29,16 @@ namespace Compiler.Tree
 
         internal void generateCode(StringBuilder fieldsBuilder, API api)
         {
-            fieldsBuilder.Append(Utils.This + id.ToString() + " = " + api.ValidateExpressionCode(assignment)+";");
+            if (isThis)
+            {
+                fieldsBuilder.Append(Utils.This);
+            }
+            fieldsBuilder.Append(id.ToString() + " = " + api.ValidateExpressionCode(assignment)+";");
+        }
+
+        internal void setIsThis()
+        {
+            isThis = true;
         }
     }
 }

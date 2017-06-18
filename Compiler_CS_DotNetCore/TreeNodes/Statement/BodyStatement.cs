@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
@@ -27,6 +28,11 @@ namespace Compiler.Tree
                     s.evaluate(api);
                 }
             }
+        }
+
+        public override void generateCode(StringBuilder builder, API api)
+        {
+            throw new NotImplementedException();
         }
     }
 }
