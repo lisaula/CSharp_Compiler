@@ -159,7 +159,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                 if (expression != Utils.Int)
                 {
                     if (expression == Utils.Char)
-                        builder.Append("charCodeAt");
+                        builder.Append("atoi");
                     else
                         builder.Append("+");
                 }
@@ -169,7 +169,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                 if (expression != Utils.Float)
                 {
                     if (expression == Utils.Char)
-                        builder.Append("charCodeAt");
+                        builder.Append("atoi");
                     else
                         builder.Append("+");
                 }

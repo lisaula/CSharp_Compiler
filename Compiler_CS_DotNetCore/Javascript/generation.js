@@ -212,7 +212,7 @@ this[arguments[0]](...argus);
 }
 GlobalNamespace.N1.myClase.c = new GlobalNamespace.Figuras.Circulo("Circulo");
 GlobalNamespace.N1.myClase.clase = this.c;
-GlobalNamespace.N1.myClase.ca = charCodeAt('a');
+GlobalNamespace.N1.myClase.ca = atoi('a');
 GlobalNamespace.N1.myClase.b = true;
 GlobalNamespace.N1.myClase.f = false;
 GlobalNamespace.N1.myClase = class extends GlobalNamespace.Figuras.Circulo {
@@ -224,7 +224,7 @@ super.Circulo();
 let romano = IntType.ParseStringType("a");
 let kaka = 5;
 let n = nuevo;
-this.t = this.DIASDELASEMANA.MARTES;
+this.t = GlobalNamespace.DIASDELASEMANA.MARTES;
 let mama = 5000;
 let circulo = (this.c)||(null);
 do {
@@ -243,7 +243,7 @@ else {
 if( (array[5]) < (0) ){
 let n3 = 5;
 switch ( this.t){
-case (this.DIASDELASEMANA.MARTES): 
+case (GlobalNamespace.DIASDELASEMANA.MARTES): 
 continue;
 default :
 break;

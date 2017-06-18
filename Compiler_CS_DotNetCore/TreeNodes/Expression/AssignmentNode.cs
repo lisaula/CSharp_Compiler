@@ -128,6 +128,7 @@ namespace Compiler.Tree
                 || rules.Contains(rule3)
                 || t1.Equals(t2))
             {
+                t1.onTableType = false;
                 return t1;
             }
             throw new SemanticException("Rule not supported. '"+t1.ToString()+"' "+assigmentOperator.ToString()+" '"+t2.ToString()+"'.", assigmentOperator);

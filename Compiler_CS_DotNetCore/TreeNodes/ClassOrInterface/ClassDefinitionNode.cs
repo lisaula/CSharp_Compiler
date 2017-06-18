@@ -102,7 +102,7 @@ namespace Compiler.Tree
 
             foreach (var key in constructors)
             {
-                if (key.Value.id.ToString() == "Circulo")
+                if (key.Value.id.ToString() == "myClase")
                     Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());

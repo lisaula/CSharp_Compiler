@@ -12,6 +12,8 @@ namespace Compiler.Tree
         public List<ExpressionNode> list;
         public bool isStatic = false, foundLocally = false, foundGlobally = false;
         public TypeDefinitionNode firstFound = null;
+        private bool onTableType = false;
+
         public InlineExpressionNode(List<ExpressionNode> list)
         {
             this.list = list;
@@ -52,6 +54,7 @@ namespace Compiler.Tree
                 if (count == 0)
                 {
                     foundLocally = t.localy;
+                    onTableType = t.onTableType;
                     foundGlobally = t.globally;
                 }
                 count++;
@@ -74,13 +77,13 @@ namespace Compiler.Tree
                 {
                     if (element is IdentifierNode)
                     {
-                        if (foundGlobally)
+                        if (foundGlobally && !onTableType)
                         {
                             ((IdentifierNode)element).setFirst();
                         }
                         else
                         {
-                            if (isStatic)
+                            if (isStatic || (returnType is EnumDefinitionNode))
                             {
                                 string name = api.getFullNamespaceName(returnType);
                                 builder.Append(name + ".");
