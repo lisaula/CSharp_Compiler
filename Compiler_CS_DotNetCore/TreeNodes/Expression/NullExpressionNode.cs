@@ -16,6 +16,7 @@ namespace Compiler
 
         public override TypeDefinitionNode evaluateType(API api)
         {
+            this.returnType = type;
             return type;
         }
 

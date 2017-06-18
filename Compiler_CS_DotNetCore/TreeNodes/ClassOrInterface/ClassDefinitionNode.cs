@@ -39,7 +39,7 @@ namespace Compiler.Tree
             if (evaluated)
                 return;
             Debug.printMessage("Evaluating class " + identifier.ToString());
-            if (identifier.ToString() == "myClase")
+            if (identifier.ToString() == "Tree")
                 Console.WriteLine();
             checkInheritanceExistance(api);
             checkParents(api);
@@ -150,7 +150,7 @@ namespace Compiler.Tree
                     api.setWorkingType(this);
                     api.contextManager.isStatic = true;
                     FieldNode f = key.Value;
-                    if (f.id.ToString() == "t")
+                    if (f.id.ToString() == "field45")
                         Console.WriteLine();
                     TypeDefinitionNode tdn = f.assignment.evaluateType(api);
                     string rule = f.type.ToString() + "," + tdn.ToString();
@@ -409,12 +409,21 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
+
+            string nms = Utils.EndLine+api.getFullNamespaceName(this);
+            nms += "." + identifier.ToString();
+            builder.Append(nms + " = class {");
             StringBuilder fieldsBuilder = new StringBuilder();
             foreach (var field in fields)
             {
-                if(api.modifierPass(field.Value.modifier,TokenType.RW_STATIC))
-                    field.Value.generateCode(fieldsBuilder, api);
+
+                if (field.Value.id.ToString() == "field45")
+                    Console.WriteLine();
+                if(!api.modifierPass(field.Value.modifier,TokenType.RW_STATIC))
+                    field.Value.generateCode(builder, api);
             }
+
+            builder.Append(Utils.EndLine+"}");
         }
     }
 }

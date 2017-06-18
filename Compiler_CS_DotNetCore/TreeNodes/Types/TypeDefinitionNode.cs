@@ -13,6 +13,8 @@ namespace Compiler.Tree
         public NamespaceNode parent_namespace;
         public IdentifierNode identifier;
         public TypeDefinitionNode typeNode;
+        internal bool localy = false;
+
         public virtual void Evaluate(API api)
         {
 

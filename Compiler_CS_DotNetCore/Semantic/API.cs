@@ -49,6 +49,14 @@ namespace Compiler_CS_DotNetCore.Semantic
             return l.Contains(v);
         }
 
+        internal TypeDefinitionNode CopyType(TypeDefinitionNode t)
+        {
+            TypeDefinitionNode nuevo = new ClassDefinitionNode();
+            nuevo.localy = t.localy;
+            nuevo.onTableType = t.onTableType;
+            return nuevo;
+        }
+
         public void setWorkingType(TypeDefinitionNode type)
         {
             working_type = type;
@@ -116,7 +124,9 @@ namespace Compiler_CS_DotNetCore.Semantic
         internal TypeDefinitionNode searchInTableType(string typeName)
         {
             if (working_type == null)
+            {
                 throw new SemanticException("Working directory has not been set.");
+            }
             if (typeName == Utils.Null)
                 return new NullTypeNode();
             string name = typeName;
@@ -409,6 +419,13 @@ namespace Compiler_CS_DotNetCore.Semantic
             return string.Join(".", parents_name);
         }
 
+        public string getFullNamespaceName(TypeDefinitionNode t)
+        {
+            List<string> parents_name = new List<string>();
+            parents_name.Add(Utils.GlobalNamespace);
+            parents_name.AddRange(getParentsName(t.parent_namespace));
+            return string.Join(".", parents_name);
+        }
         private List<string> getParentsName(NamespaceNode parent_namespace)
         {
             if(parent_namespace == null)

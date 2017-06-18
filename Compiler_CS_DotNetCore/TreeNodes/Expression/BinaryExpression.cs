@@ -47,7 +47,7 @@ namespace Compiler.Tree
             api.checkExpression(this.returnType.getComparativeType(), rightExpression.returnType.getComparativeType(), builder);
             builder.Append("(");
             rightExpression.generateCode(builder, api);
-            builder.Append("(");
+            builder.Append(")");
         }
     }
 }

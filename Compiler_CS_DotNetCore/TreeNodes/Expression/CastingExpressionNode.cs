@@ -76,7 +76,7 @@ namespace Compiler.Tree
         {
             List<string> primitive = new List<string>(Utils.primitives);
             primitive.Add(Utils.String);
-            if(api.pass(this.returnType.getComparativeType(), primitive.ToArray()))
+            if (api.pass(this.returnType.getComparativeType(), primitive.ToArray()))
             {
                 api.checkExpression(this.returnType.getComparativeType(), primary.returnType.getComparativeType(), builder);
                 builder.Append("(");
@@ -84,6 +84,8 @@ namespace Compiler.Tree
                 builder.Append(")");
             }
             else
+                primary.generateCode(builder, api);
+            /*else
             {
                 if(returnType is NullTypeNode)
                 {
@@ -99,7 +101,7 @@ namespace Compiler.Tree
                     primary.generateCode(builder, api);
                     builder.Append(")");
                 }
-            }
+            }*/
         }
     }
 }

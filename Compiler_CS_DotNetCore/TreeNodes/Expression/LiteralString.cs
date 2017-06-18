@@ -17,16 +17,17 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            this.returnType = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.String];
+            return returnType;
         }
 
         public override void generateCode(StringBuilder builder, API api)
         {
             if (verbatin)
             {
-                builder.Append("`" + token.lexema + "`");
+                builder.Append(token.lexema);
             }else
-                builder.Append("\"" + token.lexema + "\"");
+                builder.Append(token.lexema);
         }
         internal void setVerbatin()
         {

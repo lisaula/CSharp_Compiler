@@ -45,13 +45,21 @@ namespace Compiler.Tree
                     array.indexes.Add(origin.indexes[i]);
             }
             if (array.indexes.Count == 0)
+            {
+                this.returnType = array.type;
                 return array.type;
+            }
+            this.returnType = array;
             return array;
         }
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            primary.generateCode(builder, api);
+            foreach(var array in lista)
+            {
+                array.generateCode(builder, api);
+            }
         }
     }
 }

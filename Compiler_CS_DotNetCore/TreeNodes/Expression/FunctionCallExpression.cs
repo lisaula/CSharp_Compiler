@@ -9,11 +9,13 @@ namespace Compiler.Tree
     {
         public PrimaryExpressionNode primary;
         public List<ExpressionNode> arguments;
+        public List<TypeDefinitionNode> argumentsType;
 
         public FunctionCallExpression(PrimaryExpressionNode primary, List<ExpressionNode> arguments)
         {
             this.primary = primary;
             this.arguments = arguments;
+            argumentsType = new List<TypeDefinitionNode>();
         }
         public FunctionCallExpression()
         {
@@ -27,17 +29,29 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            List<TypeDefinitionNode> argumentsType = api.getArgumentsType(arguments);
+            argumentsType = api.getArgumentsType(arguments);
             string functionName = ((IdentifierNode)primary).ToString() +"("+Utils.getTypeName(argumentsType)+")";
             MethodNode m = api.contextManager.findFunction(functionName);
             if (m == null)
                 throw new SemanticException("Function '" + functionName + "' could not be found in the current context.");
+            this.returnType = m.returnType;
             return m.returnType;
         }
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            primary.generateCode(builder, api);
+            string argus = Utils.getTypeNameConcated(argumentsType);
+            builder.Append(argus);
+            builder.Append("(");
+            if(arguments != null)
+            {
+                foreach(var arg in arguments)
+                {
+                    arg.generateCode(builder, api);
+                }
+            }
+            builder.Append(")");
         }
     }
 }

@@ -3,6 +3,7 @@ using N1.N2;
 using System;
 namespace Figuras{
 	public class Circulo : Figura, MismoTypes{
+		public int field1;
 		int[] n1 = new int[4] {2, 4, 6, 8};
 		int[] n2 = new int[] {2, 4, 6, 8};
 		int[] n3 = {2, 4, 6, 8};
@@ -21,10 +22,9 @@ namespace Figuras{
 		int[][] n8 = new int[][] { new int[] {2,4,6}, new int[] {1,3,5,7,9} };
 		int[][] n9 = { new int[] {2,4,6}, new int[] {1,3,5,7,9} };
 
-		public int field1;
 		public string field2;
 		public static float field3;
-		public int field4 = myClase.ca;
+		public int field45 = myClase.ca;
 		
 		myClase nueva = new myClase();
 		myClase[] field5 = new myClase[3];

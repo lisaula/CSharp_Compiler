@@ -1,5 +1,6 @@
 ﻿using Compiler_CS_DotNetCore.Semantic;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Compiler.Tree
 {
@@ -47,6 +48,19 @@ namespace Compiler.Tree
                 return ((ArrayNode)obj).dimensions == dimensions;
             }
             return false;
+        }
+
+        public void generateCode(StringBuilder builder, API api)
+        {
+            if (expression_list != null)
+            {
+                foreach(var exp in expression_list)
+                {
+                    builder.Append("[");
+                    exp.generateCode(builder, api);
+                    builder.Append("]");
+                }
+            }
         }
     }
 }

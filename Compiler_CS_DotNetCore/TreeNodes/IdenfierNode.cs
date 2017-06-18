@@ -30,14 +30,19 @@ namespace Compiler.Tree
         {
             TypeDefinitionNode t = null;
             t = api.contextManager.findVariable(token);
+            if (token.lexema == "myClase" || token.lexema == "ca")
+                Console.WriteLine();
             if (t == null)
             {
                 t = api.searchInTableType(token.lexema);
-                if(t!=null)
+                if (t != null)
                     t.onTableType = true;
             }
-            if(t == null)
+            else
+                t.localy = true;
+            if (t == null)
                 throw new SemanticException("Variable '" + token.lexema + "' could not be found in the current context.", token);
+            this.returnType = t;
             return t;
         }
 

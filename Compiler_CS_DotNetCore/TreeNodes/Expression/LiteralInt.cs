@@ -12,7 +12,8 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return Singleton.tableTypes[Utils.GlobalNamespace+"."+Utils.Int];
+            this.returnType = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Int];
+            return returnType;
         }
 
         public override void generateCode(StringBuilder builder, API api)

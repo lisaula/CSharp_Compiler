@@ -17,12 +17,14 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
-            return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Char];
+
+            this.returnType = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Char];
+            return returnType;
         }
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            builder.Append("'" + token.lexema + "'");
+            builder.Append(token.lexema);
         }
     }
 }

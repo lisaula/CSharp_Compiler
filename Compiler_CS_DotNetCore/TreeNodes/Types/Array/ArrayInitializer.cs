@@ -66,10 +66,15 @@ namespace Compiler.Tree
         public override void generateCode(StringBuilder builder, API api)
         {
             builder.Append("[");
-            if (variables_list != null) { 
+            if (variables_list != null) {
+                int count = variables_list.Count - 1;
+                int count2 = 0;
                 foreach (var a in variables_list)
                 {
                     a.generateCode(builder, api);
+                    if(count2<count)
+                        builder.Append(",");
+                    count2++;
                 }
             }
             builder.Append("]");

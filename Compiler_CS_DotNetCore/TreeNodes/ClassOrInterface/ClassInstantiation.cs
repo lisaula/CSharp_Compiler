@@ -9,21 +9,22 @@ namespace Compiler.Tree
     {
         public TypeDefinitionNode type;
         public List<ExpressionNode> arguments;
-
+        List<TypeDefinitionNode> argumentsType;
         public ClassInstantiation(TypeDefinitionNode type, List<ExpressionNode> arguments)
         {
             this.type = type;
             this.arguments = arguments;
+            argumentsType = new List<TypeDefinitionNode>();
         }
         public ClassInstantiation()
         {
-
+            
         }
 
         public override TypeDefinitionNode evaluateType(API api)
         {
             TypeDefinitionNode tdn = api.searchType(type);
-            List<TypeDefinitionNode> argumentsType = api.getArgumentsType(arguments);
+            argumentsType = api.getArgumentsType(arguments);
             if (api.findConstructor(tdn, Utils.getTypeName(argumentsType)))
             {
                 this.returnType = tdn;
@@ -34,15 +35,22 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            List<TypeDefinitionNode> argumentsType = api.getArgumentsType(arguments);
-            string name = returnType.ToString() + Utils.getTypeNameConcated(argumentsType);
-            string fullname = Utils.GlobalNamespace+"."+api.getParentNamespace(returnType);
+            string name = returnType.ToString() +"(" +Utils.getTypeNameConcated(argumentsType)+")";
+            string fullname = api.getFullNamespaceName(returnType);
             fullname += "." + returnType.ToString();
-            builder.Append("new " + fullname+"(\""+name+"\",");
-            foreach(var expr in arguments)
+            builder.Append("new " + fullname+"(\""+name+"\"");
+            if (arguments != null)
             {
-                expr.generateCode(builder, api);
                 builder.Append(",");
+                int argumentsLen = arguments.Count - 1;
+                int count = 0;
+                foreach (var expr in arguments)
+                {
+                    expr.generateCode(builder, api);
+                    if(count< argumentsLen)
+                        builder.Append(",");
+                    count++;
+                }
             }
             builder.Append(")");
         }

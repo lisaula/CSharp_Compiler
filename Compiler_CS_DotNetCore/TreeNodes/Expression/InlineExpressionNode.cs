@@ -10,7 +10,8 @@ namespace Compiler.Tree
     public class InlineExpressionNode : UnaryExpressionNode
     {
         public List<ExpressionNode> list;
-
+        public bool isStatic = false, foundLocally = false;
+        public TypeDefinitionNode firstFound = null;
         public InlineExpressionNode(List<ExpressionNode> list)
         {
             this.list = list;
@@ -39,12 +40,20 @@ namespace Compiler.Tree
             var copy = new ContextManager();
             copy.contexts = new List<Context>(copy_context);
             copy.isStatic = api.contextManager.isStatic;
+            isStatic = copy.isStatic;
             copy.Enums_or_Literal = api.contextManager.Enums_or_Literal;
             api.contextManager = copy;
+            int count = 0;
             foreach (ExpressionNode exp in list)
             {
                 api.class_contextManager = ctx_mng;
                 t = exp.evaluateType(api);
+                exp.returnType = t;
+                if (count == 0)
+                {
+                    foundLocally = t.localy;
+                }
+                count++;
                 List<Context> contexts = api.contextManager.buildEnvironment(t, ContextType.ATRIBUTE, api, t.onTableType);
                 api.contextManager.isStatic = t.onTableType;
                 api.contextManager.contexts.Clear();
@@ -60,9 +69,23 @@ namespace Compiler.Tree
             int count = 0;
             foreach (var element in list)
             {
-                if(count == 0 && element is IdentifierNode)
+                if (count == 0 && element is IdentifierNode)
                 {
-                    ((IdentifierNode)element).setFirst();
+                    if (!element.returnType.onTableType && !isStatic && !(returnType is EnumDefinitionNode))
+                        ((IdentifierNode)element).setFirst();
+                    else
+                    {
+                        if (isStatic && foundLocally)
+                        {
+                            ((IdentifierNode)element).setFirst();
+                        }
+                        else
+                        {
+                            string name = api.getFullNamespaceName(returnType);
+                            builder.Append(name + ".");
+                        }
+                    }
+                    
                 }
                 count++;
                 element.generateCode(builder,api);

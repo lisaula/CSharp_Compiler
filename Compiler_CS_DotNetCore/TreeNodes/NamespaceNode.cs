@@ -25,10 +25,21 @@ namespace Compiler.Tree
 
         internal void generateCode(StringBuilder builder, API api)
         {
-            foreach(TypeDefinitionNode t in typeList)
+            Debug.printMessage("Generando " + identifierList[0].ToString());
+            foreach (TypeDefinitionNode t in typeList)
             {
-                if(t is EnumDefinitionNode)
+                if (t is EnumDefinitionNode || t is ClassDefinitionNode)
+                {
+                    if(t.ToString() == "Circulo")
+                    Debug.printMessage("Generando " + t.ToString());
                     t.generateCode(builder, api);
+                }
+            }
+
+            foreach (NamespaceNode t in namespaceList)
+            {
+                Debug.printMessage("Generando " + t.identifierList[0].ToString());
+                t.generateCode(builder, api);
             }
         }
 

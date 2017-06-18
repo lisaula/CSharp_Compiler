@@ -4,7 +4,7 @@ public class Node{
         Node left;
         Node right;
         static int x = 6;
-        
+        char c= (char)10;
         public Node(int val){
 
         }
@@ -26,7 +26,6 @@ public class Tree{
         int val2 = new Node(x).SetVal(x + root.val);
         
         public Tree() : base(){
-            
         }
 
         public void Tree(){

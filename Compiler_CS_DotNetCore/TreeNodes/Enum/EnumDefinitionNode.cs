@@ -28,6 +28,8 @@ namespace Compiler.Tree
 
         public override void Evaluate(API api)
         {
+            if (identifier.ToString() == "DIASDELASEMANA5")
+                Console.WriteLine();
             if (this.evaluated)
                 return;
             Debug.printMessage("Evaluatiog " +identifier.token.lexema);
@@ -82,6 +84,7 @@ namespace Compiler.Tree
                     inline.list.Add(l);
                     enum_.expressionNode = new PreExpressionNode(op,inline);
                 }
+                initialization++;
                 return;
             }
 
@@ -126,7 +129,9 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            builder.Append("\nconst " + identifier.ToString() + " =  {");
+            string name = Utils.EndLine + api.getFullNamespaceName(this);
+            name += "." + identifier.ToString();
+            builder.Append(name+" =  {");
             foreach(var enums in enumNodeList)
             {
                 enums.generateCode(builder,api);

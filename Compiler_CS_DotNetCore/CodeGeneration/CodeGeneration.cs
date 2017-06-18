@@ -46,6 +46,7 @@ namespace Compiler_CS_DotNetCore.CodeGeneration
                     Console.WriteLine("Not implemented.");
                 }
             }
+            builder.Append("\nmodule.exports = " + Utils.GlobalNamespace + ";");
         }
     }
 }

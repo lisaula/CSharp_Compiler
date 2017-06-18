@@ -85,8 +85,8 @@ namespace Compiler.Tree
 
                 if (t.getComparativeType() == Utils.Interface)
                     throw new SemanticException("Cannot compare an object with interface '" + t.ToString() + "'", type.getPrimaryToken());
-                this.returnType = Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool];
-                return returnType;
+                this.returnType = t;
+                return Singleton.tableTypes[Utils.GlobalNamespace + "." + Utils.Bool]; ;
             }
         }
 
@@ -98,11 +98,13 @@ namespace Compiler.Tree
                 leftExpression.generateCode(builder, api);
                 builder.Append(" instanceof ");
 
-                string name = Utils.GlobalNamespace + "." + api.getParentNamespace(returnType);
+                string name = api.getFullNamespaceName(returnType);
                 name += "." + returnType.identifier.ToString();
                 builder.Append(name);
             }
             else
+                leftExpression.generateCode(builder, api);
+            /*else
             {
                 //Object.create(Person, person1);
                 string name = Utils.GlobalNamespace + "." + api.getParentNamespace(returnType);
@@ -112,7 +114,7 @@ namespace Compiler.Tree
                 builder.Append(" , ");
                 leftExpression.generateCode(builder, api);
                 builder.Append(")");
-            }
+            }*/
         }
     }
 }
