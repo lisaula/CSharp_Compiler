@@ -412,16 +412,7 @@ namespace Compiler.Tree
 
             string nms = Utils.EndLine+api.getFullNamespaceName(this);
             nms += "." + identifier.ToString();
-            foreach (var field in fields)
-            {
-                if (api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
-                {
-                    builder.Append(nms + ".");
-                    field.Value.generateCode(builder, api);
-                    builder.Append(";");
-                }
-                
-            }
+            
             builder.Append(nms + " = class ");
             if (parents != null)
             {
@@ -461,6 +452,16 @@ namespace Compiler.Tree
             builder.Append(Utils.EndLine+"this[arguments[0]](...argus);");
             builder.Append(Utils.EndLine + "}");
             builder.Append(Utils.EndLine+"}");
+            foreach (var field in fields)
+            {
+                if (api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
+                {
+                    builder.Append(nms + ".");
+                    field.Value.generateCode(builder, api);
+                    builder.Append(";");
+                }
+
+            }
         }
     }
 }

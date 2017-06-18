@@ -1,3 +1,1 @@
-class foo {
-	s = 1;
-}
+let globalNamespace = require("./generation");

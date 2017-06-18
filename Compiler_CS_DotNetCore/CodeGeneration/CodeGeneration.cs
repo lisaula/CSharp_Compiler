@@ -36,6 +36,12 @@ namespace Compiler_CS_DotNetCore.CodeGeneration
 
         private void generateCode()
         {
+            builder.Append("let " + Utils.GlobalNamespace + " = {};");
+            foreach(var nms in Singleton.tableNamespaces)
+            {
+                if(nms != Utils.GlobalNamespace)
+                builder.Append(Utils.EndLine + nms + " = {};");
+            }
             foreach (var tree in trees)
             {
                 try

@@ -90,6 +90,7 @@ namespace Compiler.Tree
                     s.generateCode(builder, api);
                     if (count < len)
                         builder.Append(",");
+                    count++;
                 }
             }
             builder.Append(") {");
