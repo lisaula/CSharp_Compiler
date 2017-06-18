@@ -31,7 +31,16 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            
+            builder.Append(Utils.EndLine + token.lexema);
+            if(api.TokenPass(token, TokenType.RW_DEFAULT))
+            {
+                builder.Append(" :");
+                return;
+            }
+            builder.Append(" (");
+            expr.generateCode(builder, api);
+            builder.Append("): ");
         }
     }
 }

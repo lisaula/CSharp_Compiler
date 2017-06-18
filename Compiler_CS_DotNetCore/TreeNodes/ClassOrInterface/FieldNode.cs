@@ -13,6 +13,7 @@ namespace Compiler.Tree
         public IdentifierNode id;
         public VariableInitializer assignment;
         private bool isThis = false;
+        internal bool localEstatement = false;
 
         public FieldNode(EncapsulationNode encapsulation, ModifierNode modifier, TypeDefinitionNode type, IdentifierNode id, VariableInitializer assignment)
         {
@@ -32,8 +33,11 @@ namespace Compiler.Tree
             if (isThis)
             {
                 fieldsBuilder.Append(Utils.This);
+            }else if (localEstatement)
+            {
+                fieldsBuilder.Append("let ");
             }
-            fieldsBuilder.Append(id.ToString() + " = " + api.ValidateExpressionCode(assignment)+";");
+            fieldsBuilder.Append(id.ToString() + " = " + api.ValidateExpressionCode(assignment));
         }
 
         internal void setIsThis()

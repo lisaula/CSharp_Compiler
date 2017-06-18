@@ -81,6 +81,7 @@ namespace Compiler.Tree
                         }
                         else
                         {
+                        
                             string name = api.getFullNamespaceName(returnType);
                             builder.Append(name + ".");
                         }

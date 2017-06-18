@@ -37,7 +37,14 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append(Utils.EndLine);
+            builder.Append("if( ");
+            expr.generateCode(builder, api);
+            builder.Append(" ){");
+            body.generateCode(builder, api);
+            builder.Append(Utils.EndLine + "}");
+            if (elseStatement != null)
+                elseStatement.generateCode(builder, api);
         }
     }
 }

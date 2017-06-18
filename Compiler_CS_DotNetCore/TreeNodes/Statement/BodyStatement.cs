@@ -32,7 +32,20 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            foreach(var s in statements)
+            {
+
+                if(s is LocalVariableDefinitionNode)
+                {
+                    foreach(var key in ((LocalVariableDefinitionNode)s).variable)
+                    {
+                        ((LocalVariableDefinitionNode)s).endLine = true;
+                        key.Value.localEstatement = true;
+                    }
+                }
+                s.generateCode(builder, api);
+                builder.Append(";");
+            }
         }
     }
 }

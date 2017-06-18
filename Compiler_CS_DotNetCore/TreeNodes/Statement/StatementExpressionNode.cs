@@ -23,7 +23,8 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append(Utils.EndLine);
+            expression.generateCode(builder, api);
         }
     }
 }

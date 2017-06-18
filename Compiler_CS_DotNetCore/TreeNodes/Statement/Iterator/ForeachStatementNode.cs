@@ -60,7 +60,12 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append(Utils.EndLine + "for(let ");
+            builder.Append(id.ToString() + " of ");
+            collection.generateCode(builder, api);
+            builder.Append("){");
+            body.generateCode(builder, api);
+            builder.Append(Utils.EndLine + "}");
         }
     }
 }

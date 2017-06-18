@@ -36,7 +36,17 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append(Utils.EndLine + "switch ( ");
+            constantExpression.generateCode(builder, api);
+            builder.Append("){");
+            if(cases != null)
+            {
+                foreach(var c in cases)
+                {
+                    c.generateCode(builder, api);
+                }
+            }
+            builder.Append(Utils.EndLine+"}");
         }
     }
 }

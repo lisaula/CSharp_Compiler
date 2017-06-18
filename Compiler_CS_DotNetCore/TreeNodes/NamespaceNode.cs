@@ -39,6 +39,8 @@ namespace Compiler.Tree
             foreach (NamespaceNode t in namespaceList)
             {
                 Debug.printMessage("Generando " + t.identifierList[0].ToString());
+                if (t.identifierList[0].ToString() == "N1")
+                    Console.WriteLine();
                 t.generateCode(builder, api);
             }
         }

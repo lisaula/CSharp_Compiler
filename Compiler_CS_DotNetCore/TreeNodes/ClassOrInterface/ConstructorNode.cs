@@ -61,7 +61,7 @@ namespace Compiler.Tree
             }
             if(bodyStatements!= null)
             {
-                //bodyStatements.generateCode(builder, api);
+                bodyStatements.generateCode(builder, api);
             }
             builder.Append(Utils.EndLine + "}");
         }

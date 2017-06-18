@@ -35,7 +35,13 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append(Utils.EndLine + "while(");
+            conditionExpression.generateCode(builder, api);
+            builder.Append("){");
+            if (body != null)
+                body.generateCode(builder, api);
+
+            builder.Append(Utils.EndLine + "}");
         }
     }
 }

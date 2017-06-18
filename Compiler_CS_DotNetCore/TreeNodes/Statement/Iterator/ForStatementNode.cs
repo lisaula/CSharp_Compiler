@@ -65,7 +65,39 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            builder.Append(Utils.EndLine + "for(");
+            if (initializer != null)
+            {
+                int len = initializer.Count - 1;
+                int count = 0;
+                foreach (var s in initializer)
+                {
+                    s.generateCode(builder, api);
+                    if (count < len)
+                        builder.Append(",");
+                }
+            }
+            builder.Append(";");
+            if(expresion != null)
+                expresion.generateCode(builder, api);
+            builder.Append(";");
+            if(iterative != null)
+            {
+                int len = iterative.Count-1;
+                int count = 0;
+                foreach(var s in iterative)
+                {
+                    s.generateCode(builder, api);
+                    if (count < len)
+                        builder.Append(",");
+                }
+            }
+            builder.Append(") {");
+            if(body != null)
+            {
+                body.generateCode(builder, api);
+            }
+            builder.Append(Utils.EndLine + "}");
         }
     }
 }

@@ -8,9 +8,11 @@ namespace Compiler.Tree
     public class LocalVariableDefinitionNode : Statement
     {
         public Dictionary<string,FieldNode> variable;
+        public bool endLine { get; set; }
 
         public LocalVariableDefinitionNode()
         {
+            endLine = false;
             this.variable = new Dictionary<string, FieldNode>();
         }
 
@@ -23,7 +25,15 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            foreach(var vari in variable)
+            {
+                //vari.Value.localEstatement = true;
+                if (endLine)
+                {
+                    builder.Append(Utils.EndLine);
+                }
+                vari.Value.generateCode(builder, api);
+            }
         }
 
         private void checkFieldsAssignment(API api)

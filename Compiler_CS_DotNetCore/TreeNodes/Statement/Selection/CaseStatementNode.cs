@@ -52,7 +52,21 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            throw new NotImplementedException();
+            if (caseLabel != null)
+            {
+                foreach (var c in caseLabel)
+                {
+                    c.generateCode(builder, api);
+                }
+            }
+            if(body != null)
+            {
+                foreach(var s in body)
+                {
+                    s.generateCode(builder, api);
+                }
+            }
+
         }
 
         private bool checkExpression(ExpressionNode expr)

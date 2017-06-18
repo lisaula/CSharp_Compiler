@@ -418,6 +418,7 @@ namespace Compiler.Tree
                 {
                     builder.Append(nms + ".");
                     field.Value.generateCode(builder, api);
+                    builder.Append(";");
                 }
                 
             }
@@ -447,6 +448,7 @@ namespace Compiler.Tree
                 {
                     field.Value.setIsThis();
                     field.Value.generateCode(fieldsBuilder, api);
+                    builder.Append(";");
                 }
             }
 
@@ -454,6 +456,12 @@ namespace Compiler.Tree
             {
                 ctr.Value.generateCode(builder, api);
             }
+
+            builder.Append(Utils.EndLine + "constructor(){");
+            builder.Append(fieldsBuilder.ToString());
+            builder.Append(Utils.EndLine + "let argus = arguments.slice(1);");
+            builder.Append(Utils.EndLine+"this[arguments[0]](...argus);");
+            builder.Append(Utils.EndLine + "}");
             builder.Append(Utils.EndLine+"}");
         }
     }

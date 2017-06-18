@@ -131,7 +131,7 @@ namespace Compiler.Tree
         {
             string name = Utils.EndLine + api.getFullNamespaceName(this);
             name += "." + identifier.ToString();
-            builder.Append(name+" =  {");
+            builder.Append(name+" =  const {");
             foreach(var enums in enumNodeList)
             {
                 enums.generateCode(builder,api);
