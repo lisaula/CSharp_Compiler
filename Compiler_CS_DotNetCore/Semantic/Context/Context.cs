@@ -151,6 +151,9 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 string key = Utils.getMethodName(m);
                 if (methods.ContainsKey(key))
                     throw new SemanticException("Method '" + key + "' already exist in current context.", m.id.token);
+                m.returnType.localy = false;
+                m.returnType.globally = false;
+                m.returnType.onTableType = false;
                 methods[key] = m;
             }
         }

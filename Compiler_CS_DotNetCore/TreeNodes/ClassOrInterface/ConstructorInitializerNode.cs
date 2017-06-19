@@ -51,6 +51,8 @@ namespace Compiler.Tree
         {
             builder.Append(Utils.EndLine);
             if (api.TokenPass(reference, TokenType.RW_BASE)) {
+                if (argumentList == null || argumentList.Count == 0)
+                    return;
                 builder.Append("super.");
             }else
             {

@@ -30,7 +30,7 @@ namespace Compiler.Tree
             {
                 if (t is EnumDefinitionNode || t is ClassDefinitionNode)
                 {
-                    if(t.ToString() == "myClase")
+                    if(t.ToString() == "sort")
                     Debug.printMessage("Generando " + t.ToString());
                     t.generateCode(builder, api);
                 }

@@ -41,6 +41,10 @@ namespace Compiler_CS_DotNetCore.Semantic
             StringBuilder builder = new StringBuilder();
             foreach(TypeDefinitionNode t in argumentsType)
             {
+                if(t is ArrayTypeNode)
+                {
+                    ((ArrayTypeNode)t).generated = true;
+                }
                 builder.Append(t.ToString());
             }
             return builder.ToString();
@@ -128,14 +132,12 @@ public class Object{
 public class IntType{
     public override string ToString(){}
     public static int Parse(string s){}
-	public static int TryParse(string s, int out){}
  
 }
     
 public class CharType{
     public override string ToString(){}
 	public static int Parse(string s){}
-	public static int TryParse(string s, char out){}
 }
  
 public class DictionaryTypeNode{
@@ -144,7 +146,6 @@ public class DictionaryTypeNode{
 public class FloatType{
     public override string ToString(){}
 	public static int Parse(string s){}
-	public static int TryParse(string s, float out){}
 }
 public class StringType{
     public override string ToString(){}

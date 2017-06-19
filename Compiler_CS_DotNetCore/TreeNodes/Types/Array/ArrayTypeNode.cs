@@ -9,6 +9,8 @@ namespace Compiler.Tree
     {
         public List<ArrayNode> indexes;
         public TypeDefinitionNode type;
+        internal bool generated = false;
+
         public ArrayTypeNode()
         {
             indexes = new List<ArrayNode>();
@@ -43,6 +45,10 @@ namespace Compiler.Tree
 
         public override string ToString()
         {
+            if (generated)
+            {
+                return type.ToString() + "Array" + indexes.Count+"D";
+            }
             return type.ToString() + Utils.indexesToString(indexes);
         }
 

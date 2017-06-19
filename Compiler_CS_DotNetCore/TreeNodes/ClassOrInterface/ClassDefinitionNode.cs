@@ -9,6 +9,7 @@ namespace Compiler.Tree
     public class ClassDefinitionNode : TypeDefinitionNode
     {
         public Dictionary<string,FieldNode> fields;
+        public bool generated = false;
         public Dictionary<string,MethodNode> methods;
         public Dictionary<string,ConstructorNode> constructors;
         public bool isAbstract;
@@ -39,7 +40,7 @@ namespace Compiler.Tree
             if (evaluated)
                 return;
             Debug.printMessage("Evaluating class " + identifier.ToString());
-            if (identifier.ToString() == "Tree")
+            if (identifier.ToString() == "sort")
                 Console.WriteLine();
             checkInheritanceExistance(api);
             checkParents(api);
@@ -409,11 +410,16 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
+            if (generated)
+                return;
 
-            string nms = Utils.EndLine+api.getFullNamespaceName(this);
+            generateParentsFirst(builder, api);
+
+            string nms = Utils.EndLine + api.getFullNamespaceName(this);
             nms += "." + identifier.ToString();
-            
+
             builder.Append(nms + " = class ");
+            bool haParrent = false;
             if (parents != null)
             {
                 foreach (var pKey in parents)
@@ -424,6 +430,7 @@ namespace Compiler.Tree
                         string name = api.getFullNamespaceName(pKey.Value);
                         name += "." + pKey.Value.ToString();
                         builder.Append(name);
+                        haParrent = true;
                     }
                 }
             }
@@ -441,17 +448,28 @@ namespace Compiler.Tree
                 }
             }
 
-            foreach(var ctr in constructors)
+            foreach (var ctr in constructors)
             {
                 ctr.Value.generateCode(builder, api);
             }
 
             builder.Append(Utils.EndLine + "constructor(){");
+            if (haParrent)
+                builder.Append(Utils.EndLine + "super()");
             builder.Append(fieldsBuilder.ToString());
-            builder.Append(Utils.EndLine + "let argus = arguments.slice(1);");
-            builder.Append(Utils.EndLine+"this[arguments[0]](...argus);");
+            builder.Append(Utils.EndLine + "let argumentos = Array.from(arguments);");
+            builder.Append(Utils.EndLine + "let argus = argumentos.slice(1);");
+            builder.Append(Utils.EndLine + "if(argumentos.length>1)");
+            builder.Append(Utils.EndLine + "\tthis[arguments[0]](...argus);");
             builder.Append(Utils.EndLine + "}");
-            builder.Append(Utils.EndLine+"}");
+            if (methods != null)
+            {
+                foreach (var method in methods)
+                {
+                    method.Value.generateCode(builder, api);
+                }
+            }
+            builder.Append(Utils.EndLine + "}");
             foreach (var field in fields)
             {
                 if (api.modifierPass(field.Value.modifier, TokenType.RW_STATIC))
@@ -461,6 +479,22 @@ namespace Compiler.Tree
                     builder.Append(";");
                 }
 
+            }
+
+            generated = true;
+        }
+
+        private void generateParentsFirst(StringBuilder builder, API api)
+        {
+            if (parents != null)
+            {
+                foreach (var pKey in parents)
+                {
+                    if (pKey.Value is ClassDefinitionNode && ((ClassDefinitionNode)pKey.Value).generated==false)
+                    {
+                        pKey.Value.generateCode(builder, api);
+                    }
+                }
             }
         }
     }

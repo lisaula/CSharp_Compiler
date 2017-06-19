@@ -29,6 +29,7 @@ namespace Compiler.Tree
 
         public override TypeDefinitionNode evaluateType(API api)
         {
+            
             argumentsType = api.getArgumentsType(arguments);
             string functionName = ((IdentifierNode)primary).ToString() +"("+Utils.getTypeName(argumentsType)+")";
             MethodNode m = api.contextManager.findFunction(functionName);
@@ -46,9 +47,14 @@ namespace Compiler.Tree
             builder.Append("(");
             if(arguments != null)
             {
-                foreach(var arg in arguments)
+                int len = arguments.Count - 1;
+                int count = 0;
+                foreach (var arg in arguments)
                 {
                     arg.generateCode(builder, api);
+                    if (count < len)
+                        builder.Append(",");
+                    count++;
                 }
             }
             builder.Append(")");

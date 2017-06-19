@@ -42,12 +42,11 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
-            builder.Append(Utils.EndLine + token.lexema);
+            builder.Append(Utils.EndLine + token.lexema+" ");
             if(expression != null)
             {
                 expression.generateCode(builder, api);
             }
-            builder.Append(";");
         }
     }
 }

@@ -92,6 +92,10 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                         if(t.modifier.token.type != TokenType.RW_STATIC)
                             throw new SemanticException("Cannot reference a non-static method '" + Utils.getMethodName(t) + "'");
                     }
+                    if (contexts[i].type == ContextType.CLASS || contexts[i].type == ContextType.PARENT)
+                        t.returnType.globally= true;
+                    else
+                        t.returnType.localy= true;
                     return t;
                 }
             }

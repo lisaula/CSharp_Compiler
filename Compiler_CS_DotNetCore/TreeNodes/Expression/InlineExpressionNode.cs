@@ -118,8 +118,6 @@ namespace Compiler.Tree
                                 builder.Append(name + ".");
                             }
                         }
-
-
                         /*if (foundLocally && !(returnType is EnumDefinitionNode))
                             ((IdentifierNode)((ArrayAccessNode)element).primary).setFirst();
                         else
@@ -134,6 +132,21 @@ namespace Compiler.Tree
                                 builder.Append(name + ".");
                             }
                         }*/
+                    }
+                    else if (element is FunctionCallExpression)
+                    {
+                        if (foundGlobally)
+                        {
+                            ((IdentifierNode)((FunctionCallExpression)element).primary).setFirst();
+                        }
+                        else
+                        {
+                            if (isStatic)
+                            {
+                                string name = api.getFullNamespaceName(returnType);
+                                builder.Append(name + ".");
+                            }
+                        }
                     }
                 }
                 count++;

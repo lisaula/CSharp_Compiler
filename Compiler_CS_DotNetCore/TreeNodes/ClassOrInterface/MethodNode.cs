@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Compiler_CS_DotNetCore.Semantic;
 
 namespace Compiler.Tree
 {
@@ -29,6 +32,43 @@ namespace Compiler.Tree
             this.id = id;
             this.parameters = parameters;
             this.bodyStatements = bodyStatements;
+        }
+
+        internal void generateCode(StringBuilder builder, API api)
+        {
+            builder.Append(Utils.EndLine);
+            if (api.modifierPass(modifier, TokenType.RW_STATIC))
+                builder.Append(modifier.token.lexema+" ");
+
+            List<TypeDefinitionNode> parameterList = new List<TypeDefinitionNode>();
+            if (parameters != null)
+            {
+                foreach (var par in parameters)
+                {
+                    parameterList.Add(par.type);
+                }
+            }
+            string name = id.ToString() + Utils.getTypeNameConcated(parameterList);
+            builder.Append(name + "(");
+
+            if (parameters != null)
+            {
+                int len = parameters.Count - 1;
+                int count = 0;
+                foreach (var p in parameters)
+                {
+                    p.generateCode(builder, api);
+                    if (count < len)
+                        builder.Append(",");
+                    count++;
+                }
+            }
+            builder.Append(") {");
+            if (bodyStatements != null)
+            {
+                bodyStatements.generateCode(builder, api);
+            }
+            builder.Append(Utils.EndLine + "}");
         }
     }
 }

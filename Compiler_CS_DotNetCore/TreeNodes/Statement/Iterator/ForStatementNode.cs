@@ -72,6 +72,14 @@ namespace Compiler.Tree
                 int count = 0;
                 foreach (var s in initializer)
                 {
+                    if (s is LocalVariableDefinitionNode)
+                    {
+                        foreach (var key in ((LocalVariableDefinitionNode)s).variable)
+                        {
+                            ((LocalVariableDefinitionNode)s).endLine = false;
+                            key.Value.localEstatement = true;
+                        }
+                    }
                     s.generateCode(builder, api);
                     if (count < len)
                         builder.Append(",");
