@@ -83,7 +83,7 @@ namespace Compiler.Tree
                         }
                         else
                         {
-                            if (isStatic || (element.returnType is EnumDefinitionNode))
+                            if (isStatic || (element.returnType is EnumDefinitionNode) || onTableType)
                             {
                                 string name = api.getFullNamespaceName(element.returnType);
                                 builder.Append(name + ".");
@@ -112,7 +112,7 @@ namespace Compiler.Tree
                         }
                         else
                         {
-                            if (isStatic)
+                            if (isStatic || onTableType)
                             {
                                 string name = api.getFullNamespaceName(returnType);
                                 builder.Append(name + ".");
@@ -141,7 +141,7 @@ namespace Compiler.Tree
                         }
                         else
                         {
-                            if (isStatic)
+                            if (isStatic || onTableType)
                             {
                                 string name = api.getFullNamespaceName(returnType);
                                 builder.Append(name + ".");

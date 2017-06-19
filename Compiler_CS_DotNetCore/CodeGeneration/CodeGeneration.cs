@@ -42,6 +42,7 @@ namespace Compiler_CS_DotNetCore.CodeGeneration
                 if(nms != Utils.GlobalNamespace)
                 builder.Append(Utils.EndLine + nms + " = {};");
             }
+            builder.Append(Utils.includesDefaultJS);
             foreach (var tree in trees)
             {
                 try

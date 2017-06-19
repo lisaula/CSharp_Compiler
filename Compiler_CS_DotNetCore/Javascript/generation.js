@@ -126,7 +126,7 @@ GlobalNamespace.sort = class {
         let n = GlobalNamespace.IntType.ParseStringType("5");
         for (i = 0;
             (i) < ((N) - (1)); i++) {
-            let k = this.IntArrayMinIntTypeArray1DIntTypeIntType(data, i, this.prueba);
+            let k = this.IntArrayMinIntTypeArray1DIntTypeIntType(data, i, size);
             if ((i) != (k)) {
                 this.exchangeIntTypeArray1DIntTypeIntType(data, i, k)
             };

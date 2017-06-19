@@ -77,7 +77,7 @@ namespace Compiler.Tree
             }
             else
             {
-                builder.Append(GetType(token));
+                builder.Append(Utils.GlobalNamespace+"."+GetType(token));
             }
         }
     }

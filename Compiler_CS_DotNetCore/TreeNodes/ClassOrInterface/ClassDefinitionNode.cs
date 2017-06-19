@@ -466,6 +466,8 @@ namespace Compiler.Tree
             {
                 foreach (var method in methods)
                 {
+                    if (method.Value.id.ToString() == "IntArraySelectionSort")
+                        Console.WriteLine();
                     method.Value.generateCode(builder, api);
                 }
             }

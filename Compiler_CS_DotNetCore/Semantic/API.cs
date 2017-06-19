@@ -317,6 +317,8 @@ namespace Compiler_CS_DotNetCore.Semantic
             foreach(TypeDefinitionNode td in tree.typeList)
             {
                 td.evaluated = true;
+                if(td is ClassDefinitionNode)
+                    ((ClassDefinitionNode)td).generated = true;
             }
             foreach(NamespaceNode nms in tree.namespaceList)
             {

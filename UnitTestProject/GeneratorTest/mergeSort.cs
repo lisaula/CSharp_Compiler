@@ -1,5 +1,6 @@
+using System;
 public class sort{
-
+    public int prueba = 5;
     public static int IntArrayMin(int[] data, int start, int size)
     {
         int minPos = start;
@@ -13,10 +14,11 @@ public class sort{
     {
         int i;
         int N = size;
-
+        Console.WriteLine("Hola");
+        int n = int.Parse("5");
         for (i = 0; i < N - 1; i++)
         {
-            int k = IntArrayMin(data, i, size);
+            int k = this.IntArrayMin(data, i, size);
             if (i != k)
                 exchange(data, i, k);
         }
