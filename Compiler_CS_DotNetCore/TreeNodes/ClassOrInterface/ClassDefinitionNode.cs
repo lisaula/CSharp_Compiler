@@ -60,7 +60,7 @@ namespace Compiler.Tree
             api.contextManager.contexts.Clear();
             foreach (var key in methods)
             {
-                if (key.Value.id.ToString() == "SetStudentType")
+                if (key.Value.id.ToString() == "GetAndIncrementNumberCall")
                     Console.WriteLine();
                 if (api.modifierPass(key.Value.modifier, TokenType.RW_ABSTRACT))
                     continue;

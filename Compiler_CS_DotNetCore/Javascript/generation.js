@@ -137,7 +137,7 @@ GlobalNamespace.RaimProgram.Base.Person = class extends GlobalNamespace.Object {
         GlobalNamespace.System.Console.WriteLineStringType((((("Person") + (" "))) + itoa(numberCall)));
     }
     GetAndIncrementNumberCall() {
-        _numberCall++;
+        this._numberCall++;
         return this._numberCall;
     }
     SortPersonsPersonArray1DIntType(persons, size) {}
