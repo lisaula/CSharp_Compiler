@@ -153,7 +153,9 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                     throw new SemanticException("Method '" + key + "' already exist in current context.", m.id.token);
                 m.returnType.localy = false;
                 m.returnType.globally = false;
+                m.returnType.functionStatic = false;
                 m.returnType.onTableType = false;
+                m.returnType.functionOwner = null;
                 methods[key] = m;
             }
         }
@@ -217,6 +219,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 f.type.localy = false;
                 f.type.onTableType = false;
                 f.type.globally = false;
+                f.type.functionOwner = null;
                 variables[f.id.ToString()] = f;
             }
         }

@@ -15,6 +15,8 @@ namespace Compiler.Tree
         public TypeDefinitionNode typeNode;
         internal bool localy = false;
         internal bool globally;
+        internal bool functionStatic = false;
+        internal TypeDefinitionNode functionOwner = null;
 
         public virtual void Evaluate(API api)
         {

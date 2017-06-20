@@ -13,6 +13,8 @@ namespace Compiler.Tree
         public bool isStatic = false, foundLocally = false, foundGlobally = false;
         public TypeDefinitionNode firstFound = null;
         private bool onTableType = false;
+        private bool funcionStatic = false;
+        private TypeDefinitionNode functionOwner;
 
         public InlineExpressionNode(List<ExpressionNode> list)
         {
@@ -56,6 +58,8 @@ namespace Compiler.Tree
                     foundLocally = t.localy;
                     onTableType = t.onTableType;
                     foundGlobally = t.globally;
+                    funcionStatic = t.functionStatic;
+                    functionOwner = t.functionOwner;
                 }
                 count++;
                 List<Context> contexts = api.contextManager.buildEnvironment(t, ContextType.ATRIBUTE, api, t.onTableType);
@@ -135,7 +139,7 @@ namespace Compiler.Tree
                     }
                     else if (element is FunctionCallExpression)
                     {
-                        if (foundGlobally)
+                        if (foundGlobally && !isStatic && !funcionStatic)
                         {
                             ((IdentifierNode)((FunctionCallExpression)element).primary).setFirst();
                         }
@@ -143,7 +147,13 @@ namespace Compiler.Tree
                         {
                             if (isStatic || onTableType)
                             {
-                                string name = api.getFullNamespaceName(returnType);
+                                if (funcionStatic)
+                                    Console.WriteLine();
+                                string name = api.getFullNamespaceName(functionOwner);
+                                builder.Append(name + ".");
+                            }else if(funcionStatic && foundGlobally)
+                            {
+                                string name = api.getFullNamespaceName(functionOwner)+"."+functionOwner.ToString();
                                 builder.Append(name + ".");
                             }
                         }

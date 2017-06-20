@@ -137,7 +137,7 @@ GlobalNamespace.RaimProgram.Base.Person = class extends GlobalNamespace.Object {
         GlobalNamespace.System.Console.WriteLineStringType((((("Person") + (" "))) + itoa(numberCall)));
     }
     GetAndIncrementNumberCall() {
-        this._numberCall++;
+        _numberCall++;
         return this._numberCall;
     }
     SortPersonsPersonArray1DIntType(persons, size) {}
@@ -283,7 +283,7 @@ GlobalNamespace.RaimProgram.Program = class extends GlobalNamespace.Object {
         students[toInt(2)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Student("StudentStringTypeIntType", "B", 40);
         students[toInt(3)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Student("StudentStringTypeIntType", "A", 35);
         student.SortPersonsPersonArray1DIntType(students, 4);
-        this.PrintPersonsInfoPersonArray1D(students);
+        GlobalNamespace.RaimProgram.Program.PrintPersonsInfoPersonArray1D(students);
         GlobalNamespace.System.Console.WriteLineStringType("");
         let teacher = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("Teacher");
         let teachers = [];
@@ -292,7 +292,7 @@ GlobalNamespace.RaimProgram.Program = class extends GlobalNamespace.Object {
         teachers[toInt(2)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("TeacherStringTypeIntType", "Xc", 40);
         teachers[toInt(3)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("TeacherStringTypeIntType", "Wd", 35);
         teacher.SortPersonsPersonArray1DIntType(teachers, 4);
-        this.PrintPersonsInfoPersonArray1D(teachers);
+        GlobalNamespace.RaimProgram.Program.PrintPersonsInfoPersonArray1D(teachers);
     }
     static PrintPersonsInfoPersonArray1D(persons) {
         for (let p of persons) {
