@@ -37,7 +37,13 @@ namespace Compiler.Tree
 
         public override void generateCode(StringBuilder builder, API api)
         {
+            
+            if(returnType.getComparativeType() == Utils.Int)
+            {
+                builder.Append("toInt");
+            }
             api.checkExpression(this.returnType.getComparativeType(), leftExpression.returnType.getComparativeType(), builder);
+            builder.Append("(");
             builder.Append("(");
             leftExpression.generateCode(builder, api);
             builder.Append(") ");
@@ -47,6 +53,7 @@ namespace Compiler.Tree
             api.checkExpression(this.returnType.getComparativeType(), rightExpression.returnType.getComparativeType(), builder);
             builder.Append("(");
             rightExpression.generateCode(builder, api);
+            builder.Append(")");
             builder.Append(")");
         }
     }

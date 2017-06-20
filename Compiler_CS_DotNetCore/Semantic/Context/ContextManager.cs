@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using Compiler.Tree;
 using Compiler;
+using System.Xml;
+using System.Xml.Serialization;
+using System.IO;
 
 namespace Compiler_CS_DotNetCore.Semantic.Context
 {
@@ -126,6 +129,7 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                 t = contexts[i].findVariable(id);
                 if (t != null)
                 {
+                    TypeDefinitionNode n = copy(t.type);
                     if (isStatic)
                     {
                         if (t.modifier == null)
@@ -139,16 +143,132 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
                             throw new SemanticException("Field '"+t.id.ToString()+"' of type '"+t.type.getComparativeType()+"'is not a enum or literal. ");
                     }
                     if (contexts[i].type == ContextType.CLASS || contexts[i].type == ContextType.PARENT)
-                        t.type.globally = true;
+                        n.globally = true;
                     else
-                        t.type.localy = true;
-                    return t.type;
+                        n.localy = true;
+                    return n;
                 }
             }
             return null;
         }
 
-        internal List<Context> buildEnvironment(TypeDefinitionNode node, ContextType type, API api, bool isStatic= false)
+        private TypeDefinitionNode copy(TypeDefinitionNode t)
+        {
+            if (t is ClassDefinitionNode) {
+                var c = t as ClassDefinitionNode;
+                var n  = new ClassDefinitionNode();
+                n.constructors = c.constructors;
+                n.encapsulation = c.encapsulation;
+                n.evaluated = c.evaluated;
+                n.fields = c.fields;
+                n.generated = c.generated;
+                n.globally = false ;
+                n.identifier = c.identifier;
+                n.inheritance = c.inheritance;
+                n.isAbstract= c.isAbstract;
+                n.isStatic = c.isStatic;
+                n.localy = false;
+                n.methods = c.methods;
+                n.onTableType = false;
+                n.parents = c.parents;
+                n.parent_namespace = c.parent_namespace;
+                n.typeNode = c.typeNode;
+                return n;
+            }
+            else if(t is InterfaceNode)
+            {
+                var c = t as InterfaceNode;
+                var n = new InterfaceNode();
+                n.encapsulation = c.encapsulation;
+                n.evaluated = c.evaluated;
+                n.globally = false;
+                n.identifier = c.identifier;
+                n.inheritance = c.inheritance;
+                n.isStatic = c.isStatic;
+                n.localy = false;
+                n.methods = c.methods;
+                n.onTableType = false;
+                n.parents = c.parents;
+                n.parent_namespace = c.parent_namespace;
+                n.typeNode = c.typeNode;
+                return n;
+            }
+            else if(t is EnumNode)
+            {
+                var c = t as EnumNode;
+                var n = new EnumNode();
+                n.encapsulation = c.encapsulation;
+                n.evaluated = c.evaluated;
+                n.globally = false;
+                n.identifier = c.identifier;
+                n.isStatic = c.isStatic;
+                n.localy = false;
+                n.onTableType = false;
+                n.parent_namespace = c.parent_namespace;
+                n.typeNode = c.typeNode;
+
+                n.enumNodeList = c.enumNodeList;
+                n.expressionNode = c.expressionNode;
+                return n;
+            }
+            else if (t is EnumDefinitionNode)
+            {
+                var c = t as EnumDefinitionNode;
+                var n = new EnumDefinitionNode();
+                n.encapsulation = c.encapsulation;
+                n.evaluated = c.evaluated;
+                n.globally = false;
+                n.identifier = c.identifier;
+                n.isStatic = c.isStatic;
+                n.localy = false;
+                n.onTableType = false;
+                n.parent_namespace = c.parent_namespace;
+                n.typeNode = c.typeNode;
+
+                n.enumNodeList = c.enumNodeList;
+                return n;
+            }
+            return t;
+        }
+
+        public TypeDefinitionNode clone(TypeDefinitionNode t)
+        {
+
+            System.Type[] types = { typeof(UsingNode), typeof(NamespaceNode), typeof(EnumDefinitionNode)
+            , typeof(EnumNode), typeof(InterfaceNode), typeof(ClassDefinitionNode), typeof(FieldNode)
+            , typeof(MethodNode), typeof(ConstructorNode),typeof(ConstructorInitializerNode), typeof(IdentifierNode), typeof(Token)
+            , typeof(ExpressionNode), typeof(Parameter), typeof(ModifierNode), typeof(PrimitiveType), typeof(DictionaryTypeNode)
+            , typeof(LiteralNode), typeof(StatementExpressionNode), typeof(FunctionCallExpression), typeof(AccessMemory)
+            , typeof(ReferenceAccessNode), typeof(ForStatementNode), typeof(ForeachStatementNode), typeof(WhileStatementNode)
+            , typeof(DoStatementNode), typeof(IfStatementNode),typeof(SwitchStatementNode) , typeof(BodyStatement), typeof(LocalVariableDefinitionNode)
+            , typeof(EmbeddedStatementNode), typeof(IdentifierTypeNode), typeof(ClassInstantiation), typeof(ArrayInstantiation), typeof(ConditionExpression)
+            , typeof(AssignmentNode), typeof(PostAdditiveExpressionNode), typeof(UnaryExpressionNode), typeof(PreExpressionNode),
+            typeof(VoidTypeNode), typeof(ArrayAccessNode), typeof(ParenthesizedExpressionNode), typeof(ArithmeticExpression), typeof(VarType)
+            , typeof(BinaryExpression), typeof(TernaryExpressionNode), typeof(JumpStatementNode), typeof(CastingExpressionNode)
+            , typeof(InlineExpressionNode),typeof(SubExpression), typeof(SumExpression), typeof(MultExpression), typeof(DivExpression), typeof(LogicalExpression),
+            typeof(RelationalExpression), typeof(EqualityExpression), typeof(ModExpression), typeof(IsASExpression)};
+
+            var serializer = new XmlSerializer(typeof(TypeDefinitionNode), types);
+            byte[] byteArray = Encoding.UTF8.GetBytes("cloning.xml");
+            //byte[] byteArray = Encoding.ASCII.GetBytes(contents);
+            MemoryStream stream = new MemoryStream(byteArray);
+
+            using (var writer = XmlWriter.Create(stream))
+            {
+                serializer.Serialize(writer, t);
+            }
+
+            var des = new XmlSerializer(typeof(TypeDefinitionNode), types);
+            TypeDefinitionNode nuevo = null;
+            using (var reader = XmlReader.Create("cloning.xml"))
+            {
+                nuevo = (TypeDefinitionNode)serializer.Deserialize(reader);
+            }
+            return nuevo;
+        }
+
+        
+internal List<Context> buildEnvironment(TypeDefinitionNode node, ContextType type, API api, bool isStatic= false)
         {
             List<Context> contexts = new List<Context>();
             contexts.Add(new Context(node, type, api));

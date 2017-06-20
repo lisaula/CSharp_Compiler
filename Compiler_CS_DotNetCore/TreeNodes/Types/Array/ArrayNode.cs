@@ -57,7 +57,9 @@ namespace Compiler.Tree
                 foreach(var exp in expression_list)
                 {
                     builder.Append("[");
+                    builder.Append("toInt(");
                     exp.generateCode(builder, api);
+                    builder.Append(")");
                     builder.Append("]");
                 }
             }

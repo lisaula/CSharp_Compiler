@@ -36,8 +36,11 @@ namespace Compiler_CS_DotNetCore.CodeGeneration
 
         private void generateCode()
         {
+            builder.Append("let { itoa, atoi, toInt } = require(\"./Utils.js\");");
             builder.Append("let " + Utils.GlobalNamespace + " = {};");
-            foreach(var nms in Singleton.tableNamespaces)
+            var array = Singleton.tableNamespaces.ToArray();
+            IntArrayInsertionSort(array);
+            foreach (var nms in array)
             {
                 if(nms != Utils.GlobalNamespace)
                 builder.Append(Utils.EndLine + nms + " = {};");
@@ -54,6 +57,27 @@ namespace Compiler_CS_DotNetCore.CodeGeneration
                 }
             }
             builder.Append("\nmodule.exports = " + Utils.GlobalNamespace + ";");
+        }
+        public static void exchange(string[] data, int m, int n)
+        {
+            string temporary;
+
+            temporary = data[m];
+            data[m] = data[n];
+            data[n] = temporary;
+        }
+        public static void IntArrayInsertionSort(string[] data)
+        {
+            int i, j;
+            int N = data.Length;
+
+            for (j = 1; j < N; j++)
+            {
+                for (i = j; i > 0 && data[i].Length < data[i - 1].Length; i--)
+                {
+                    exchange(data, i, i - 1);
+                }
+            }
         }
     }
 }
