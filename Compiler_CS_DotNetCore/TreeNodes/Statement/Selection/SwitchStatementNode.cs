@@ -26,7 +26,7 @@ namespace Compiler.Tree
             TypeDefinitionNode t = constantExpression.evaluateType(api);
             foreach(CaseStatementNode c in cases)
             {
-                api.pushContext(new Context(ContextType.SWITCH, api));
+                api.contextManager.pushFront(new Context(ContextType.SWITCH, api));
                 c.primaryType = t;
                 c.evaluate(api);
                 api.popFrontContext();

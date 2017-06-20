@@ -29,13 +29,23 @@ namespace Compiler
                 Token placehold = getNextLookAhead(count);// look_ahead[look_ahead.Count() - 1];
                 int first = look_ahead.IndexOf(placehold);//look_ahead.Count() - 1;
                 bool accept = false;
+                Token placeholdArray = null;
+                bool capturar = false;
                 while (typesOptions.Contains(placehold.type) || placehold.type == TokenType.OP_DOT
-                    || placehold.type == TokenType.OPEN_SQUARE_BRACKET || placehold.type == TokenType.CLOSE_SQUARE_BRACKET
-                    || placehold.type == TokenType.OP_LESS_THAN || placehold.type == TokenType.OP_GREATER_THAN
-                    || placehold.type == TokenType.OP_COMMA)
+                    || placehold.type == TokenType.OPEN_SQUARE_BRACKET || placehold.type == TokenType.CLOSE_SQUARE_BRACKET)
                 {
+                    if (capturar && placeholdArray.type != TokenType.CLOSE_SQUARE_BRACKET)
+                        break;
+
                     count++;
+
+                    if (placehold.type == TokenType.OPEN_SQUARE_BRACKET)
+                    {
+                        capturar = true;
+                    }
                     placehold = getNextLookAhead(count);
+                    if (capturar)
+                        placeholdArray = placehold;
                     accept = true;
                 }
                 Token after_closing = getNextLookAhead(count+1);

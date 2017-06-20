@@ -42,7 +42,7 @@ namespace Compiler.Tree
             api.contextManager.Enums_or_Literal = false;
             if (body == null || body.Count == 0)
                 throw new SemanticException("Cases in switch should have body.", caseLabel[caseLabel.Count-1].token);
-            api.pushContext(new Context(ContextType.SWITCH, api));
+            api.contextManager.pushFront(new Context(ContextType.SWITCH, api));
             foreach (Statement s in body)
             {
                 s.evaluate(api);

@@ -40,7 +40,7 @@ namespace Compiler.Tree
             if (evaluated)
                 return;
             Debug.printMessage("Evaluating class " + identifier.ToString());
-            if (identifier.ToString() == "sort")
+            if (identifier.ToString() == "Student")
                 Console.WriteLine();
             checkInheritanceExistance(api);
             checkParents(api);
@@ -60,6 +60,8 @@ namespace Compiler.Tree
             api.contextManager.contexts.Clear();
             foreach (var key in methods)
             {
+                if (key.Value.id.ToString() == "SetStudentType")
+                    Console.WriteLine();
                 if (api.modifierPass(key.Value.modifier, TokenType.RW_ABSTRACT))
                     continue;
                Debug.printMessage("Evaluando " + key.Key);
@@ -103,7 +105,7 @@ namespace Compiler.Tree
 
             foreach (var key in constructors)
             {
-                if (key.Value.id.ToString() == "myClase")
+                if (key.Value.id.ToString() == "Student")
                     Console.WriteLine();
                 List<Context> contexts = api.contextManager.buildEnvironment(this, ContextType.CLASS, api);
                 api.pushContext(contexts.ToArray());
@@ -121,8 +123,8 @@ namespace Compiler.Tree
                     if (t is ClassDefinitionNode)
                     {
                         key.Value.base_init = init;
+                        key.Value.base_init.evaluate(api);
                     }
-                    key.Value.base_init.evaluate(api);
                 }else if(key.Value.base_init != null)
                     key.Value.base_init.evaluate(api);
 
@@ -282,6 +284,11 @@ namespace Compiler.Tree
                 parents[name] = tdn;
                 count++;
             }
+
+            if (!parents.ContainsKey("Object"))
+            {
+                parents["Object"] = Singleton.tableTypes[Utils.GlobalNamespace + ".Object"];
+            }
         }
         public override void verifiCycle(TypeDefinitionNode type, API api)
         {
@@ -431,6 +438,7 @@ namespace Compiler.Tree
                         name += "." + pKey.Value.ToString();
                         builder.Append(name);
                         haParrent = true;
+                        break;
                     }
                 }
             }

@@ -36,7 +36,8 @@ namespace Compiler
             if (!pass(TokenType.OPEN_PARENTHESIS))
                 throwError("open parenthesis '('");
             consumeToken();
-
+            if (id.ToString() == "QuickSort")
+                Console.WriteLine();
             var parameters = fixed_parameters();
 
             if (!pass(TokenType.CLOSE_PARENTHESIS))

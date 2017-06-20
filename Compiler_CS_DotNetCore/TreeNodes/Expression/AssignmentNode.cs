@@ -123,15 +123,36 @@ namespace Compiler.Tree
             string rule = t1.ToString() + "," + t2.ToString();
             string rule2 = t1.getComparativeType() + "," + t2.ToString();
             string rule3 = t1.getComparativeType() + "," + t2.getComparativeType();
-            if (rules.Contains(rule)
-                || rules.Contains(rule2)
-                || rules.Contains(rule3)
-                || t1.Equals(t2))
+            if (!rule.Contains(rule)
+                        && !rule.Contains(rule2)
+                        && !rule.Contains(rule3)
+                        && !t1.Equals(t2))
             {
-                t1.onTableType = false;
-                return t1;
+                if (t1.getComparativeType() == Utils.Class && t2.getComparativeType() == Utils.Class)
+                {
+                    if (!api.checkRelationBetween(t1, t2))
+                        throw new SemanticException("Not a valid assignment. Trying to assign " + t2.ToString() + " to field with type " + t1.ToString());
+                }
+                else if ((!(t1.getComparativeType() == Utils.Class || t1.getComparativeType() == Utils.String) && t2 is NullTypeNode))
+                {
+                    throw new SemanticException("Not a valid assignment. Trying to assign " + t2.ToString() + " to field with type " + t1.ToString());
+                }
+                else if (t1.getComparativeType() == Utils.Var)
+                {
+                    t1 = t2;
+                }
+                else if (t1.getComparativeType() == Utils.Array && t2.getComparativeType() == Utils.Array)
+                {
+                    var token = new Token();
+                    token.row = -1;
+                    token.column = -1;
+                    api.checkArrays(t1, t2, token);
+                }
+                else
+                    throw new SemanticException("Not a valid assignment. Trying to assign " + t2.ToString() + " to field with type " + t1.ToString());
             }
-            throw new SemanticException("Rule not supported. '"+t1.ToString()+"' "+assigmentOperator.ToString()+" '"+t2.ToString()+"'.", assigmentOperator);
+            t1.onTableType = false;
+            return t1;
         }
 
         public override void generateCode(StringBuilder builder, API api)

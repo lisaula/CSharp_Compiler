@@ -187,6 +187,9 @@ namespace Compiler_CS_DotNetCore.Semantic.Context
             //checkVariableExistance(fields);
             foreach (var f in fields)
             {
+                f.type.localy = false;
+                f.type.globally = false;
+                f.type.onTableType = false;
                 var ctx = contexts[0];
                 ctx.addVariable(f);
             }

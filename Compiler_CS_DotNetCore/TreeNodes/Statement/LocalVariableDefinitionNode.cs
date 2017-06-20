@@ -63,6 +63,9 @@ namespace Compiler.Tree
                         }else if(f.type.getComparativeType() == Utils.Var)
                         {
                             f.type = tdn;
+                        }else if(f.type.getComparativeType() == Utils.Array && tdn.getComparativeType()== Utils.Array)
+                        {
+                            api.checkArrays(f.type, tdn, key.Value.id.token);
                         }
                         else
                             throw new SemanticException("Not a valid assignment. Trying to assign " + tdn.ToString() + " to field with type " + f.type.ToString(), key.Value.id.token);
@@ -70,6 +73,8 @@ namespace Compiler.Tree
                 }
             }
         }
+
+
         private void evaluateFields(API api)
         {
             foreach (KeyValuePair<string, FieldNode> field in variable)

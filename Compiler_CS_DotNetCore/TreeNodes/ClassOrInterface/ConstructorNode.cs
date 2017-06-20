@@ -33,6 +33,8 @@ namespace Compiler.Tree
 
         internal void generateCode(StringBuilder builder, API api)
         {
+            if (id.ToString() == "Student")
+                Console.WriteLine();
             List<TypeDefinitionNode> parameterList = new List<TypeDefinitionNode>();
             if (parameters != null) {
                 foreach (var par in parameters)

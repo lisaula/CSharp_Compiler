@@ -106,6 +106,37 @@ namespace Compiler_CS_DotNetCore.Semantic
             return type;
         }
 
+        public void checkArrays(TypeDefinitionNode type, TypeDefinitionNode tdn, Token token)
+        {
+            var array1 = type as ArrayTypeNode;
+            var array2 = tdn as ArrayTypeNode;
+            string rule = array1.type.ToString() + "," + array2.type.ToString();
+            string rule2 = array1.type.getComparativeType() + "," + array2.type.ToString();
+            string rule3 = array1.type.getComparativeType() + "," + array2.type.getComparativeType();
+            if (!assignmentRules.Contains(rule)
+                && !assignmentRules.Contains(rule2)
+                && !assignmentRules.Contains(rule3)
+                && !array1.type.Equals(array2.type))
+            {
+                if (array1.type.getComparativeType() == Utils.Class && array2.type.getComparativeType() == Utils.Class)
+                {
+                    if (!checkRelationBetween(array1.type, array2.type))
+                        throw new SemanticException("Not a valid assignment. Trying to assign Array" + array2.type.ToString() + " to field with type Array" + array1.type.ToString(), token);
+                }
+                else if ((!(array1.type.getComparativeType() == Utils.Class || array1.type.getComparativeType() == Utils.String) && array2.type is NullTypeNode))
+                {
+                    throw new SemanticException("Not a valid assignment. Trying to assign Array" + array2.type.ToString() + " to field with type Arrat" + array1.type.ToString(), token);
+                }
+                else if (array1.type.getComparativeType() == Utils.Var)
+                {
+                    throw new SemanticException("Cannot make an array of var.", token);
+                }
+                else
+                    throw new SemanticException("Not a valid assignment. Trying to assign " + array2.type.ToString() + " to field with type " + array1.type.ToString(), token);
+            }
+
+        }
+
         public TypeDefinitionNode searchType(TypeDefinitionNode type)
         {
             if (working_type == null)
@@ -352,6 +383,7 @@ namespace Compiler_CS_DotNetCore.Semantic
                 var txt = System.IO.File.ReadAllText(s);
                 var inputString = new InputString(txt);
                 var lexer = new LexicalAnalyzer(inputString);
+
                 var parser = new Parser(lexer, s);
                 NamespaceNode tree;   
                 tree = parser.parse();
@@ -496,9 +528,20 @@ namespace Compiler_CS_DotNetCore.Semantic
                 return ((InterfaceNode)parent).methods;
             }else if(parent is ClassDefinitionNode)
             {
-                return ((ClassDefinitionNode)parent).methods;
+                return overridableMethods(((ClassDefinitionNode)parent).methods);
             }
             throw new Exception("Not a Class or interface type. Methods couldn't be extracted ");
+        }
+
+        private Dictionary<string, MethodNode> overridableMethods(Dictionary<string, MethodNode> methods)
+        {
+            Dictionary<string, MethodNode> met = new Dictionary<string, MethodNode>();
+            foreach(var me in methods)
+            {
+                if (modifierPass(me.Value.modifier, TokenType.RW_ABSTRACT, TokenType.RW_OVERRIDE, TokenType.RW_VIRTUAL))
+                    met[me.Key] = me.Value;
+            }
+            return met;
         }
 
         internal bool methodIsAbstract(MethodNode value)
