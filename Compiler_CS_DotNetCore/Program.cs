@@ -14,7 +14,8 @@ namespace Compiler
     {
         static void Main(string[] args)
         {
-            string[] argumentos = { @"G:\2017\2do tri\Compi\RaimProgram\" };
+            //string[] argumentos = { @"G:\2017\2do tri\Compi\RaimProgram\" };
+            string[] argumentos = { @"G:\2017\2do tri\Compi\Compiler_CS_DotNetCore\UnitTestProject\GeneratorTest\" };
             string path = "./";
             if (argumentos.Length > 0)
             {

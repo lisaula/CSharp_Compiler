@@ -42,8 +42,9 @@ namespace Compiler.Tree
             {
                 builder.Append("toInt");
             }
-            api.checkExpression(this.returnType.getComparativeType(), leftExpression.returnType.getComparativeType(), builder);
+            
             builder.Append("(");
+            api.checkExpression(this.returnType.getComparativeType(), leftExpression.returnType.getComparativeType(), builder);
             builder.Append("(");
             leftExpression.generateCode(builder, api);
             builder.Append(") ");

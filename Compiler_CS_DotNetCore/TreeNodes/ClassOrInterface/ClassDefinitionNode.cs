@@ -60,7 +60,7 @@ namespace Compiler.Tree
             api.contextManager.contexts.Clear();
             foreach (var key in methods)
             {
-                if (key.Value.id.ToString() == "GetAndIncrementNumberCall")
+                if (key.Value.id.ToString() == "Main")
                     Console.WriteLine();
                 if (api.modifierPass(key.Value.modifier, TokenType.RW_ABSTRACT))
                     continue;
@@ -474,7 +474,7 @@ namespace Compiler.Tree
             {
                 foreach (var method in methods)
                 {
-                    if (method.Value.id.ToString() == "IntArraySelectionSort")
+                    if (method.Value.id.ToString() == "Main")
                         Console.WriteLine();
                     method.Value.generateCode(builder, api);
                 }
