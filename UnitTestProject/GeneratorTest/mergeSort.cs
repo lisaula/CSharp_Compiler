@@ -1,6 +1,16 @@
 using System;
 public class sort{
-    public int prueba = 5;
+    
+    public static void Main(string[] args)
+    {
+        int[] array = { 7,50,20,40,90,6,4 };
+        int size = 7;
+        IntArraySelectionSort(array, size);
+        for (int i = 0; i < size; i++) {
+            Console.WriteLine(""+array[i]);
+        }
+    }
+
     public static int IntArrayMin(int[] data, int start, int size)
     {
         int minPos = start;
