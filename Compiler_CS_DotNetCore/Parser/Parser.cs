@@ -10,13 +10,20 @@ namespace Compiler
     {
         private LexicalAnalyzer lexer;
         private Token current_token;
+        private List<Token> look_ahead;
+        string filename="";
+        public Parser(LexicalAnalyzer lexer,string name) : this(lexer)
+        {
+            filename = name;
+        }
 
         public Parser(LexicalAnalyzer lexer)
         {
             this.lexer = lexer;
             current_token = lexer.getNextToken();
-            //doDebugOnlyCode = true;
+            look_ahead = new List<Token>();
+            //doDebugOnlyCode = true ;
         }
-        
+
     }
 }

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CompilationNode xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <usingList>
+    <UsingNode />
+    <UsingNode />
+  </usingList>
+  <namespaceList>
+    <NamespaceNode>
+      <usingList>
+        <UsingNode />
+      </usingList>
+      <namespaceList>
+        <NamespaceNode>
+          <usingList>
+            <UsingNode />
+          </usingList>
+          <namespaceList />
+          <typeList>
+            <TypeDefinitionNode xsi:type="EnumDefinitionNode">
+              <enumNodeList>
+                <EnumNode />
+                <EnumNode />
+                <EnumNode />
+              </enumNodeList>
+            </TypeDefinitionNode>
+          </typeList>
+        </NamespaceNode>
+      </namespaceList>
+      <typeList>
+        <TypeDefinitionNode xsi:type="InterfaceNode" />
+      </typeList>
+    </NamespaceNode>
+  </namespaceList>
+  <typeList>
+    <TypeDefinitionNode xsi:type="EnumDefinitionNode">
+      <enumNodeList>
+        <EnumNode />
+      </enumNodeList>
+    </TypeDefinitionNode>
+    <TypeDefinitionNode xsi:type="ClassDefinitionNode">
+      <fields />
+    </TypeDefinitionNode>
+    <TypeDefinitionNode xsi:type="ClassDefinitionNode">
+      <fields>
+        <FieldNode />
+        <FieldNode />
+        <FieldNode />
+      </fields>
+      <methods>
+        <MethodNode />
+      </methods>
+      <constructors>
+        <ConstructorNode />
+        <ConstructorNode />
+      </constructors>
+    </TypeDefinitionNode>
+  </typeList>
+</CompilationNode>

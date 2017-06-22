@@ -29,10 +29,10 @@
         OP_BIN_ONES_COMPLMTS,
         OP_COLON,
         OP_TER_NULLABLE,
-        KEY_OPEN,
-        KEY_CLOSE,
-        KEY_BAR_OPEN,
-        KEY_BAR_CLOSE,
+        OPEN_CURLY_BRACKET,
+        CLOSE_CURLY_BRACKET,
+        OPEN_SQUARE_BRACKET,
+        CLOSE_SQUARE_BRACKET,
         RW_IS,
         RW_AS,
         OP_INCREMENT,
@@ -93,6 +93,15 @@
         RW_SIZEOF,
         RW_TYPE,
         RW_ENUM,
-        RW_INTERFACE
+        RW_INTERFACE,
+        RW_VIRTUAL,
+        RW_BASE,
+        RW_THIS,
+        RW_DO,
+        RW_RETURN,
+        RW_CONTINUE,
+        RW_BREAK,
+        RW_DEFAULT,
+        RW_NULL
     }
 }

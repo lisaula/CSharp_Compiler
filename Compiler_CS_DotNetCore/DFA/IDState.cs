@@ -43,16 +43,26 @@ namespace Compiler
             reservedWordsDict["foreach"] = TokenType.RW_FOREACH;
             reservedWordsDict["in"] = TokenType.RW_IN;
             reservedWordsDict["using"] = TokenType.RW_USING;
-            reservedWordsDict["nameespace"] = TokenType.RW_NAMEESPACE;
+            reservedWordsDict["namespace"] = TokenType.RW_NAMEESPACE;
             reservedWordsDict["if"] = TokenType.RW_IF;
             reservedWordsDict["else"] = TokenType.RW_ELSE;
             reservedWordsDict["switch"] = TokenType.RW_SWITCH;
             reservedWordsDict["case"] = TokenType.RW_CASE;
             reservedWordsDict["static"] = TokenType.RW_STATIC;
             reservedWordsDict["sizeof"] = TokenType.RW_SIZEOF;
-            reservedWordsDict["type"] = TokenType.RW_TYPE;
+            //reservedWordsDict["type"] = TokenType.RW_TYPE;
             reservedWordsDict["enum"] = TokenType.RW_ENUM;
             reservedWordsDict["interface"] = TokenType.RW_INTERFACE;
+            reservedWordsDict["virtual"] = TokenType.RW_VIRTUAL;
+            reservedWordsDict["base"] = TokenType.RW_BASE;
+            reservedWordsDict["this"] = TokenType.RW_THIS;
+            reservedWordsDict["do"] = TokenType.RW_DO;
+            reservedWordsDict["break"] = TokenType.RW_BREAK;
+            reservedWordsDict["continue"] = TokenType.RW_CONTINUE;
+            reservedWordsDict["return"] = TokenType.RW_RETURN;
+            reservedWordsDict["default"] = TokenType.RW_DEFAULT;
+            reservedWordsDict["Dictionary"] = TokenType.RW_NULL;
+            reservedWordsDict["null"] = TokenType.RW_NULL;
         }
 
         public override Token makeToken(string lexema, int lexemaRow, int lexemaColumn)

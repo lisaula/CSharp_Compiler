@@ -14,10 +14,24 @@
             this.row = row;
             this.column = column;
         }
+        public Token()
+        {
+            lexema = null;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(obj is Token)
+            {
+                var t = obj as Token;
+                return t.lexema == lexema;
+            }
+            return false;
+        }
 
         public override string ToString()
         {
-            return lexema + " of type " + type + " row: " +row+ " column: "+column;
+            return " row: " +row+ " column: "+column;
         }
     }
 }
