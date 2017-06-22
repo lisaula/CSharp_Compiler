@@ -23,6 +23,24 @@ public class sort{
         Console.WriteLine("Suma char and int: " + c7);
         Console.WriteLine("Mult chars: " + c8);
 
+        c8 += c5;
+        Console.WriteLine("+= " + c8);
+        c7 -= c5;
+        Console.WriteLine("-= " + c7);
+        c6 *= c5;
+        Console.WriteLine("*= " + c6);
+        c5 /= c5;
+        Console.WriteLine("/= " + c5);
+        c4 &= c5;
+        Console.WriteLine("&= " + c4);
+        c3 |= c5;
+        Console.WriteLine("|= " + c3);
+        c2 ^= c5;
+        Console.WriteLine("^= " + c2);
+        c1 %= ~c8;
+        Console.WriteLine("%= " + c1);
+
+
         string s = "a" + 1;
         string s2 = "a" + 1.5;
         Console.WriteLine("Suma string-float " + s2);
@@ -30,7 +48,6 @@ public class sort{
 
         Console.WriteLine("Suma string-int " + s);
         Console.WriteLine("Suma assign " + s2);
-
 
         Console.WriteLine("Using selectionsort ");
 
@@ -44,7 +61,7 @@ public class sort{
         }
 
 
-        Console.WriteLine("Using quicksort ");
+        Console.WriteLine("Using HOLAAaaaaaaaaaaa ");
         int[] array2 = { 7,35,22,45,92,11,4 };
         int size2 = 7;
         IntArrayQuickSort(array2, size2);

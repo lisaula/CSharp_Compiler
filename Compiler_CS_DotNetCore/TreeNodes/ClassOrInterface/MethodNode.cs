@@ -49,6 +49,10 @@ namespace Compiler.Tree
                     parameterList.Add(par.type);
                 }
             }
+            if(id.ToString() == "GetAndIncrementNumberCall")
+            {
+                Console.WriteLine();
+            }
             string name = id.ToString() + Utils.getTypeNameConcated(parameterList);
             builder.Append(name + "(");
 

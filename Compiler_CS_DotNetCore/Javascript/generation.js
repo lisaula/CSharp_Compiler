@@ -6,6 +6,12 @@ let {
 let GlobalNamespace = {};
 GlobalNamespace.System = {};
 GlobalNamespace.System.IO = {};
+GlobalNamespace.RaimProgram = {};
+GlobalNamespace.RaimProgram.Base = {};
+GlobalNamespace.RaimProgram.Common = {};
+GlobalNamespace.RaimProgram.Common.Sorting = {};
+GlobalNamespace.RaimProgram.Base.Derivatives = {};
+GlobalNamespace.RaimProgram.Base.Derivatives = {};
 GlobalNamespace.Object = class {
     Object() {}
     constructor() {
@@ -106,8 +112,176 @@ GlobalNamespace.System.IO.TextReader = class {
     }
     static ReadLine() {}
 }
-GlobalNamespace.sort = class extends GlobalNamespace.Object {
-    sort() {}
+GlobalNamespace.RaimProgram.Common.StudentType = {
+    FRESHMAN: 0,
+    SOPHOMORE: 1,
+    JUNIOR: 2,
+    SENIOR: 3,
+}
+GlobalNamespace.RaimProgram.Base.Person = class extends GlobalNamespace.Object {
+    Person() {}
+    PersonStringTypeIntType(name, age) {
+        this.Name = name;
+        this.Age = age;
+    }
+    constructor() {
+        super()
+        this.Name = null;
+        this.Age = null;
+        this._numberCall = 0;
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length > 1) this[arguments[0]](...argus);
+    }
+    print() {
+        GlobalNamespace.System.Console.WriteLineStringType(this.ToString());
+    }
+    PrintClassTypeWithNumberCall() {
+        let numberCall = this.GetAndIncrementNumberCall();
+        GlobalNamespace.System.Console.WriteLineStringType((((("Person") + (" "))) + itoa(this._numberCall)));
+    }
+    fn() {
+        GlobalNamespace.System.Console.WriteLineStringType("Person");
+    }
+    metodoPrivado() {
+        GlobalNamespace.System.Console.WriteLineStringType("Soy el metodo Privado");
+    }
+    GetAndIncrementNumberCall() {
+        this._numberCall++;
+        return this._numberCall;
+    }
+    SortPersonsPersonArray1DIntType(persons, size) {}
+}
+GlobalNamespace.RaimProgram.Base.Derivatives.Student = class extends GlobalNamespace.RaimProgram.Base.Person {
+    Student() {}
+    StudentStringTypeIntType(name, age) {
+        this.Name = name;
+        this.Age = age;
+    }
+    constructor() {
+        super()
+        this.studentType = null;
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length > 1) this[arguments[0]](...argus);
+    }
+    SetStudentTypeStudentType(type) {
+        GlobalNamespace.RaimProgram.Common.StudentType = GlobalNamespace.RaimProgram.Common.type;
+    }
+    fn() {
+        super.fn();
+        GlobalNamespace.System.Console.WriteLineStringType("Student");
+    }
+    SetStudentTypeIntType(type) {
+        switch (type) {
+            case (0):
+                this.studentType = GlobalNamespace.RaimProgram.Common.StudentType.FRESHMAN
+                break
+            case (1):
+                this.studentType = GlobalNamespace.RaimProgram.Common.StudentType.SOPHOMORE
+                break
+            case (2):
+                this.studentType = GlobalNamespace.RaimProgram.Common.StudentType.JUNIOR
+                break
+            case (3):
+                this.studentType = GlobalNamespace.RaimProgram.Common.StudentType.SENIOR
+                break
+            default:
+                GlobalNamespace.System.Console.WriteLineStringType("Invalid entry for StudentType")
+                break
+        };
+    }
+    GetStudentType() {
+        return GlobalNamespace.RaimProgram.Common.StudentType;
+    }
+    SortPersonsPersonArray1DIntType(persons, size) {
+        this.QuickSortPersonArray1DIntTypeIntType(persons, 0, toInt((size) - (1)));
+    }
+    ToString() {
+        return (((((("Name: ") + (this.Name))) + ("\nAge: "))) + itoa(this.Age));
+    }
+    QuickSortPersonArray1DIntTypeIntType(persons, left, right) {
+        let i = left;
+        let j = right;
+        let pivot = persons[toInt(toInt(((toInt((left) + (right)))) / (2)))];
+        do {
+            while ((((((persons[toInt(i)].Age) < (pivot.Age)))) && ((((i) < (right)))))) {
+                i++
+            };
+            while ((((((pivot.Age) < (persons[toInt(j)].Age)))) && ((((j) > (left)))))) {
+                j--
+            };
+            if (((i) <= (j))) {
+                let temp = persons[toInt(i)];
+                persons[toInt(i)] = persons[toInt(j)];
+                persons[toInt(j)] = temp;
+                i++;
+                j--;
+            };
+        } while (((i) <= (j)));;
+        if (((left) < (j))) {
+            this.QuickSortPersonArray1DIntTypeIntType(persons, left, j)
+        };
+        if (((i) < (right))) {
+            this.QuickSortPersonArray1DIntTypeIntType(persons, i, right)
+        };
+    }
+}
+GlobalNamespace.RaimProgram.Base.Derivatives.Random = class extends GlobalNamespace.Object {
+    Random() {}
+    constructor() {
+        super()
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length > 1) this[arguments[0]](...argus);
+    }
+    Nextfloat() {
+        return 5.5;
+    }
+}
+GlobalNamespace.RaimProgram.Base.Derivatives.Teacher = class extends GlobalNamespace.RaimProgram.Base.Person {
+    Teacher() {
+        this.random = new GlobalNamespace.RaimProgram.Base.Derivatives.Random("Random");
+    }
+    TeacherStringTypeIntType(name, age) {
+        this.Name = name;
+        this.Age = age;
+        this.random = new GlobalNamespace.RaimProgram.Base.Derivatives.Random("Random");
+    }
+    constructor() {
+        super()
+        let argumentos = Array.from(arguments);
+        let argus = argumentos.slice(1);
+        if (argumentos.length > 1) this[arguments[0]](...argus);
+    }
+    GetRandomGrumpinessFloatTypeFloatType(lowerLimit, upperLimit) {
+        let range = ((upperLimit) - (lowerLimit));
+        let number = this.random.Nextfloat();
+        return ((((((number) * (range))))) + (lowerLimit));
+    }
+    SortPersonsPersonArray1DIntType(persons, size) {
+        GlobalNamespace.RaimProgram.Base.Derivatives.Teacher.BubbleSortPersonArray1DIntType(persons, size);
+    }
+    ToString() {
+        return (((((("Name5: ") + (this.Name))) + ("\nAg5: "))) + itoa(this.Age));
+    }
+    static BubbleSortPersonArray1DIntType(persons, size) {
+        for (let pass = 1;
+            ((pass) < (size)); pass++) {
+            for (let i = 0;
+                ((i) < (toInt((size) - (pass)))); i++) {
+                if (((persons[toInt(i)].Age) >= (persons[toInt(toInt((i) + (1)))].Age))) {
+                    let temp = persons[toInt(i)];
+                    persons[toInt(i)] = persons[toInt(toInt((i) + (1)))];
+                    persons[toInt(toInt((i) + (1)))] = temp;
+                };
+            };
+        };
+    }
+}
+GlobalNamespace.RaimProgram.Base.Derivatives.Teacher.random = null;
+GlobalNamespace.RaimProgram.Program = class extends GlobalNamespace.Object {
+    Program() {}
     constructor() {
         super()
         let argumentos = Array.from(arguments);
@@ -115,108 +289,61 @@ GlobalNamespace.sort = class extends GlobalNamespace.Object {
         if (argumentos.length > 1) this[arguments[0]](...argus);
     }
     static MainStringTypeArray1D(args) {
-        let c7 = toInt(atoi('a') + (1));
-        let c = toInt((20) + (30));
-        let c1 = toInt(((toInt(((toInt((toInt((20) + (30))) - (toInt((10) * (50)))))) / (5)))) * (10));
-        let c2 = toInt((1) << (0x1));
-        let c3 = toInt((c2) ^ (c1));
-        let c4 = toInt((1) & (c));
-        let c5 = toInt((100) % (7));
-        let c6 = toInt((c4) | (c1));
-        let c8 = toInt(atoi('b') * atoi('r'));
-        GlobalNamespace.System.Console.WriteLineStringType((("Suma: ") + itoa(c)));
-        GlobalNamespace.System.Console.WriteLineStringType((("sumatoria complicada: ") + itoa(c1)));
-        GlobalNamespace.System.Console.WriteLineStringType((("left shifting: ") + itoa(c2)));
-        GlobalNamespace.System.Console.WriteLineStringType((("XOR operator: ") + itoa(c3)));
-        GlobalNamespace.System.Console.WriteLineStringType((("AND operator: ") + itoa(c4)));
-        GlobalNamespace.System.Console.WriteLineStringType((("MOD operator: ") + itoa(c5)));
-        GlobalNamespace.System.Console.WriteLineStringType((("OR operator: ") + itoa(c6)));
-        GlobalNamespace.System.Console.WriteLineStringType((("Suma char and int: ") + itoa(c7)));
-        GlobalNamespace.System.Console.WriteLineStringType((("Mult chars: ") + itoa(c8)));
-        let s = (("a") + itoa(1));
-        let s2 = (("a") + itoa(1.5));
-        GlobalNamespace.System.Console.WriteLineStringType((("Suma string-float ") + (s2)));
-        s2 += " fin";
-        GlobalNamespace.System.Console.WriteLineStringType((("Suma string-int ") + (s)));
-        GlobalNamespace.System.Console.WriteLineStringType((("Suma assign ") + (s2)));
-        GlobalNamespace.System.Console.WriteLineStringType("Using selectionsort ");
-        let array = [7, 50, 20, 40, 90, 6, 4];
-        let size = 7;
-        GlobalNamespace.sort.IntArraySelectionSortIntTypeArray1DIntType(array, size);
+        let array2 = [
+            [1, 2],
+            [3, 4],
+            [5, 6],
+            [7, 8]
+        ];
         for (let i = 0;
-            ((i) < (size)); i++) {
-            GlobalNamespace.System.Console.WriteLineStringType((("") + itoa(array[toInt(i)])));
+            ((i) < (4)); i++) {
+            for (let x = 0;
+                ((x) < (2)); x++) {
+                array2[toInt(i)][toInt(x)] *= 2;
+            };
         };
-        GlobalNamespace.System.Console.WriteLineStringType("Using quicksort ");
-        let array2 = [7, 35, 22, 45, 92, 11, 4];
-        let size2 = 7;
-        GlobalNamespace.sort.IntArrayQuickSortIntTypeArray1DIntType(array2, size2);
         for (let i = 0;
-            ((i) < (size2)); i++) {
-            GlobalNamespace.System.Console.WriteLineStringType((("") + itoa(array2[toInt(i)])));
-        };
-    }
-    static IntArrayQuickSortIntTypeArray1DIntTypeIntType(data, l, r) {
-        let i = null
-        let j = null;
-        let x = null;
-        i = l;
-        j = r;
-        x = data[toInt(toInt(((toInt((l) + (r)))) / (2)))];
-        while (true) {
-            while (((data[toInt(i)]) < (x))) {
-                i++
-            };
-            while (((x) < (data[toInt(j)]))) {
-                j--
-            };
-            if (((i) <= (j))) {
-                GlobalNamespace.sort.exchangeIntTypeArray1DIntTypeIntType(data, i, j);
-                i++;
-                j--;
-            };
-            if (((i) > (j))) {
-                break
+            ((i) < (4)); i++) {
+            GlobalNamespace.System.Console.WriteLineStringType((("Arreglo: ") + itoa(i)));
+            for (let x = 0;
+                ((x) < (2)); x++) {
+                GlobalNamespace.System.Console.WriteLineStringType((("val :") + itoa(array2[toInt(i)][toInt(x)])));
             };
         };
-        if (((l) < (j))) {
-            GlobalNamespace.sort.IntArrayQuickSortIntTypeArray1DIntTypeIntType(data, l, j)
-        };
-        if (((i) < (r))) {
-            GlobalNamespace.sort.IntArrayQuickSortIntTypeArray1DIntTypeIntType(data, i, r)
-        };
+        let student = new GlobalNamespace.RaimProgram.Base.Derivatives.Student("Student");
+        let students = [];
+        students[toInt(0)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Student("StudentStringTypeIntType", "D", 50);
+        students[toInt(1)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Student("StudentStringTypeIntType", "C", 22);
+        students[toInt(2)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Student("StudentStringTypeIntType", "B", 40);
+        students[toInt(3)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Student("StudentStringTypeIntType", "A", 35);
+        student.SortPersonsPersonArray1DIntType(students, 4);
+        GlobalNamespace.RaimProgram.Program.PrintPersonsInfoPersonArray1D(students);
+        GlobalNamespace.System.Console.WriteLineStringType("");
+        let teacher = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("Teacher");
+        let teachers = [];
+        teachers[toInt(0)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("TeacherStringTypeIntType", "Za", 50);
+        teachers[toInt(1)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("TeacherStringTypeIntType", "Yb", 22);
+        teachers[toInt(2)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("TeacherStringTypeIntType", "Xc", 40);
+        teachers[toInt(3)] = new GlobalNamespace.RaimProgram.Base.Derivatives.Teacher("TeacherStringTypeIntType", "Wd", 35);
+        teacher.SortPersonsPersonArray1DIntType(teachers, 4);
+        GlobalNamespace.RaimProgram.Program.PrintPersonsInfoPersonArray1D(teachers);
     }
-    static IntArrayQuickSortIntTypeArray1DIntType(data, size) {
-        GlobalNamespace.sort.IntArrayQuickSortIntTypeArray1DIntTypeIntType(data, 0, toInt((size) - (1)));
-    }
-    static IntArrayMinIntTypeArray1DIntTypeIntType(data, start, size) {
-        let minPos = start;
-        for (let pos = toInt((start) + (1));
-            ((pos) < (size)); pos++) {
-            if (((data[toInt(pos)]) < (data[toInt(minPos)]))) {
-                minPos = pos
-            }
-        };
-        return minPos;
-    }
-    static IntArraySelectionSortIntTypeArray1DIntType(data, size) {
-        let i = null;
-        let N = size;
-        GlobalNamespace.System.Console.WriteLineStringType("Hola");
-        let n = GlobalNamespace.IntType.ParseStringType("5");
-        for (i = 0;
-            ((i) < (toInt((N) - (1)))); i++) {
-            let k = this.IntArrayMinIntTypeArray1DIntTypeIntType(data, i, size);
-            if (((i) != (k))) {
-                GlobalNamespace.sort.exchangeIntTypeArray1DIntTypeIntType(data, i, k)
+    static PrintPersonsInfoPersonArray1D(persons) {
+        for (let p of persons) {
+            p.print();
+            if (p instanceof GlobalNamespace.RaimProgram.Base.Derivatives.Teacher) {
+                let t = p;
+                GlobalNamespace.System.Console.WriteLineStringType(((t.Name) + (" is a teacher.")));
+                GlobalNamespace.System.Console.WriteLineStringType(t.ToString());
+                t.PrintClassTypeWithNumberCall();
+                GlobalNamespace.System.Console.WriteLineStringType((((("Grumpiness: ") + itoa(t.GetRandomGrumpinessFloatTypeFloatType(1, 100)))) + ("\n")));
+            } else {
+                let s = p;
+                s.fn();
+                GlobalNamespace.System.Console.WriteLineStringType(((s.Name) + (" is not a teacher.")));
+                s.PrintClassTypeWithNumberCall();
             };
         };
-    }
-    static exchangeIntTypeArray1DIntTypeIntType(data, m, n) {
-        let temporary = null;
-        temporary = data[toInt(m)];
-        data[toInt(m)] = data[toInt(n)];
-        data[toInt(n)] = temporary;
     }
 }
 module.exports = GlobalNamespace;

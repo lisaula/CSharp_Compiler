@@ -15,6 +15,7 @@ namespace Compiler.Tree
         private bool onTableType = false;
         private bool funcionStatic = false;
         private TypeDefinitionNode functionOwner;
+        
 
         public InlineExpressionNode(List<ExpressionNode> list)
         {
